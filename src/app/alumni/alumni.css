@@ -12,7 +12,7 @@
   --al-ink: var(--text-primary);
   --al-muted: var(--text-secondary);
   --al-line: var(--border-strong); /* #C9D3DE */
-  --al-gutter: calc(var(--edge) * 2 + var(--rail)); /* clears the fixed left rail */
+  --al-gutter: 0px; /* the site layout already clears the rail */
   min-height: 100svh;
   padding-left: var(--al-gutter);
   background: var(--al-ivory);
@@ -163,7 +163,7 @@ a:hover > .al-arrow {
 .al-hero {
   position: relative;
   height: 260svh; /* the scroll distance the grid zooms out over */
-  margin: var(--edge) var(--edge) 0 0;
+  margin: 0;
   background: var(--al-navy);
 }
 .al-hero-stage {
@@ -176,7 +176,7 @@ a:hover > .al-arrow {
 }
 .al-hero-grid {
   position: absolute;
-  inset: clamp(10px, 1.4vw, 20px);
+  inset: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(0, 1fr));
@@ -257,215 +257,12 @@ a:hover > .al-arrow {
 }
 /* Before the script runs, and whenever motion is reduced: a calm, complete grid. */
 .al-hero:not([data-animated]) {
-  height: calc(100svh - var(--edge));
+  height: 100svh;
   min-height: 560px;
 }
 .al-hero:not([data-animated]) .al-hero-stage {
   position: relative;
   height: 100%;
-}
-
-/* ---------- 2 · Remember this spot? — aerial, tab row, story ---------- */
-.al-spots {
-  padding: clamp(88px, 10vw, 152px) 0 clamp(72px, 8vw, 128px);
-}
-.al-spots .al-head {
-  margin-bottom: clamp(32px, 4vw, 56px);
-}
-.al-map {
-  max-width: 1120px;
-  margin-inline: auto;
-}
-.al-map-frame {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: var(--al-navy);
-}
-.al-map-canvas {
-  position: absolute;
-  inset: 0;
-  transform-origin: 0 0;
-  transition: transform 700ms cubic-bezier(0.25, 0.8, 0.25, 1);
-  will-change: transform;
-}
-.al-map-canvas > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-.al-map-pin {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 2px solid var(--surface-primary);
-  border-radius: 50%;
-  background: var(--al-navy);
-  color: var(--surface-primary);
-  font: 400 16px/1 var(--display);
-  cursor: pointer;
-  /* Pins stay the same size while the map zooms. */
-  transform: translate(-50%, -50%) scale(calc(1 / var(--z, 1)));
-  transition: transform 700ms cubic-bezier(0.25, 0.8, 0.25, 1), background-color var(--transition-fast) var(--ease-standard);
-  box-shadow: 0 4px 12px rgb(7 24 47 / 60%);
-}
-.al-map-pin[data-hover],
-.al-map-pin:hover {
-  background: var(--color-primary);
-}
-.al-map-pin[data-active] {
-  z-index: 2;
-  background: var(--color-gold);
-  color: var(--al-navy);
-}
-.al-map-controls {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  display: flex;
-  gap: 4px;
-}
-.al-map-controls button {
-  display: grid;
-  place-items: center;
-  min-width: 40px;
-  height: 40px;
-  padding: 0 12px;
-  border: 0;
-  background: rgb(11 45 82 / 83%);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  color: var(--surface-primary);
-  font: 600 0.8rem/1 var(--font-primary);
-  cursor: pointer;
-  transition: background-color var(--transition-fast) var(--ease-standard);
-}
-.al-map-controls button:hover {
-  background: rgb(11 45 82 / 94%);
-}
-.al-map-controls svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.al-map-all {
-  order: -1;
-}
-
-/* Tab row: six equal columns, each a numbered stop; the active one gets a navy bar. */
-.al-map-tabs {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  border-bottom: 1px solid var(--border-strong);
-}
-.al-map-tab {
-  position: relative;
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  min-height: 84px;
-  padding: 16px 14px 14px 0;
-  border: 0;
-  background: none;
-  color: var(--al-muted);
-  text-align: left;
-  cursor: pointer;
-  transition: color var(--transition-fast) var(--ease-standard);
-}
-.al-map-tab::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 4px;
-  background: var(--border-strong);
-  transition: background-color var(--transition-normal) var(--ease-standard);
-}
-.al-map-tab + .al-map-tab {
-  padding-left: 14px;
-}
-.al-map-tab:hover {
-  color: var(--al-navy);
-}
-.al-map-tab:hover::before {
-  background: var(--sky, #a8c8e6);
-}
-.al-map-tab[aria-selected="true"] {
-  color: var(--al-navy);
-}
-.al-map-tab[aria-selected="true"]::before {
-  background: var(--al-navy);
-}
-.al-map-tab-num {
-  font: 400 1rem/1 var(--display);
-}
-.al-map-tab-name {
-  font: 400 clamp(1.15rem, 1.5vw, 1.45rem) / 1 var(--display);
-  text-transform: uppercase;
-}
-
-/* Story */
-.al-map-story {
-  min-height: 180px;
-  padding-top: var(--space-8);
-}
-.al-map-story-inner {
-  display: grid;
-  gap: var(--space-8);
-}
-.al-map-story-inner.has-photo {
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  align-items: start;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .al-map-story-inner {
-    animation: al-story-in 380ms cubic-bezier(0.25, 0.8, 0.25, 1) both;
-  }
-}
-@keyframes al-story-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-.al-map-where {
-  font: 600 11px/1.4 var(--font-nav);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--al-muted);
-}
-.al-page .al-map-story h3 {
-  margin-top: var(--space-2);
-  font: 400 clamp(2.2rem, 3.6vw, 3.2rem) / 0.95 var(--display);
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--al-navy);
-}
-.al-map-memory {
-  max-width: 52ch;
-  margin-top: var(--space-4) !important;
-  font: 400 1.15rem/1.55 var(--font-editorial);
-  color: var(--al-ink);
-}
-.al-map-story img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-}
-@media (prefers-reduced-motion: reduce) {
-  .al-map-canvas,
-  .al-map-pin {
-    transition: none;
-  }
 }
 
 /* ---------- 3 · Memory gallery ---------- */
@@ -833,20 +630,6 @@ a:hover > .al-arrow {
   .al-people {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .al-map-tabs {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-  .al-map-tabs::-webkit-scrollbar {
-    display: none;
-  }
-  .al-map-tab {
-    flex: 0 0 auto;
-    width: 168px;
-    scroll-snap-align: start;
-  }
 
   .al-reveal-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -866,20 +649,18 @@ a:hover > .al-arrow {
 @media (max-width: 760px) {
   .al-page {
     --al-pad: 16px;
-    --al-gutter: 0px;
-    padding-left: 0;
-    padding-top: calc(var(--edge) + var(--bar-h));
+    padding-top: 0;
   }
   .al-hero {
-    margin: var(--edge) var(--edge) 0;
+    margin: 0;
   }
   .al-hero:not([data-animated]) {
-    height: calc(100svh - var(--bar-h) - 2 * var(--edge));
+    height: calc(100svh - var(--bar-h, 48px));
     min-height: 480px;
   }
   .al-hero-stage {
-    top: calc(var(--bar-h) + var(--edge));
-    height: calc(100svh - var(--bar-h) - var(--edge));
+    top: var(--bar-h, 48px);
+    height: calc(100svh - var(--bar-h, 48px));
   }
   .al-invite-expect {
     grid-template-columns: 1fr;
@@ -891,19 +672,7 @@ a:hover > .al-arrow {
   .al-people {
     grid-template-columns: 1fr;
   }
-  .al-map-tab {
-    width: 140px;
-  }
-  .al-map-story-inner.has-photo {
-    grid-template-columns: 1fr;
-  }
-  .al-map-story-inner.has-photo img {
-    order: -1;
-  }
-  .al-map-controls button {
-    min-width: 44px;
-    height: 44px;
-  }
+  /* Phones: controls sit in a bar under the map so they never cover it. */
 
   .al-reveal-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

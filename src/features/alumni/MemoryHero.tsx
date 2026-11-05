@@ -73,7 +73,7 @@ export function MemoryHero() {
         </h1>
         <p className="al-eyebrow al-hero-kicker">SRMIST Alumni</p>
         <div className="al-hero-after">
-          <a className="al-scroll" href="#spots">
+          <a className="al-scroll" href="#memories">
             Take a walk back <span aria-hidden="true">↓</span>
           </a>
         </div>

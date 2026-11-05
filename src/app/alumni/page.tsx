@@ -2,7 +2,6 @@ import Image from "next/image";
 import { SiteFooter } from "@/components/SiteFooter";
 import { MemoryReveal } from "@/features/alumni/MemoryReveal";
 import { MemoryHero } from "@/features/alumni/MemoryHero";
-import { CampusMap } from "@/features/alumni/CampusMap";
 import { DaysToGo } from "@/features/alumni/DaysToGo";
 import { alumniDay, alumniLinks, alumniOffice, notableAlumni, pastEvents } from "@/features/alumni/data";
 import "./alumni.css";
@@ -29,14 +28,6 @@ export default function Page() {
       <div className="al-page">
         {/* 1 — Hero: scroll-driven photo grid */}
         <MemoryHero />
-
-        {/* 2 — Remember this spot? An illustrated campus map */}
-        <section id="spots" className="al-section al-spots" aria-labelledby="spots-title">
-          <div className="al-head al-reveal">
-            <h2 id="spots-title">Remember this spot?</h2>
-          </div>
-          <CampusMap />
-        </section>
 
         {/* 3 — Memory gallery */}
         <section id="memories" className="al-memories" aria-labelledby="memories-title">
