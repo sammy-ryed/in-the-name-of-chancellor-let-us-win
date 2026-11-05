@@ -2,11 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { stories } from "./content";
+import { useCarouselPlayback } from "@/components/useCarouselPlayback";
+import { CarouselPlaybackButton } from "@/components/CarouselPlaybackButton";
 export function NewsReel() {
   const strip = useRef<HTMLDivElement>(null);
   const drag = useRef({ down: false, moved: false, x: 0, left: 0 });
   const hover = useRef<HTMLSpanElement>(null);
   const [edges, setEdges] = useState({ start: true, end: false });
+  const { rootRef, playing, reducedMotion, togglePlayback, pausePlayback } = useCarouselPlayback<HTMLDivElement>({
+    enabled: stories.length > 1 && !(edges.start && edges.end),
+    onAdvance: quiet => move(1, quiet, true),
+  });
   useEffect(() => {
     const el = strip.current!;
     const update = () => {
@@ -25,19 +31,23 @@ export function NewsReel() {
       el.removeEventListener("scroll", update);
     };
   }, []);
-  function move(d: number) {
-    const el = strip.current!;
-    const a = el.children[0].getBoundingClientRect(),
-      b = el.children[1].getBoundingClientRect();
-    el.scrollBy({
-      left: d * (b.left - a.left),
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "instant"
-        : "smooth",
-    });
+  function move(direction: number, quiet: boolean, wrap = false) {
+    const el = strip.current;
+    if (!el || el.children.length < 2) return;
+    if (wrap && el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
+      el.scrollTo({ left: 0, behavior: "instant" });
+      return;
+    }
+    const first = el.children[0].getBoundingClientRect();
+    const next = el.children[1].getBoundingClientRect();
+    el.scrollBy({ left: direction * (next.left - first.left), behavior: quiet ? "instant" : "smooth" });
+  }
+  function browse(direction: number) {
+    pausePlayback();
+    move(direction, reducedMotion);
   }
   return (
-    <div className="s-stories">
+    <div className="s-stories" ref={rootRef}>
       <div
         className="s-story-strip"
         ref={strip}
@@ -63,6 +73,7 @@ export function NewsReel() {
           const d = drag.current;
           if (!d.down) return;
           if (!d.moved && Math.abs(e.clientX - d.x) > 6) {
+            pausePlayback();
             d.moved = true;
             el.setPointerCapture(e.pointerId);
             el.dataset.dragging = "true";
@@ -112,11 +123,15 @@ export function NewsReel() {
         ↔
       </span>
       <div className="s-news-controls">
+        {!(edges.start && edges.end) && (
+          <CarouselPlaybackButton className="s-news-playback yellow-action" playing={playing}
+            controls="s-stories" onToggle={togglePlayback} />
+        )}
         <button
           className="yellow-action"
           aria-controls="s-stories"
           disabled={edges.start}
-          onClick={() => move(-1)}
+          onClick={() => browse(-1)}
           aria-label="Previous story"
         >
           ←
@@ -125,7 +140,7 @@ export function NewsReel() {
           className="yellow-action"
           aria-controls="s-stories"
           disabled={edges.end}
-          onClick={() => move(1)}
+          onClick={() => browse(1)}
           aria-label="Next story"
         >
           →

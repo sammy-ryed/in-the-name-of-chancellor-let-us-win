@@ -15,10 +15,6 @@
 .light-guide .newsroom-list b { color: var(--color-primary); }
 .light-guide .newsroom-list a:is(:hover, :focus-visible) { color: var(--color-primary); }
 .light-guide .newsroom-list a { border-color: var(--border-strong); }
-.light-guide .drift-controls { color: var(--text-secondary); }
-.light-guide .drift-controls button { color: var(--color-primary); border-color: var(--color-primary); }
-.light-guide .drift-controls button:hover { background: var(--color-primary); color: var(--surface-primary); }
-.light-guide .drift-static a > span { color: var(--text-primary); }
 html[data-high-contrast] .light-guide .guide-shell {
   --paper: #fff;
   --panel: #edf4fb;
