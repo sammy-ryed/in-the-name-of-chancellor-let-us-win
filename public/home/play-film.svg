@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="68" viewBox="0 0 64 68">
+  <path d="M20 4 36 2 49 7 56 19 55 34 45 45 29 48 15 42 8 29 9 15Z" fill="#f7d987" stroke="#0b2d52" stroke-width="1.5"/>
+  <path d="m27 16 15 9-15 9Z" fill="#0b2d52"/>
+  <text x="32" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="10" letter-spacing=".8" fill="white" stroke="#0b2d52" stroke-width="2.4" stroke-linejoin="round" paint-order="stroke">PLAY FILM</text>
+</svg>

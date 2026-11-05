@@ -4,17 +4,20 @@ Run `npm ci` and `npm run dev`, then open [localhost:3000](http://localhost:3000
 
 | Scene | Scroll and interaction | Team editing point |
 | --- | --- | --- |
-| Opening | One headline crosses three colour and film layers. The diagonal aperture opens, then a diagonal wipe brings in academics from the right. On phones the film opens vertically below the compact toolbar. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
-| Campus film | The muted preview plays in the aperture. Click the follow-cursor control to start the reel with sound, then click to pause/resume. Close restores the preview. A poster and direct link cover blocked players. | `src/features/home/Film.tsx` |
-| Find your way | The illustrated campus map settles from a slight zoom and tilt beside the heading, tour link and editorial copy. | `src/app/home-scenes.css` |
-| Community | A cut-out opens, five headline lines rise through masks, and the linked roster moves over the pinned title. Hover or focus a row to preview its photo. | `src/features/home/content.ts` |
+| Opening | The headline and motto sit in the left panel. The film aperture expands as you scroll, then gives way to academics. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
+| Campus film | The muted local HD excerpt plays in view. The play cursor opens the full reel on desktop. Touch and keyboard users have a dedicated play button. | `src/features/home/Film.tsx` |
+| Find your way | An 18-second film visits the campus lake, Arch Gate, Central Library and T.P. Ganesan Auditorium. It plays once when it comes into view. Visitors can replay it, enter the full tour or open the illustrated map. | `src/features/home/journeys.css` |
+| Community | On desktop the names roll past the center and select a portrait. Phones and tablets get swipeable cards. Reduced motion presents all five links in a directory. | `src/features/home/TeamRoll.tsx`, `src/features/home/content.ts` |
 | News and destinations | Swipe or drag the news strip, use its arrow buttons, or tab through the stories. The three closing bands lead into the other teammates’ routes. | `src/features/home/NewsReel.tsx`, `src/features/home/content.ts` |
 
 The [Monument homepage](https://monument.tv/) is the motion and layout reference. The copy, destinations and implementation are written for SRM. Motion follows native page scrolling. Reduced-motion mode presents the scenes in reading order with no pinned choreography or automatic film playback.
 
 ## Media sources
 
-- **Opening film**: [official SRM YouTube video](https://www.youtube.com/watch?v=S_xAJo_siHA), using YouTube’s privacy-enhanced embedded player. The [thumbnail](https://i.ytimg.com/vi/S_xAJo_siHA/maxresdefault.jpg) is stored locally.
+- **Opening preview**: a locally encoded 1080p excerpt from the [official SRMIST campus film](https://www.youtube.com/watch?v=4c7Ob4pDYMQ), also featured on [SRM’s B.Tech admissions page](https://applications.srmist.edu.in/btech). Watch film opens the full video on demand.
+- **Subject previews**: five photos are from [SRM’s faculty cards](https://www.srmist.edu.in/). Humanities uses the [English department’s theatre workshop](https://www.srmist.edu.in/department/department-of-english/), and Sciences uses a microscopy frame from the campus film. Each local WebP loads when a subject receives hover or keyboard focus.
+- **Tour preview**: four camera pans rendered from the Kattankulathur panoramas in the [official virtual tour](https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm). Only the local poster and preview are used on the homepage.
+- **Motto**: “Learn. Leap. Lead.” follows the [official university homepage](https://www.srmist.edu.in/).
 - **Logo**: the [white SRM homepage SVG](https://www.srmist.edu.in/wp-content/uploads/2022/01/srm-logo-white.svg), stored unchanged.
 - **Campus**: [SRM Kattankulathur panorama](https://www.srmist.edu.in/wp-content/uploads/2022/01/Panroma_pic3_100_0106_20211022192347_Croped.jpg).
 - **Campus map**: illustrated transit-style map supplied by the team (`public/home/campus-map.webp`); its baked-in checkerboard background was removed to make it transparent. Illustrative, not to scale.
