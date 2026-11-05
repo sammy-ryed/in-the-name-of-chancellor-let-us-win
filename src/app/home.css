@@ -1,4 +1,5 @@
 .s-home {
+  --scene-top: 0px;
   color: var(--ink);
   background: var(--color-primary-dark);
   font:
@@ -61,7 +62,7 @@
 .s-place-frame,
 .s-people-frame {
   position: relative;
-  min-height: calc(100svh - var(--header-height));
+  min-height: calc(100svh - var(--scene-top));
   overflow: hidden;
 }
 .s-moving .s-opening {
@@ -71,12 +72,12 @@
 .s-moving .s-place-frame,
 .s-moving .s-people-frame {
   position: sticky;
-  top: var(--header-height);
-  height: calc(100svh - var(--header-height));
+  top: var(--scene-top);
+  height: calc(100svh - var(--scene-top));
   overflow: hidden;
 }
 .s-hero {
-  height: calc(100svh - var(--header-height));
+  height: calc(100svh - var(--scene-top));
   background-color: var(--sky);
 }
 .s-headline {
@@ -313,7 +314,7 @@
   );
 }
 .s-acad-interior {
-  min-height: calc(100svh - var(--header-height));
+  min-height: calc(100svh - var(--scene-top));
   position: relative;
   padding: 4svh 5vw 4svh var(--start);
   display: grid;
@@ -419,4 +420,8 @@
   .s-marquee-group[aria-hidden] {
     display: none;
   }
+}
+
+@media (max-width: 760px) {
+  .s-home { --scene-top: var(--header-height); }
 }

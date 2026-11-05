@@ -7,7 +7,7 @@
   height: 175svh;
 }
 .s-place-frame {
-  height: calc(100svh - var(--header-height));
+  height: calc(100svh - var(--scene-top));
   background: var(--ice);
 }
 .s-place-grid {
@@ -22,7 +22,7 @@
 .s-map {
   grid-row: 1/3;
   margin: 0;
-  height: calc(100svh - var(--header-height));
+  height: calc(100svh - var(--scene-top));
   padding: 3svh 2.5vw;
   display: grid;
   place-items: center;
@@ -88,11 +88,10 @@
 }
 .s-moving .s-people {
   height: 240svh;
-  background: var(--color-primary-dark);
 }
 .s-people-frame {
   position: relative;
-  min-height: calc(100svh - var(--header-height));
+  min-height: calc(100svh - var(--scene-top));
   background: var(--mist);
   padding: 4svh 5.8vw 4svh var(--start);
 }
