@@ -16,6 +16,7 @@ export const routes = {
   programmes: { href: "/programmes", label: "Programmes" },
   campus: { href: "/campus", label: "Campus life" },
   placements: { href: "/career-centre", label: "Placements" },
+  research: { href: "/research", label: "Research" },
   students: { href: "/students", label: "Students" },
   parents: { href: "/parents", label: "Parents" },
   alumni: { href: "/alumni", label: "Alumni" },
@@ -70,6 +71,12 @@ export const navigation: NavItem[] = [
       { href: "/campus#support", label: "Student support" },
     ],
   },
+  { ...routes.research, children: [
+    { href: "/research#overview", label: "Research Overview" },
+    { href: "/research#centres", label: "Research Centres & Facilities" },
+    { href: "/research#projects", label: "Projects & Innovation" },
+    { href: "/research#opportunities", label: "Research Opportunities" },
+  ] },
   { ...routes.placements, children: [
     { href: "/career-centre#outcomes", label: "Placement figures & CTC" },
     { href: "/career-centre#recruiters", label: "Recruiters & offers" },
