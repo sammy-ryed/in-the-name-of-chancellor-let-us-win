@@ -875,29 +875,6 @@ a:hover .cl-cta-go .cl-arrow {
 }
 
 /* ---------- Footer ---------- */
-.cl-foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-right: var(--edge);
-  padding: var(--space-8) var(--cl-pad) var(--space-20); /* clears the floating Accessibility button */
-  border-top: 1px solid rgb(168 200 230 / 25%);
-  background: var(--color-primary-dark);
-  color: var(--color-blue-pale);
-  font-size: 0.9375rem;
-}
-.cl-foot a {
-  text-decoration: none;
-}
-.cl-foot a:hover {
-  color: var(--color-gold);
-}
-.cl-foot nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-8);
-}
 
 /* =====================================================================
    Accommodation & dining
@@ -1090,7 +1067,6 @@ a:hover .cl-cta-go .cl-arrow {
   .cl-home,
   .cl-explore,
   .cl-next,
-  .cl-foot,
   .ac-hero,
   .ac-dining {
     margin-right: 0;

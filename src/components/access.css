@@ -155,8 +155,4 @@ html[data-large-text] .s-news-aside .s-button {
   .access-chip button {
     min-height: 36px;
   }
-  .guide-footer,
-  .s-home .s-footer {
-    padding-bottom: 66px;
-  }
 }

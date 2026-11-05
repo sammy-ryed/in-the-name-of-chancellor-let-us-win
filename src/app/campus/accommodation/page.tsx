@@ -1,7 +1,7 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import Image from "next/image";
 import Link from "next/link";
-import { ServiceFooter } from "@/components/SiteFooter";
+import { SiteFooter } from "@/components/SiteFooter";
 import { campusLinks, hostelGroupPage } from "@/features/campus/links";
 import hostels from "@/features/explore/hostels.json";
 import "../campus.css";
@@ -149,7 +149,7 @@ export default function Page() {
         </ul>
       </section>
 
-      <ServiceFooter className="cl-foot" />
+      <SiteFooter />
     </div>
   );
 }
