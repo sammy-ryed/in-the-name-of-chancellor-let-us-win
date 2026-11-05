@@ -144,6 +144,6 @@ export function StudentsPage() {
         </a>
       </div>
     </section>
-    <SiteFooter admissionsHref={srm + "/admissions/"} showServices={false} />
+    <SiteFooter admissionsHref={srm + "/admissions/"} />
   </div>;
 }

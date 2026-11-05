@@ -1,68 +1,293 @@
-.s-footer {
-  background-color: var(--color-primary-dark);
-  color: var(--ice);
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 5vw;
-  padding: 10svh 5vw 4svh var(--start);
-  min-height: 65svh;
+/* ===== Site footer: navigation above, campus skyline as the closing visual ===== */
+.ft {
+  /* Matched to the night sky at the top of the skyline illustration, so the two meet seamlessly. */
+  --ft-bg: #03245a;
+  --ft-text: var(--surface-warm);
+  --ft-muted: rgb(250 248 242 / 66%);
+  --ft-line: rgb(250 248 242 / 14%);
+  --ft-hover: var(--color-gold-light);
+  background: var(--ft-bg);
+  color: var(--ft-text);
+  font-family: var(--font-primary);
   position: relative;
-  background-blend-mode: screen;
-  background-image: repeating-linear-gradient(
-    74deg,
-    transparent 0 33px,
-    rgb(168 200 230 / 15%) 34px,
-    transparent 35px
-  );
 }
-.s-footer > a:first-child img {
-  width: min(100%, 600px);
+.ft-inner {
+  padding: clamp(56px, 9vh, 112px) clamp(20px, 5vw, 80px) 0 var(--start, clamp(20px, 5vw, 80px));
+  max-width: calc(var(--container-width) + var(--start, 0px) + 80px);
+}
+.ft a,
+.ft button {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast) var(--ease-standard), opacity var(--transition-fast) var(--ease-standard);
+}
+.ft a:focus-visible,
+.ft button:focus-visible {
+  outline: 2px solid var(--ft-hover);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Top: logo, description, social */
+.ft-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-10);
+  padding-bottom: var(--space-12);
+  border-bottom: 1px solid var(--ft-line);
+}
+.ft-brand {
+  max-width: 520px;
+}
+.ft-brand img {
+  display: block;
+  width: clamp(180px, 18vw, 250px);
   height: auto;
-  display: block;
 }
-.s-footer p {
-  font: 400 15px/1.2 var(--font-primary);
-  color: var(--light-muted);
-  margin-bottom: 12px;
+.ft .ft-brand p {
+  margin: var(--space-6) 0 0;
+  color: var(--ft-muted);
+  font-size: 15px;
+  line-height: 1.65;
 }
-.s-footer div > a,
-.s-foot-top {
-  display: block;
-  text-transform: uppercase;
-  font: 400 clamp(18px, 1.8vw, 34px)/1.12 var(--display);
+.ft-social {
+  display: flex;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.s-foot-top {
-  justify-self: start;
-  padding: 14px 16px;
-}
-.s-footer a:hover {
-  text-decoration: underline;
-}
-.s-foot-cols {
+.ft-social a {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2vw;
-  margin-top: 9svh;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--ft-line);
+  border-radius: var(--radius-full);
+  transition: border-color var(--transition-fast) var(--ease-standard), color var(--transition-fast) var(--ease-standard),
+    background-color var(--transition-fast) var(--ease-standard);
 }
-.s-footer small,
-.s-foot-top {
-  align-self: end;
+.ft-social svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ft-social a:hover {
+  color: var(--ft-hover);
+  border-color: var(--ft-hover);
+  background: rgb(247 217 135 / 8%);
+}
+
+/* Navigation columns */
+.ft-cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-10) clamp(24px, 4vw, 64px);
+  padding: var(--space-12) 0;
+}
+.ft .ft-col-title {
+  margin: 0 0 var(--space-5);
+  font: 700 12px/1.3 var(--font-nav);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ft-muted);
+}
+.ft-col-toggle {
+  display: none;
+}
+.ft-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.ft-list a {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1.4;
+  padding-block: 2px;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: color var(--transition-fast) var(--ease-standard), background-size var(--transition-normal) var(--ease-standard);
+}
+.ft-list a:hover {
+  color: var(--ft-hover);
+  background-size: 100% 1px;
+}
+
+/* Utility bar */
+.ft-util {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-8);
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--ft-line);
+  color: var(--ft-muted);
   font-size: 13px;
 }
+.ft-util ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ft-util-link {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.ft-util-link:hover {
+  color: var(--ft-hover);
+}
+
+/* Closing skyline: full width, original proportions, fading up into the footer colour */
+.ft-skyline {
+  position: relative;
+  margin: 0;
+  line-height: 0;
+}
+.ft-skyline img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* The top third of the artwork is empty sky in the footer colour; crop it so the skyline sits close to the links. */
+  aspect-ratio: 2155 / 500;
+  object-fit: cover;
+  object-position: 50% 100%;
+}
+.ft-skyline::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 35%;
+  background: linear-gradient(var(--ft-bg), rgb(3 36 90 / 0));
+  pointer-events: none;
+}
+
+/* Tablet: two columns */
+@media (max-width: 1024px) {
+  .ft-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Phone: stacked, accordions */
 @media (max-width: 760px) {
-  .s-footer {
+  .ft-inner {
+    padding: 48px 16px 0;
+  }
+  .ft-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    padding-bottom: var(--space-8);
+  }
+  .ft .ft-brand p {
+    font-size: 14px;
+  }
+  .ft-cols {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 0;
+    padding: var(--space-2) 0 var(--space-8);
+  }
+  .ft-col {
+    border-bottom: 1px solid var(--ft-line);
+  }
+  .ft .ft-col-title {
+    margin: 0;
+  }
+  .ft-col-static {
+    display: none;
+  }
+  .ft .ft-col-toggle {
+    display: flex;
+    width: 100%;
+    min-height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: 600 16px/1.3 var(--font-nav);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ft-text);
+    cursor: pointer;
+  }
+  .ft-col-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--transition-normal) var(--ease-standard);
+  }
+  .ft-col[data-open] .ft-col-toggle svg {
+    transform: rotate(180deg);
+  }
+  .ft-list-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition: grid-template-rows var(--transition-normal) var(--ease-standard), visibility 0s linear var(--transition-normal);
+  }
+  .ft-col[data-open] .ft-list-wrap {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition: grid-template-rows var(--transition-normal) var(--ease-standard), visibility 0s;
+  }
+  .ft-list {
+    overflow: hidden;
     min-height: 0;
-    padding-block: 48px 22px;
+    gap: 0;
   }
-  .s-footer > a:first-child img {
-    max-width: 330px;
+  .ft-list li:last-child {
+    padding-bottom: var(--space-4);
   }
-  .s-foot-cols {
-    margin-top: 26px;
+  .ft-list a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 15px;
+    color: var(--ft-muted);
   }
-  .s-foot-top {
-    margin-top: -12px;
+  .ft-util {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: var(--space-2);
+  }
+  .ft-util ul {
+    flex-direction: column;
+    gap: 0;
+  }
+  .ft-util-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .ft-skyline img {
+    /* A little taller on phones so the buildings stay legible: trims the far edges, never stretches. */
+    aspect-ratio: 2.6 / 1;
+    object-position: 50% 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ft *,
+  .ft-list-wrap {
+    transition: none !important;
   }
 }

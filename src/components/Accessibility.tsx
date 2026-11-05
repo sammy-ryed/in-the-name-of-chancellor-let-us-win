@@ -35,8 +35,13 @@ export default function Accessibility() {
         else dialog.current?.showModal();
       }
     };
+    const openFromLink = () => dialog.current?.showModal();
     window.addEventListener("keydown", keys);
-    return () => window.removeEventListener("keydown", keys);
+    window.addEventListener("srm-open-access", openFromLink);
+    return () => {
+      window.removeEventListener("keydown", keys);
+      window.removeEventListener("srm-open-access", openFromLink);
+    };
   }, []);
   function update(p: Prefs) {
     setPrefs(p);

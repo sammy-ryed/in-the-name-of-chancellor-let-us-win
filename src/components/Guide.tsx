@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ServiceFooter } from "./SiteFooter";
+import { SiteFooter } from "./SiteFooter";
 import { Breadcrumbs } from "./Breadcrumbs";
 import "./guide.css";
 const homeCrumb = { href: "/", label: "Home" };
@@ -75,6 +75,7 @@ export function Guide({
     }[destination] ??
     "Programme details";
   return (
+    <>
     <div className="guide-shell">
       <div className="guide">
         <header
@@ -125,9 +126,10 @@ export function Guide({
           )}
           <div className="guide-body">{children}</div>
         </div>
-        <ServiceFooter className="guide-footer" />
       </div>
     </div>
+    <SiteFooter />
+    </>
   );
 }
 export function Section({
