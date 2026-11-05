@@ -5,7 +5,6 @@ import "@/components/chrome.css";
 import AskSRM from "@/features/ask-srm/AskSRM";
 import { RouteContent } from "@/components/RouteContent";
 import { SiteNavigation } from "@/components/SiteNavigation";
-import Accessibility from "@/components/Accessibility";
 import "@/components/access.css";
 // Design-system fonts: --font-primary (DM Sans) and --font-editorial (Newsreader) in globals.css.
 const sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
@@ -30,7 +29,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <SiteNavigation />
         </header>
         <RouteContent>{children}</RouteContent>
-        <Accessibility />
       </body>
     </html>
   );

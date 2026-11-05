@@ -11,10 +11,8 @@ function apply(p: Prefs) {
   window.dispatchEvent(new Event("srm-reading-change"));
 }
 export default function Accessibility() {
-  const [prefs, setPrefs] = useState(defaults),
-    [compact, setCompact] = useState(false);
-  const dialog = useRef<HTMLDialogElement>(null),
-    trigger = useRef<HTMLButtonElement>(null);
+  const [prefs, setPrefs] = useState(defaults);
+  const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     try {
       const raw = JSON.parse(localStorage.getItem(storage) || "{}");
@@ -51,49 +49,35 @@ export default function Accessibility() {
     } catch {}
   }
   return (
-    <aside className="access" aria-label="Accessibility tools">
-      <div className="access-chip">
-        <button
-          ref={trigger}
-          aria-haspopup="dialog"
-          aria-keyshortcuts="Alt+M"
-          aria-describedby="access-hint"
-          aria-label="Accessibility settings"
-          onClick={() => dialog.current?.showModal()}
+    <div className="access">
+      <button
+        type="button"
+        className="access-trigger"
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Alt+M"
+        aria-label="Accessibility settings"
+        aria-describedby="access-hint"
+        onClick={() => dialog.current?.showModal()}
+      >
+        <svg
+          aria-hidden="true"
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
         >
-          <svg
-            aria-hidden="true"
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <circle cx="12" cy="4" r="2" />
-            <path d="M3 8l9 2 9-2M12 10v4m0 0-5 8m5-8 5 8" />
-          </svg>
-          {!compact && "Accessibility"}
-        </button>
-        {!compact && (
-          <button
-            aria-label="Collapse accessibility label"
-            onClick={() => {
-              setCompact(true);
-              trigger.current?.focus();
-            }}
-          >
-            ×
-          </button>
-        )}
-      </div>
+          <circle cx="12" cy="4" r="2" />
+          <path d="M3 8l9 2 9-2M12 10v4m0 0-5 8m5-8 5 8" />
+        </svg>
+      </button>
       <div className="access-hint" id="access-hint" role="tooltip">
         Adjust text, contrast and motion. <kbd>Alt</kbd> <kbd>M</kbd>
       </div>
       <dialog
         ref={dialog}
         aria-label="Accessibility settings"
-        onClose={() => trigger.current?.focus({ preventScroll: true })}
       >
         <div className="access-tabs">
           <strong>Accessibility</strong>
@@ -125,6 +109,6 @@ export default function Accessibility() {
           Reset preferences
         </button>
       </dialog>
-    </aside>
+    </div>
   );
 }

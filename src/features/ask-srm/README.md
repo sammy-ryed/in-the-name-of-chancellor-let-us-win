@@ -1,6 +1,6 @@
 # Ask SRM
 
-The shared header displays Ask SRM above the navigation on every screen size. Open it with the search bar or Ctrl/Cmd + K.
+Ask SRM stays at the top beside the desktop rail and above the compact phone toolbar. Open it with the search bar or Ctrl/Cmd + K.
 
 Typing searches published SRM pages, programmes, campus-specific fees, student services, clubs, housing, news and events. Enter asks a question. Results and sources appear in the same panel. “Ask a follow-up” carries the previous question into the next search. Closing the panel clears the conversation.
 

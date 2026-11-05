@@ -1,106 +1,72 @@
 .access {
-  position: fixed;
-  z-index: 80;
-  right: 14px;
-  bottom: calc(14px + env(safe-area-inset-bottom));
-  color: #fff;
-  font:
-    14px/1.4 var(--font-primary);
+  position: relative;
+  margin-block: 12px max(10px, env(safe-area-inset-bottom));
+  font: 500 .9rem/1.4 var(--font-nav);
 }
-.access-chip,
-.access-hint,
-.access dialog {
-  background: var(--text-primary);
-  color: #fff;
-  border: 1px solid var(--text-secondary);
-  box-shadow: 0 4px 18px #10182045;
+.access button { cursor: pointer; font: inherit; }
+.access-trigger {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-gold-light);
+  background: var(--navy);
+  color: var(--color-gold-light);
 }
-.access-chip {
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  padding-inline: 5px;
-}
-.access button {
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-}
-.access-chip button,
-.access-tabs button {
-  background: transparent;
-  border: 0;
-  min-height: 40px;
-  padding: 0 9px;
-}
-.access-chip button svg {
-  vertical-align: middle;
-  margin-right: 5px;
-  color: var(--color-gold);
-}
+.access-trigger:is(:hover, :focus-visible) { background: var(--color-gold-light); color: var(--navy); }
+.access-trigger svg { width: 23px; height: 23px; }
 .access-hint {
   position: absolute;
-  right: 0;
-  bottom: calc(100% + 8px);
-  width: 240px;
-  padding: 10px 14px;
-  border-radius: 10px;
+  inset: auto auto 0 calc(100% + 12px);
+  width: max-content;
+  max-width: 220px;
+  background: var(--navy);
+  color: white;
+  border-left: 3px solid var(--action-yellow);
+  padding: 8px 12px;
+  pointer-events: none;
   visibility: hidden;
 }
-.access-chip:hover + .access-hint,
-.access-chip:focus-within + .access-hint {
-  visibility: visible;
-}
-.access:has(dialog[open]) .access-hint {
-  visibility: hidden;
-}
-.access kbd {
-  border: 1px solid var(--text-muted);
-  border-radius: 3px;
-  padding: 1px 4px;
-}
+.access-trigger:is(:hover, :focus-visible) + .access-hint { visibility: visible; }
+.access:has(dialog[open]) .access-hint { visibility: hidden; }
 .access dialog {
   position: fixed;
-  inset: auto 14px calc(66px + env(safe-area-inset-bottom)) auto;
-  width: min(310px, calc(100% - 28px));
-  border-radius: 15px;
-  padding: 18px;
+  inset: auto auto 10px calc(var(--rail) + 10px);
+  margin: 0;
+  width: min(320px, calc(100% - 20px));
+  max-height: calc(100dvh - 20px);
+  overflow: auto;
+  padding: 0 18px 18px;
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgb(7 24 47 / 22%);
 }
-.access dialog::backdrop {
-  background: #06142738;
-}
-.access-tabs,
-.access dialog label {
+.access dialog::backdrop { background: rgb(7 24 47 / 42%); }
+.access-tabs, .access dialog label {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.access-tabs strong {
-  font-size: 1.15rem;
+.access-tabs {
+  margin-inline: -18px;
+  padding: 6px 8px 6px 18px;
+  border-bottom: 3px solid var(--action-yellow);
+  background: var(--brand-blue);
+  color: white;
 }
-.access-tabs button {
-  font-size: 24px;
-  min-width: 40px;
-}
-.access dialog label {
-  padding: 11px 0;
-  border-top: 1px solid var(--text-secondary);
-  font-size: 1rem;
-}
-.access input {
-  width: 21px;
-  height: 21px;
-  accent-color: var(--color-gold);
-}
-.access-reset {
-  border: 1px solid var(--text-disabled);
-  background: transparent;
-  border-radius: 5px;
-  padding: 8px 12px;
-}
-.access :focus-visible {
-  outline: 3px solid var(--color-gold);
-  outline-offset: 2px;
+.access-tabs strong { font: 400 1.75rem/1 var(--display); }
+.access-tabs button { width: 44px; height: 44px; border: 0; color: inherit; background: transparent; font-size: 1.5rem; }
+.access dialog label { min-height: 46px; border-top: 1px solid var(--border-default); font-size: 1rem; }
+.access input { width: 20px; height: 20px; accent-color: var(--brand-blue); }
+.access-reset { margin-top: 8px; padding: 8px 12px; border: 1px solid var(--brand-blue); background: var(--surface-blue); color: var(--brand-blue); }
+.access :focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+@media (max-width: 760px) {
+  .access-trigger { width: 44px; height: 44px; border-color: transparent; background: transparent; }
+  .access-hint { inset: calc(100% + 5px) 0 auto auto; }
+  .access dialog { inset: var(--header-height) 10px auto auto; max-height: calc(100dvh - var(--header-height) - 10px); }
 }
 html[data-large-text] {
   font-size: 125%;
@@ -146,13 +112,4 @@ html[data-large-text] .s-opening-note {
 }
 html[data-large-text] .s-news-aside .s-button {
   max-width: 100%;
-}
-@media (max-width: 760px) {
-  .access {
-    bottom: 8px;
-    right: 8px;
-  }
-  .access-chip button {
-    min-height: 36px;
-  }
 }

@@ -13,9 +13,11 @@
   display: grid;
   place-items: center;
   padding-inline: 14px;
-  background: var(--color-primary-dark);
+  background: rgb(11 45 82 / 80%);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid rgb(168 200 230 / 22%);
 }
+html[data-high-contrast] .ask-dock { background: var(--navy); }
 .ask-launch {
   width: min(100%, 580px);
   display: flex;
