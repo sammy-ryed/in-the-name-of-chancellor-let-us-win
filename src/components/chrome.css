@@ -7,8 +7,7 @@
 }
 .s-chrome {
   --edge: clamp(8px, 1.05vw, 20px);
-  --rail: clamp(54px, 4.5vw, 82px);
-  --start: calc(var(--edge) * 3 + var(--rail));
+  --start: clamp(16px, 4vw, 64px);
   --display: "SRM Display", Impact, "Arial Narrow", sans-serif;
 }
 .s-lines {
@@ -16,456 +15,109 @@
   background-image: var(--pattern);
   background-size: auto 100%;
 }
-.s-rail,
-.s-menu-rail {
-  position: fixed;
-  top: var(--edge);
-  bottom: var(--edge);
-  left: var(--edge);
-  width: var(--rail);
-  z-index: 20;
-  background: var(--brand-blue);
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 12px 4px;
-  color: var(--ice);
+:root {
+  --search-row: 52px;
+  --nav-row: 60px;
+  --header-height: calc(var(--search-row) + var(--nav-row));
+  scroll-padding-top: var(--header-height);
 }
-.s-rail > *:not(.s-progress),
-.s-menu-rail > * {
-  z-index: 1;
-}
-.s-rail > a:first-child,
-.s-menu-rail > img {
-  width: 95%;
-}
-.s-rail img,
-.s-menu-rail img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.s-rail button,
-.s-menu-rail button {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 56px;
-  transform: translateY(-50%);
-  background: none;
-  border: 0;
-  display: grid;
-  place-content: center;
-  gap: 4px;
-  color: var(--action-yellow);
-}
-.s-rail button i {
-  width: 25px;
-  height: 4px;
-  background: currentColor;
-  display: block;
-  transition: transform 0.2s;
-}
-.s-rail button:hover i:first-child {
-  transform: translateX(3px);
-}
-.s-rail button:hover i:last-child {
-  transform: translateX(-3px);
-}
-.s-rail-caption {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-.s-rail-caption {
-  font: 400 11px/1 var(--display);
-  text-transform: uppercase;
-  padding: 4px 8px;
-}
-.s-progress {
-  position: absolute;
-  inset: 0;
-  background: rgb(11 45 82 / 36%);
-  transform-origin: top;
-  transform: scaleY(0);
-  pointer-events: none;
-}
-@keyframes rail-progress {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
-}
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    html:not([data-quiet-motion], [data-large-text]) .s-progress {
-      animation: rail-progress 1s linear both;
-      animation-timeline: scroll(root);
-    }
-  }
-}
-:is(.s-rail, .s-menu) :focus-visible {
-  outline: 3px solid currentColor;
-  outline-offset: 3px;
-}
-:is(.s-rail, .s-menu) :is(button, a) {
-  -webkit-tap-highlight-color: transparent;
-}
-@media (max-height: 530px) and (orientation: landscape) {
-  .s-rail-caption { font-size: 9px; }
-}
-.s-menu {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  color: var(--ice);
-}
-.s-menu,
-.s-menu::backdrop {
-  opacity: 0;
-  transition: opacity 140ms ease-out, display 140ms allow-discrete, overlay 140ms allow-discrete;
-}
-.s-menu[open],
-.s-menu[open]::backdrop {
-  opacity: 1;
-}
-.s-menu:not([open]),
-.s-menu:not([open])::backdrop {
-  pointer-events: none;
-}
-@starting-style {
-  .s-menu[open], .s-menu[open]::backdrop { opacity: 0; }
-}
-.s-menu::backdrop {
-  background: rgb(11 45 82 / 94%);
-}
-.s-menu[open] {
-  display: block;
-}
-/* Open menu: no logo; strip and panel sit flush to the screen edges.
-   The strip is the rail plus its old gaps, so the × lands where the hamburger was. */
-.s-menu-rail {
-  z-index: 1;
+.site-header {
+  position: sticky;
   top: 0;
-  bottom: 0;
-  left: 0;
-  width: calc(var(--rail) + 2 * var(--edge));
-  justify-content: center;
+  z-index: 60;
+  background: var(--brand-blue);
+  color: white;
 }
-.s-menu-rail button {
-  font: 700 40px/1 var(--font-primary);
-}
-/* ===== Menu panel =====
-   Opens beside the rail at ~46% width (wireframe frame 2). Choosing an item with
-   sub-pages widens it to full width; the item turns gold and its links appear in a
-   second column (frame 3). Phones: full screen, sub-pages expand in place. */
-.s-menu-sheet {
-  --menu-pad: clamp(22px, 4vw, 70px);
-  position: absolute;
-  inset: 0 auto 0 calc(var(--edge) * 2 + var(--rail));
-  --compact-width: min(46vw, 780px);
-  width: calc(100% - var(--rail) - 2 * var(--edge));
-  clip-path: inset(0 calc(100% - var(--compact-width)) 0 0);
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-primary);
-  color: var(--surface-primary);
-  overflow: hidden;
-  transition: clip-path 220ms var(--ease-standard);
-}
-.s-menu-sheet[data-expanded] {
-  clip-path: inset(0);
-}
-.s-menu-nav {
+.site-nav {
   position: relative;
-  flex: 1;
-  overflow: auto;
-  padding: var(--menu-pad);
-}
-.s-menu-main {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  justify-items: start;
-  gap: clamp(10px, 2.4vh, 28px);
-}
-/* Each row reacts to the pointer only over its own words, so crossing to the
-   submenu column never opens the item underneath. */
-.s-menu-main > li {
-  width: fit-content;
-}
-.s-menu-item {
-  display: inline-block;
-  padding: 0.04em 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: 600 clamp(34px, 4.2vw, 72px)/1.08 var(--font-nav);
-  letter-spacing: -0.035em;
-  text-decoration: none;
-  text-align: left;
-  transition: color var(--transition-fast) ease;
-}
-.s-menu-item:hover,
-.s-menu-item:focus-visible,
-.s-menu-main > li[data-open] > .s-menu-item {
-  color: var(--color-gold);
-}
-
-.s-menu-label {
-  position: relative;
-}
-.s-menu-label[aria-busy="true"]::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 -0.1em;
-  height: 2px;
-  background: currentColor;
-  animation: menu-pending 220ms 100ms backwards;
-  transform-origin: left;
-}
-@keyframes menu-pending {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .s-menu-label[aria-busy="true"]::after { animation: none; }
-}
-html[data-quiet-motion] .s-menu::backdrop { transition: none; }
-
-/* Second column: the open item's sub-pages (desktop). */
-.s-menu-sub {
-  position: absolute;
-  top: var(--menu-pad);
-  left: max(46%, 30rem);
-  right: var(--menu-pad);
-  padding-left: clamp(18px, 2.5vw, 40px);
-  border-left: 1px solid rgb(168 200 230 / 45%);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-6px);
-  transition:
-    opacity 100ms ease-out, transform 160ms var(--ease-standard), visibility 0s;
-}
-.s-menu-main > li[data-open] > .s-menu-sub {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition-delay: 0s;
-}
-.s-menu-sub ul {
-  list-style: none;
-  margin: var(--space-4) 0 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-1);
-}
-.s-menu-sub a {
-  display: inline-block;
-  padding: 6px 0;
-  font: 500 clamp(1.05rem, 1.35vw, 1.35rem)/1.3 var(--font-nav);
-  color: var(--color-blue-pale);
-  transition: color var(--transition-fast) ease;
-}
-.s-menu-sub a:hover,
-.s-menu-sub a:focus-visible {
-  color: var(--color-gold);
-}
-.s-menu-sub .s-menu-sub-title {
-  margin: 0;
-  font: 600 0.8125rem/1.2 var(--font-nav);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-blue-light);
-}
-
-/* Bottom bar: Close (wireframe, bottom-left) + quick links. */
-.s-menu-foot {
-  width: var(--compact-width);
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-6);
-  padding: var(--space-4) var(--menu-pad) calc(var(--space-4) + env(safe-area-inset-bottom));
-  border-top: 1px solid rgb(168 200 230 / 35%);
-  font: 500 0.875rem/1.2 var(--font-nav);
+  gap: clamp(16px, 4vw, 64px);
+  max-width: 1440px;
+  height: var(--nav-row);
+  margin: auto;
+  padding-inline: clamp(14px, 4vw, 64px);
+  font: 600 .94rem/1.25 var(--font-nav);
 }
-.s-menu-close {
+.site-crest {
+  flex: none;
+  display: block;
+  width: 46px;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+/* The circular seal occupies the first 178 × 178 units of the official 600-wide SVG. */
+.site-crest img { display: block; width: 337.079%; max-width: none; height: auto; }
+.site-nav ul { list-style: none; margin: 0; padding: 0; }
+.site-nav .site-nav-list {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(12px, 2.6vw, 42px);
+  height: 100%;
+  margin-inline-start: auto;
+}
+.site-nav-item { display: flex; align-items: center; position: relative; }
+.site-nav a { color: inherit; text-decoration: none; }
+.site-nav-item > a, .site-nav-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
-  min-height: 40px;
-  padding: 0 var(--space-4);
-  border: 1px solid rgb(168 200 230 / 55%);
-  border-radius: var(--radius-full);
+  min-height: 44px;
+  white-space: nowrap;
+}
+.site-nav-toggle {
+  justify-content: center;
+  gap: 8px;
+  border: 0;
   background: none;
   color: inherit;
   font: inherit;
-}
-.s-menu-close:hover {
-  border-color: var(--color-gold);
-  color: var(--color-gold);
-}
-.s-menu-quick {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-5);
-}
-.s-menu-quick > span {
-  color: var(--color-blue-light);
-}
-.s-menu-quick a {
-  color: var(--surface-primary);
-  transition: color var(--transition-fast) ease;
-}
-.s-menu-quick a:hover,
-.s-menu-quick a:focus-visible {
-  color: var(--color-gold);
-}
-
-@media (max-width: 760px) {
-  .s-chrome {
-    --edge: 7px;
-    --rail: 44px;
-    --start: 65px;
-  }
-  .s-rail,
-  .s-menu-rail {
-    padding: 9px 2px;
-  }
-  .s-rail button i {
-    width: 20px;
-    height: 3px;
-  }
-}
-
-@media (max-width: 760px) {
-  .s-chrome {
-    --edge: 8px;
-    --start: 16px;
-    --bar-h: 46px;
-  }
-  .s-rail,
-  .s-menu-rail {
-    left: var(--edge);
-    right: var(--edge);
-    top: var(--edge);
-    bottom: auto;
-    width: auto;
-    height: var(--bar-h);
-    padding: 5px 12px;
-    flex-direction: row;
-  }
-  .s-rail > a:first-child,
-  .s-menu-rail > img {
-    width: 79px;
-  }
-  .s-rail button,
-  .s-menu-rail button {
-    top: 0;
-    right: 0;
-    left: auto;
-    height: 100%;
-    width: 48px;
-    transform: none;
-  }
-  /* Open menu bar: flush to the top and sides, × stays where the hamburger was. */
-  .s-menu-rail {
-    top: 0;
-    left: 0;
-    right: 0;
-    height: calc(var(--bar-h) + var(--edge));
-    padding: var(--edge) calc(12px + var(--edge)) 0;
-  }
-  .s-menu-rail button {
-    top: var(--edge);
-    right: var(--edge);
-    height: var(--bar-h);
-  }
-  .s-rail-caption,
-  .s-progress {
-    display: none;
-  }
-  /* Phones: the menu takes the full screen; sub-pages expand in place under their item. */
-  .s-menu {
-    background-color: var(--color-primary);
-  }
-  .s-menu-sheet,
-  .s-menu-sheet[data-expanded] {
-    inset: 0;
-    width: 100%;
-    clip-path: none;
-    transition: none;
-  }
-  .s-menu-nav {
-    padding: calc(var(--bar-h) + 30px) 18px 20px;
-  }
-  .s-menu-main {
-    gap: 14px;
-  }
-  .s-menu-main > li {
-    width: 100%;
-  }
-  .s-menu-item {
-    font-size: clamp(34px, 9.5vw, 52px);
-  }
-  .s-menu-sub {
-    position: static;
-    display: grid;
-    grid-template-rows: 0fr;
-    padding-left: 14px;
-    transform: none;
-    transition:
-      grid-template-rows var(--transition-normal) var(--ease-standard),
-      opacity var(--transition-normal) var(--ease-standard),
-      visibility 0s linear var(--transition-normal);
-  }
-  .s-menu-sub > div {
-    overflow: hidden;
-  }
-  .s-menu-main > li[data-open] > .s-menu-sub {
-    grid-template-rows: 1fr;
-    transition-delay: 0s;
-  }
-  .s-menu-sub ul {
-    margin-top: 8px;
-    padding-bottom: 14px;
-  }
-  .s-menu-sub .s-menu-sub-title {
-    font-size: 0.75rem;
-  }
-  .s-menu-foot {
-    width: 100%;
-    padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
-  }
-  .s-menu-quick > span {
-    display: none;
-  }
-}
-
-.s-chrome :is(.s-rail, .s-menu) a {
-  text-decoration: none;
-}
-.s-chrome :is(.s-rail, .s-menu) button {
+  padding-inline: 8px;
   cursor: pointer;
 }
+.site-nav-toggle span {
+  width: 7px;
+  height: 7px;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 160ms ease;
+}
+.site-nav-toggle[aria-expanded=true] span { transform: translateY(2px) rotate(225deg); }
+.site-nav-item:is(:hover, :focus-within) > :is(a, button),
+.site-nav-item > a[aria-current], .site-nav [aria-busy=true] { color: var(--color-gold-light); }
+.site-nav :focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+.site-nav .site-nav-dropdown {
+  position: absolute;
+  top: 100%;
+  right: clamp(14px, 4vw, 64px);
+  width: min(710px, 92%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-height: calc(100dvh - var(--header-height) - 12px);
+  overflow-y: auto;
+  padding: 8px;
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-top: 3px solid var(--action-yellow);
+  box-shadow: 0 12px 28px #071c3526;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 130ms ease, transform 130ms ease, visibility 0s 130ms;
+}
+.site-nav-dropdown[data-open] { visibility: visible; opacity: 1; transform: none; transition-delay: 0s; }
+.site-nav-dropdown a { display: block; padding: 12px; }
+.site-nav-dropdown a:is(:hover,:focus-visible) { background: var(--surface-blue); color: var(--color-primary); }
+@media (max-width: 840px) {
+  :root { --search-row: 48px; --nav-row: 52px; }
+  .site-nav { gap: 12px; padding-right: 0; }
+  .site-crest { width: 39px; }
+  .site-nav-list { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--color-blue-mid) transparent; gap: 12px; padding-right: 16px; }
+  .site-nav-item { position: static; flex: none; }
+  .site-nav .site-nav-dropdown { inset-inline: 0; width: auto; grid-template-columns: 1fr; }
+  .site-nav-toggle { min-width: 27px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .s-menu,
-  .s-menu::backdrop,
-  .s-menu-sheet,
-  .s-menu-sub {
-    animation: none;
-    transition: none !important;
-  }
-  .s-rail button i {
-    transition: none;
-  }
+  .site-nav .site-nav-dropdown, .site-nav-toggle span { transition: none; }
 }

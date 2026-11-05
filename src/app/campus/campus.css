@@ -7,7 +7,6 @@
   --cl-pad: clamp(var(--space-5), 5vw, var(--space-20));
   --cl-ink: var(--color-primary-dark);
   min-height: 100svh;
-  padding-left: calc(var(--edge) * 2 + var(--rail)); /* clear the fixed left rail */
   background: var(--surface-primary);
   color: var(--text-primary);
   font: 400 1rem/1.6 var(--font-primary);
@@ -928,7 +927,7 @@ a:hover .cl-cta-go .cl-arrow {
 }
 .ac-section {
   padding: clamp(var(--space-12), 7vw, var(--space-20)) 0;
-  scroll-margin-top: calc(var(--bar-h, 0px) + var(--space-4));
+  scroll-margin-top: calc(var(--space-4));
 }
 .ac-section > h2 {
   margin-bottom: var(--space-8);
@@ -1021,7 +1020,7 @@ a:hover .cl-cta-go .cl-arrow {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   margin-right: var(--edge);
   background: var(--surface-blue);
-  scroll-margin-top: calc(var(--bar-h, 0px) + var(--space-4));
+  scroll-margin-top: calc(var(--space-4));
 }
 .ac-dining figure {
   position: relative;
@@ -1053,13 +1052,8 @@ a:hover .cl-cta-go .cl-arrow {
   }
 }
 @media (max-width: 760px) {
-  /* The rail becomes a top bar on phones. */
-  .cl-page {
-    padding-left: 0;
-    padding-top: calc(var(--edge) + var(--bar-h));
-  }
   .cl-hero {
-    height: calc(100svh - var(--bar-h) - 2 * var(--edge)); /* full screen below the top bar */
+    height: calc(100svh - var(--header-height) - 2 * var(--edge)); /* full screen below the top bar */
     min-height: 460px;
     margin: var(--edge) var(--edge) 0;
   }

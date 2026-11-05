@@ -1,6 +1,6 @@
 # Ask SRM
 
-The root layout mounts one site-search control. On phones it sits between the logo and the menu. On desktop it sits at the bottom centre. A first-visit tip introduces the field. Open it with the button or Ctrl/Cmd + K.
+The shared header displays Ask SRM above the navigation on every screen size. Open it with the search bar or Ctrl/Cmd + K.
 
 Typing searches published SRM pages, programmes, campus-specific fees, student services, clubs, housing, news and events. Enter asks a question. Results and sources appear in the same panel. “Ask a follow-up” carries the previous question into the next search. Closing the panel clears the conversation.
 

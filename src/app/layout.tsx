@@ -25,10 +25,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <a className="skip" href="#main">
           Skip to content
         </a>
-        <SiteNavigation />
+        <header className="site-header">
+          <AskSRM />
+          <SiteNavigation />
+        </header>
         <RouteContent>{children}</RouteContent>
         <Accessibility />
-        <AskSRM />
       </body>
     </html>
   );

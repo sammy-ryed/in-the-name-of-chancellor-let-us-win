@@ -1,198 +1,108 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import Link, { useLinkStatus } from "next/link";
-import type { ComponentProps } from "react";
 import { usePathname } from "next/navigation";
 import { HomeLogo } from "./HomeLogo";
-import { navigation, services, srm, tourUrl } from "@/lib/navigation";
+import { navigation, services, srm, tourUrl, type NavLink } from "@/lib/navigation";
 
-// Preserve each page’s existing “Scroll for more” destination.
-const scrollTargets: Record<string, string> = {
-  "/": "#explore",
-  "/students": "#explore",
-  "/programmes": "#pf-results-title",
-  "/campus": "#life",
-  "/campus/accommodation": "#booking",
-};
+const moreLinks = [
+  ...services,
+  { href: tourUrl, label: "Virtual tour" },
+  { href: srm + "/contact-us/", label: "Contact SRM" },
+];
 
-function MenuLabel({ children }: { children: React.ReactNode }) {
+const groups = [...navigation, { label: "More", href: "", children: moreLinks }];
+const menuId = (href: string) => "nav-" + (href.slice(1) || "more");
+const hoverEnabled = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+function LinkLabel({ label }: { label: string }) {
   const { pending } = useLinkStatus();
-  return <span className="s-menu-label" aria-busy={pending}>{children}</span>;
+  return <span aria-busy={pending}>{label}</span>;
 }
 
-type MenuLinkProps = Omit<ComponentProps<typeof Link>, "href" | "onNavigate"> & {
-  href: string;
-  close: () => void;
-};
-
-function MenuLink({ href, close, children, ...props }: MenuLinkProps) {
+function Destination({ link, close, current }: { link: NavLink; close: () => void; current: string }) {
   return (
-    <Link
-      {...props}
-      href={href}
-      onNavigate={() => {
-        // Hash and query links can stay on this pathname. Other links keep the
-        // menu visible until the next page is ready underneath it.
-        if (new URL(href, location.href).pathname === location.pathname) close();
-      }}
-    >
-      <MenuLabel>{children}</MenuLabel>
+    <Link href={link.href} aria-current={link.href === current ? "page" : undefined}
+      onNavigate={() => { if (new URL(link.href, location.href).pathname === current) close(); }}>
+      <LinkLabel label={link.label} />
     </Link>
   );
 }
 
 export function SiteNavigation() {
   const pathname = usePathname();
-  const scrollHref = scrollTargets[pathname] ?? "#guide-content";
-  const panel = useRef<HTMLDialogElement>(null);
-  const [open, setOpen] = useState(false);
-  // Which top-level item has its sub-pages showing, and whether the panel has widened.
-  // Once wide it stays wide while the menu is open, so hovering between items doesn't jump.
-  const [section, setSection] = useState<string | null>(null);
-  const [wide, setWide] = useState(false);
-  const hoverTimer = useRef<number | undefined>(undefined);
-  const close = () => panel.current?.close();
-  useLayoutEffect(() => {
-    if (panel.current?.open) panel.current.close();
-  }, [pathname]);
-  const canHover = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const show = (label: string | null) => {
-    setSection(label);
-    if (label) setWide(true);
-  };
-  // Hover opens an item after a short pause, so a pointer passing over doesn't flicker it.
-  const hoverIn = (label: string | null) => {
-    if (!canHover()) return;
-    window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => show(label), wide ? 65 : 30);
-  };
-  const hoverOut = () => window.clearTimeout(hoverTimer.current);
+  const nav = useRef<HTMLElement>(null);
+  const timer = useRef<number | undefined>(undefined);
+  const [menu, setMenu] = useState<{ label: string; path: string } | null>(null);
+  if (menu && menu.path !== pathname) setMenu(null);
+
+  function close() {
+    window.clearTimeout(timer.current);
+    setMenu(null);
+  }
+  function hover(label: string | null, delay: number) {
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setMenu(label ? { label, path: pathname } : null), delay);
+  }
   useEffect(() => {
-    if (!open) return;
-    const before = document.documentElement.style.overflow;
-    document.documentElement.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = before;
+    const outside = (event: PointerEvent) => {
+      if (!nav.current?.contains(event.target as Node)) close();
     };
-  }, [open]);
-  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+    document.addEventListener("pointerdown", outside);
+    return () => {
+      window.clearTimeout(timer.current);
+      document.removeEventListener("pointerdown", outside);
+    };
+  }, []);
+
   return (
-    <>
-      <aside className="s-rail" aria-label="Site controls">
-        <HomeLogo />
-        <button
-          aria-label="Open menu"
-          aria-controls="srm-menu"
-          aria-expanded={open}
-          onClick={() => {
-            setSection(null);
-            setWide(false);
-            panel.current?.showModal();
-            setOpen(true);
-          }}
-        >
-          <i />
-          <i />
-          <i />
-        </button>
-        <a className="s-rail-caption" href={scrollHref}>
-          Scroll for more
-        </a>
-        <span className="s-progress" aria-hidden="true" />
-      </aside>
-      <dialog
-        id="srm-menu"
-        ref={panel}
-        aria-label="Main navigation"
-        className="s-menu"
-        onClose={() => {
-          if (panel.current?.open) return;
-          setOpen(false);
-          window.clearTimeout(hoverTimer.current);
-        }}
-        onClick={(e) => {
-          if (e.target === panel.current) close();
-        }}
-      >
-        <div className="s-menu-rail">
-          <button aria-label="Close menu" onClick={close}>
-            ×
-          </button>
-        </div>
-        <div className="s-menu-sheet" data-expanded={wide ? "" : undefined}>
-          <nav className="s-menu-nav" aria-label="Main destinations">
-            <ul className="s-menu-main">
-              {navigation.map((item) => {
-                const id = "sub-" + item.href.slice(1);
-                const isOpen = section === item.label;
-                return (
-                  <li
-                    key={item.href}
-                    data-open={isOpen ? "" : undefined}
-                    onMouseEnter={() => hoverIn(item.children ? item.label : null)}
-                    onMouseLeave={hoverOut}
-                  >
-                    {/* The title always opens its page. Hover (or keyboard focus) reveals the
-                        sub-pages; on touch screens the first tap reveals them, the second opens the page. */}
-                    <MenuLink
-                      close={close}
-                      className="s-menu-item"
-                      href={item.href}
-                      aria-current={item.href === pathname ? "page" : undefined}
-                      onFocus={(e) => item.children && e.currentTarget.matches(":focus-visible") && show(item.label)}
-                      onClick={(e) => {
-                        if (item.children && !isOpen && !canHover() && e.detail > 0 &&
-                            !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
-                          e.preventDefault();
-                          show(item.label);
-                        }
-                      }}
-                    >
-                      {item.label}
-                    </MenuLink>
-                    {item.children && (
-                      <div className="s-menu-sub" id={id} inert={!isOpen}>
-                        <div>
-                          <p className="s-menu-sub-title">{item.label}</p>
-                          <ul>
-                            {item.children.map((child) => (
-                              <li key={child.href}>
-                                <MenuLink close={close} href={child.href} aria-current={child.href === pathname ? "page" : undefined}>
-                                  {child.label}
-                                </MenuLink>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-          <div className="s-menu-foot">
-            <button type="button" className="s-menu-close" onClick={close}>
-              Close <span aria-hidden="true">×</span>
-            </button>
-            <nav className="s-menu-quick" aria-label="Quick links">
-              <span aria-hidden="true">Quick links ›</span>
-              <a href={tourUrl}>Virtual tour ↗</a>
-              {services.map((a) => (
-                <MenuLink
-                  close={close}
-                  key={a.href}
-                  href={a.href}
-                  aria-current={a.href === pathname ? "page" : undefined}
-                >
-                  {a.label}
-                </MenuLink>
-              ))}
-              <a href={srm + "/contact-us/"}>Contact SRM ↗</a>
-            </nav>
-          </div>
-        </div>
-      </dialog>
-    </>
+    <nav className="site-nav" aria-label="Main navigation" ref={nav}
+      onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) close(); }}
+      onPointerLeave={(event) => { if (event.pointerType === "mouse" && hoverEnabled()) hover(null, 150); }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && menu) {
+          nav.current?.querySelector<HTMLButtonElement>('button[aria-expanded="true"]')?.focus();
+          close();
+        }
+      }}>
+      <HomeLogo crest />
+      <ul className="site-nav-list">
+        {groups.map((item) => {
+          const expanded = menu?.label === item.label;
+          const id = menuId(item.href);
+          return (
+            <li key={id} className="site-nav-item"
+              onPointerEnter={(event) => {
+                if (event.pointerType === "mouse" && hoverEnabled()) hover(item.children ? item.label : null, 45);
+              }}>
+              {item.href && <Destination link={item} current={pathname} close={close} />}
+              {item.children && (
+                <button className="site-nav-toggle" type="button" aria-expanded={expanded}
+                  id={id + "-toggle"} aria-controls={id} aria-label={item.label + " links"}
+                  onClick={(event) => {
+                    window.clearTimeout(timer.current);
+                    setMenu(expanded ? null : { label: item.label, path: pathname });
+                    if (!expanded && event.detail === 0) {
+                      requestAnimationFrame(() => document.getElementById(id)?.querySelector("a")?.focus());
+                    }
+                  }}>
+                  {!item.href && item.label}<span aria-hidden="true" />
+                </button>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+      {groups.map(({ href, label, children }) => children && (
+        <ul key={label} id={menuId(href)} aria-labelledby={menuId(href) + "-toggle"}
+          className="site-nav-dropdown" inert={menu?.label !== label} data-open={menu?.label === label || undefined}
+          onPointerEnter={() => window.clearTimeout(timer.current)}>
+          {children.map((link) => (
+            <li key={link.href}><Destination link={link} current={pathname} close={close} /></li>
+          ))}
+        </ul>
+      ))}
+    </nav>
   );
 }

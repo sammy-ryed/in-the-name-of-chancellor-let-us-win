@@ -1,6 +1,6 @@
 .drift-showcase {
   position: sticky;
-  top: max(24px, calc((100svh - var(--dw-showcase-height, calc(clamp(340px, 62svh, 760px) + 76px))) / 2));
+  top: max(calc(var(--header-height) + 12px), calc((100svh - var(--dw-showcase-height, calc(clamp(340px, 62svh, 760px) + 76px))) / 2));
   background: transparent;
   overflow: hidden;
   isolation: isolate;

@@ -11,7 +11,6 @@
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  padding-left: calc(var(--edge) * 2 + var(--rail)); /* clear the fixed left rail */
   background: var(--surface-primary);
   color: var(--text-primary);
   font: 400 1rem/1.5 var(--pf-ui);
@@ -236,8 +235,8 @@
 /* Refine (secondary filters) */
 .pf-refine {
   position: sticky;
-  top: var(--space-6);
-  max-height: calc(100svh - var(--space-12));
+  top: calc(var(--header-height) + var(--space-4));
+  max-height: calc(100svh - var(--header-height) - var(--space-12));
   overflow: auto;
   overscroll-behavior: contain;
 }
@@ -397,7 +396,7 @@
 
 .pf-results,
 #pf-results-title {
-  scroll-margin-top: calc(var(--bar-h, 0px) + var(--edge) + var(--space-4)); /* clear the phone top bar */
+  scroll-margin-top: calc(var(--edge) + var(--space-4)); /* clear the phone top bar */
 }
 
 /* Results toolbar */
@@ -782,11 +781,6 @@
   }
 }
 @media (max-width: 760px) {
-  /* The rail becomes a top bar on phones. */
-  .pf-page {
-    padding-left: 0;
-    padding-top: calc(var(--edge) + var(--bar-h));
-  }
   .pf-search {
     height: 56px;
     padding-left: var(--space-4);

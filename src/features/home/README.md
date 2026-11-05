@@ -4,7 +4,7 @@ Run `npm ci` and `npm run dev`, then open [localhost:3000](http://localhost:3000
 
 | Scene | Scroll and interaction | Team editing point |
 | --- | --- | --- |
-| Opening | One headline crosses three colour and film layers. The diagonal aperture opens, then a diagonal wipe brings in academics from the right. On phones the rail moves to the top and the film opens vertically. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
+| Opening | One headline crosses three colour and film layers. The diagonal aperture opens, then a diagonal wipe brings in academics from the right. On phones the film opens vertically below the shared header. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
 | Campus film | The muted preview plays in the aperture. Click the follow-cursor control to start the reel with sound, then click to pause/resume. Close restores the preview. A poster and direct link cover blocked players. | `src/features/home/Film.tsx` |
 | Find your way | The illustrated campus map settles from a slight zoom and tilt beside the heading, tour link and editorial copy. | `src/app/home-scenes.css` |
 | Community | A cut-out opens, five headline lines rise through masks, and the linked roster moves over the pinned title. Hover or focus a row to preview its photo. | `src/features/home/content.ts` |

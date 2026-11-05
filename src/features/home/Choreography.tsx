@@ -27,7 +27,7 @@ export function Choreography() {
             defaults: { ease: "none" },
             scrollTrigger: {
               trigger: q(".s-opening")[0],
-              start: "top top",
+              start: () => "top " + (document.querySelector(".site-header")?.clientHeight ?? 0) + "px",
               end: "bottom bottom",
               scrub: 0.48,
               invalidateOnRefresh: true,

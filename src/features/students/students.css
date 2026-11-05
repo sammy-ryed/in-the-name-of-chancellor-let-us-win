@@ -52,7 +52,7 @@
 }
 .st-academic-intro {
   position:sticky;
-  top:35px;
+  top:calc(var(--header-height) + 12px);
 }
 .st-academic-intro .st-title {
   font-size:clamp(54px,6.6vw,120px);
@@ -658,6 +658,6 @@
 }
 @media (max-width: 760px) {
   .students-page :is(#explore, #campus, #wifi, #score, #portals) {
-    scroll-margin-top: 75px;
+    scroll-margin-top: 12px;
   }
 }

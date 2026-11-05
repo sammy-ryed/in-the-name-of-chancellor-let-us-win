@@ -61,7 +61,7 @@
 .s-place-frame,
 .s-people-frame {
   position: relative;
-  min-height: 100svh;
+  min-height: calc(100svh - var(--header-height));
   overflow: hidden;
 }
 .s-moving .s-opening {
@@ -71,12 +71,12 @@
 .s-moving .s-place-frame,
 .s-moving .s-people-frame {
   position: sticky;
-  top: 0;
-  height: 100svh;
+  top: var(--header-height);
+  height: calc(100svh - var(--header-height));
   overflow: hidden;
 }
 .s-hero {
-  height: 100svh;
+  height: calc(100svh - var(--header-height));
   background-color: var(--sky);
 }
 .s-headline {
@@ -313,7 +313,7 @@
   );
 }
 .s-acad-interior {
-  min-height: 100svh;
+  min-height: calc(100svh - var(--header-height));
   position: relative;
   padding: 4svh 5vw 4svh var(--start);
   display: grid;

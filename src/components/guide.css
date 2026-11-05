@@ -430,7 +430,6 @@
   --line: var(--color-blue-mid);
   color: var(--copy);
   background: var(--paper);
-  padding-left: calc(var(--rail) + 2 * var(--edge));
 }
 .guide {
   --pad: clamp(20px, 3.15vw, 64px);
@@ -708,7 +707,7 @@ html[data-high-contrast] .guide-shell {
 }
 @media (max-width: 760px) {
   .guide-shell {
-    padding: calc(var(--bar-h) + 2 * var(--edge)) 0 0;
+    padding: 0;
   }
   .guide {
     --pad: 16px;
@@ -730,7 +729,7 @@ html[data-high-contrast] .guide-shell {
   }
   .guide-section,
   #guide-content {
-    scroll-margin-top: 76px;
+    scroll-margin-top: 12px;
   }
   .guide .resources a {
     grid-template-columns: 1fr auto;
