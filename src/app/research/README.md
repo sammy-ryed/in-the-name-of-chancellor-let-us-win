@@ -18,12 +18,10 @@ New `/research` route. CSS is scoped to this route; existing pages and shared vi
 
 `public/research/laboratory.webp` is the supplied lab photograph, resized to 1600px and encoded as WebP. Existing SRMIST imagery is reused for research areas; project cards explicitly identify it as illustrative area imagery rather than photographs of specific project outcomes.
 
-The hero follows the Career Centre's 60svh split composition and pointer-responsive blue/gold gradient. Only the hero glow and project selector are client components. The gradient respects reduced motion and the site's quiet-motion setting. Project details work on pointer hover, keyboard focus and click/tap; mobile cards use native horizontal scrolling. The centre directory uses native details/summary.
+The split hero uses the shared SRM Display, Newsreader, DM Sans and Manrope fonts. Its section links and each discipline’s native expandable centre list work without JavaScript.
 
-Fonts inherit the shared Bebas Neue (`SRM Display`), DM Sans, Newsreader and Manrope resources. No dependencies or global style changes are required.
+The project and facility galleries share a thumbnail index, photo, details and source link. Mouse hover, keyboard focus and clicks select the same record. On phones, a native picker, previous/next buttons and horizontal photo swipes update that record together. Animations respect reduced motion and the site’s quiet-motion setting.
 
-## Interactive previews
-
-Statistics count from zero when first scrolled into view (Indian number formatting, 1.8 seconds). Reduced/quiet motion displays final values. Project cards form a perspective diagonal stack and pull forward on hover, focus or tap; details remain alongside on desktop and below on mobile. Facility row buttons select a crossfading photo; separate arrow links open the official facility resources.
+The eight prospectus figures animate from zero once as each value enters view. Accessible text and the server-rendered HTML retain the complete, Indian-formatted figure throughout.
 
 Facility photos were sourced from https://www.srmist.edu.in/research/: `2022/05/sir-cv-raman-research-park.png`, `2022/05/SCIF-Microscope-equipment.png`, `2023/09/Nanotechnology-Research-Center-NRC.jpg`, `2022/05/HPCC.png`, and `2022/03/Chemistry-research-149-1-scaled.jpg` (all under `/wp-content/uploads/`). Local WebP copies are in `public/research/`.

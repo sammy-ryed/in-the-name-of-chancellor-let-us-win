@@ -282,8 +282,6 @@
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: 3px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--cobalt) transparent;
   gap: 2.6vw;
   padding: 3px 3px 14px;
 }
@@ -324,6 +322,16 @@
   width: 44px;
   height: 44px;
   font-size: 24px;
+}
+.s-news-controls .s-news-playback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: auto;
+  min-width: 86px;
+  padding-inline: 12px;
+  font: 650 .85rem/1 var(--font-nav);
 }
 .s-news-controls button:disabled {
   background: var(--mist);

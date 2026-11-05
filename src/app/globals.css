@@ -98,6 +98,26 @@
   --seafoam: var(--color-gold-light);
   --apricot: var(--color-amber);
 }
+/* Keep the page and its scrollable panels on the same trackless scrollbar theme. */
+@media (forced-colors: none) {
+  :root { --scroll-thumb: var(--steel); }
+  .s-menu { --scroll-thumb: var(--color-gold); }
+  :where(:root, .s-menu) { scrollbar-color: var(--scroll-thumb) transparent; }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* scrollbar-width does not inherit into nested scrollers. */
+    :where(*) { scrollbar-width: thin; }
+
+    @supports not (scrollbar-width: thin) {
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner { background: transparent; }
+      ::-webkit-scrollbar-thumb {
+        border-radius: var(--radius-full);
+        background: var(--scroll-thumb);
+      }
+    }
+  }
+}
 ::selection {
   color: var(--text-primary);
   background: var(--color-gold-light);

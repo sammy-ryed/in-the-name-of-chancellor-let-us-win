@@ -88,10 +88,9 @@
   html:not([data-quiet-motion], [data-large-text]) .team-list {
     --card: min(78vw, 500px);
     display: grid; grid-auto-flow: column; grid-auto-columns: var(--card); gap: clamp(10px, 2vw, 20px);
-    position: relative; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x mandatory;
+    position: relative; overflow-x: auto; scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain; padding: 4px max(0px, calc((100% - var(--card)) / 2));
   }
-  .team-list::-webkit-scrollbar { display: none; }
   html:not([data-quiet-motion], [data-large-text]) .team-list li { scroll-snap-align: center; }
   html:not([data-quiet-motion], [data-large-text]) .team-list a { grid-template-columns: 2ch 1fr auto; padding: 0 0 .75rem; }
   html:not([data-quiet-motion], [data-large-text]) .team-thumb { grid-column: 1/-1; }

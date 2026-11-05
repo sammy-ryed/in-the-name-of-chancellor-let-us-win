@@ -5,14 +5,14 @@ import { stories } from "@/features/home/content";
 import { srm } from "@/lib/navigation";
 import headlines from "@/features/explore/headlines.json";
 import newsImages from "@/features/news/images.json";
-import DriftWall from "@/features/news/DriftWall";
+import ArticleCarousel from "@/features/news/ArticleCarousel";
 import "@/features/news/news.css";
 import "@/components/light-guide.css";
 
 export const metadata = { title: "Campus news" };
-const wallItems = [
-  ...newsImages.map(article => ({ image: article.image, title: article.title, href: article.href })),
-  ...stories.map(article => ({ image: `/home/${article.image}.webp`, title: article.title, href: article.href })),
+const photoStories = [
+  ...newsImages.map(({ title, href, category, image }) => ({ title, href, category, image })),
+  ...stories.map(article => ({ ...article, image: `/home/${article.image}.webp` })),
 ];
 const featuredStories = [
   {
@@ -37,7 +37,7 @@ export default function Page() {
           <div className="newsroom-actions"><Action href={srm + "/news/"}>Official newsroom</Action><Link href="/events">View events →</Link></div>
         </div>
         <aside className="newsroom-visual" aria-label="Campus stories in pictures">
-          <DriftWall items={wallItems} columns={5} tileWidth={200} tileHeight={132} gap={18} tilt={16} turn={-14} perspective={1200} depth={120} speed={42} direction="up" variance={0.45} parallax={0.6} lift={64} fade={0.6} dim={0.72} overlayColor="var(--navy)" radius={8} roll={0} pauseOnHover={false} grayscale={false} />
+          <ArticleCarousel articles={photoStories} />
         </aside>
       </section>
       <section className="newsroom-featured" aria-labelledby="news-featured-title"><div className="newsroom-kicker">A CLOSER LOOK</div><h2 id="news-featured-title">In focus</h2>

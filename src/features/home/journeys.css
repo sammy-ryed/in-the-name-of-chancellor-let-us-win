@@ -42,6 +42,7 @@
   letter-spacing: -.045em;
   color: var(--surface-warm);
 }
+.s-motto > span { color: var(--action-yellow); }
 .s-film-pane {
   clip-path: polygon(var(--lt) 0,var(--rt) 0,var(--rb) 100%,var(--lb) 100%,var(--lk) 32%);
 }

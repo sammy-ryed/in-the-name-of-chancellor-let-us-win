@@ -4,27 +4,31 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SrmCrest } from "@/components/HomeLogo";
 import { Icon } from "./Icons";
-import { SearchPanel } from "./SearchPanel";
+import { IdleSearchPrompt } from "./IdleSearchPrompt";
+import dynamic from "next/dynamic";
 import { useLauncherSurface } from "./useLauncherSurface";
 import "./search.css";
+
+const SearchPanel = dynamic(() => import("./SearchPanel").then((module) => module.SearchPanel));
 
 export default function AskSRM() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [visited, setVisited] = useState(false);
   const [docked, setDocked] = useState(false);
   const [shortcut, setShortcut] = useState("Ctrl K");
   const trigger = useRef<HTMLButtonElement>(null);
 
   useLauncherSurface(trigger, path);
 
-  const launch = useCallback(() => setOpen(true), []);
+  const launch = useCallback(() => { setVisited(true); setOpen(true); }, []);
 
   useEffect(() => {
     const phone = window.matchMedia("(max-width: 760px)");
     let timer: number;
     const startPreview = () => {
       window.clearTimeout(timer);
-      if (phone.matches) timer = window.setTimeout(() => setDocked(true), 3000);
+      if (phone.matches) timer = window.setTimeout(() => setDocked(true), 7500);
     };
     const onLayoutChange = () => {
       setDocked(false);
@@ -70,7 +74,7 @@ export default function AskSRM() {
           className="ask-launch"
           data-docked={docked || undefined}
           type="button"
-          aria-label="Ask SRM, search the site"
+          aria-label="Ask SRM, AI search. Ask anything about SRM."
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-keyshortcuts="Control+K Meta+K"
@@ -78,14 +82,14 @@ export default function AskSRM() {
         >
           <SrmCrest />
           <Icon name="search" />
-          <strong>Ask SRM</strong>
-          <span className="ask-prompt">Search courses, campus and services</span>
+          <span className="ask-launch-brand"><strong>Ask SRM</strong><span className="ask-ai-label">AI search</span></span>
+          <IdleSearchPrompt key={path} path={path} />
           <kbd aria-hidden="true">{shortcut}</kbd>
         </button>
       </aside>
-      {open && (
+      {visited && (
         <SearchPanel
-          key={path}
+          open={open}
           path={path}
           onClose={() => {
             setOpen(false);

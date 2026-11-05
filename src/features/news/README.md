@@ -1,23 +1,5 @@
-# Newsroom / Drift Wall
+# News photos
 
-The News page retains the shared Guide navigation, cover, footer, and all existing
-newsroom and featured-story links. Desktop uses equal-width editorial and visual
-columns; the visual stays sticky alongside the list. Mobile shows the newsroom
-heading, wall, then the article list.
+The News route combines the SRM newsroom manifest with the campus features in `src/features/home/content.ts`. Each entry links to its original article. `images.json` records the official photograph URL and byte size for each local newsroom WebP.
 
-`DriftWall.tsx` adapts the user-supplied React Bits implementation to TypeScript
-and plain CSS; no Tailwind or new runtime dependencies are required. Attribution
-and the existing React Bits license are retained. The original configurable
-perspective, column drift, variance, pointer parallax, and hover lift are supported.
-
-Motion pauses using the visible toggle. Offscreen and hidden-document frames skip
-DOM updates. The animation frame and both observers are cleaned up on unmount.
-OS reduced motion and the site's Reduce motion control replace the moving wall
-with a static, keyboard-accessible image grid. Repeated moving tiles are omitted
-from the accessibility tree; equivalent article links appear in the newsroom and
-In focus sections. The wall does not intercept scrolling or replace the cursor.
-
-`images.json` records each article and the original public SRM image URL.
-`public/news` contains optimized WebP copies (720px wide, quality 80). These are
-article photographs, not stock images. Existing featured images live in
-`public/home`. Update the image manifest when updating the curated headline data.
+`ArticleCarousel` shows the full photo, headline and article link. Visible stories advance every seven seconds. Play/Pause controls playback, and choosing, swiping or stepping to a story pauses it for reading. Both site and OS reduced-motion settings start the carousel paused. On desktop the carousel sits beside the headline list. On phones it follows the newsroom heading.
