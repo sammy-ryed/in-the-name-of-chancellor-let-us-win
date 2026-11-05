@@ -3,5 +3,5 @@ import next from "eslint-config-next/core-web-vitals";
 import ts from "eslint-config-next/typescript";
 export default defineConfig([
   ...next, ...ts,
-  globalIgnores([".next/**", "next-env.d.ts", ".playwright-cli/**", ".worktrees/**", "output/playwright/**", "output/deck-build/**"]),
+  globalIgnores([".next/**", "next-env.d.ts", ".playwright-cli/**", ".worktrees/**", ".claude/**", "output/playwright/**", "output/deck-build/**"]),
 ]);

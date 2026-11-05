@@ -69,7 +69,7 @@ export function SiteFooter({ admissionsHref = "/admissions" }: { admissionsHref?
         { label: "Prospective Students", href: admissionsHref },
         { label: "Current Students", href: "/students" },
         { label: "Parents", href: "/parents" },
-        { label: "Alumni", href: "https://alumni.srmist.edu.in/" },
+        { label: "Alumni", href: "/alumni" },
         { label: "Recruiters", href: "/career-centre" },
         { label: "Faculty", href: srm + "/faculty-gateway/" },
       ],

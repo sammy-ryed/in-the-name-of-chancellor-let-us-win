@@ -59,6 +59,7 @@ export const services: NavLink[] = [
   { href: "/career-centre", label: "Career Centre" },
   { href: "/events", label: "Events" },
   { href: "/parents", label: "Parents" },
+  { href: "/alumni", label: "Alumni" },
 ];
 
 export const srm = "https://www.srmist.edu.in";

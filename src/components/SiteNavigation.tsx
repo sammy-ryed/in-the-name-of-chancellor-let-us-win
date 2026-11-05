@@ -12,6 +12,7 @@ const scrollTargets: Record<string, string> = {
   "/programmes": "#pf-results-title",
   "/campus": "#life",
   "/campus/accommodation": "#booking",
+  "/alumni": "#spots",
 };
 
 export function SiteNavigation() {

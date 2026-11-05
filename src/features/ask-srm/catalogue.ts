@@ -29,6 +29,8 @@ const sectionNotes: Record<string, string> = {
     "Use the campus calendar to see upcoming events, filter by date or find an organiser’s registration page.",
   Parents:
     "Choose ParentConnect for the 2025 intake onwards, or the earlier-batch login for older cohorts.",
+  Alumni:
+    "Alumni Day 2026 is on 19 December at Dr. T. P. Ganesan Auditorium; register in advance. The page also covers notable alumni, past reunions and how to join the alumni network.",
 };
 
 const portalInstructions: Record<string, string> = {

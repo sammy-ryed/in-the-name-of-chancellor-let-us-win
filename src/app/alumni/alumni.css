@@ -1,0 +1,923 @@
+/* =====================================================================
+   Alumni — the homepage palette: SRM blue, navy, sky blue, gold on warm paper.
+   Bebas Neue headlines, DM Sans body, Newsreader editorial copy, Manrope labels.
+   ===================================================================== */
+.al-page {
+  --al-pad: clamp(20px, 5vw, 80px);
+  --al-navy: var(--color-primary-dark);
+  --al-ivory: var(--surface-warm);
+  --al-ivory-deep: var(--surface-blue); /* #EDF4FB */
+  --al-gold: var(--color-gold); /* #D6A928 */
+  --al-gold-light: var(--color-gold-light);
+  --al-ink: var(--text-primary);
+  --al-muted: var(--text-secondary);
+  --al-line: var(--border-strong); /* #C9D3DE */
+  --al-gutter: calc(var(--edge) * 2 + var(--rail)); /* clears the fixed left rail */
+  min-height: 100svh;
+  padding-left: var(--al-gutter);
+  background: var(--al-ivory);
+  color: var(--al-ink);
+  font: 400 1rem/1.6 var(--font-primary);
+  overflow-x: clip;
+}
+.al-page :where(h1, h2, h3, p, figure, dl, dd, ul, ol) {
+  margin: 0;
+}
+.al-page :where(ul, ol) {
+  list-style: none;
+  padding: 0;
+}
+.al-page a {
+  color: inherit;
+}
+.al-page :focus-visible {
+  outline: 3px solid var(--al-gold-light);
+  outline-offset: 3px;
+}
+.al-page h3 {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  text-transform: none;
+}
+/* Section headings match the home page: SRM Display, uppercase, tight. */
+.al-page h1,
+.al-page h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+.al-section {
+  width: min(100% - 2 * var(--al-pad), var(--container-width));
+  margin-inline: auto;
+}
+.al-arrow {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--transition-normal) var(--ease-standard);
+}
+a:hover > .al-arrow {
+  transform: translateX(3px);
+}
+
+/* Section heads */
+.al-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6) var(--space-16);
+  align-items: end;
+  margin-bottom: clamp(var(--space-10), 5vw, var(--space-16));
+}
+.al-head h2 {
+  font-size: min(10vw, 18svh);
+  color: var(--al-navy);
+}
+.al-head p {
+  max-width: 42ch;
+  color: var(--al-muted);
+  font-size: 1.075rem;
+}
+.al-head-light h2 {
+  color: var(--al-ivory);
+}
+.al-head-light p {
+  color: rgb(250 248 242 / 66%);
+}
+
+/* Buttons */
+.al-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background-color var(--transition-fast) var(--ease-standard), color var(--transition-fast) var(--ease-standard),
+    border-color var(--transition-fast) var(--ease-standard);
+}
+.al-page .al-btn-gold {
+  background: var(--al-gold-light);
+  color: var(--al-navy);
+}
+.al-page .al-btn-gold:hover {
+  background: var(--color-amber);
+}
+.al-page .al-btn-line {
+  border: 1px solid var(--al-navy);
+  color: var(--al-navy);
+}
+.al-page .al-btn-line:hover {
+  background: var(--al-navy);
+  color: var(--al-ivory);
+}
+.al-page .al-btn-ivory {
+  border: 1px solid rgb(168 200 230 / 55%);
+  color: var(--al-ivory);
+}
+.al-page .al-btn-ivory:hover {
+  border-color: var(--al-ivory);
+  background: rgb(247 217 135 / 8%);
+}
+
+/* Scroll reveal: progressive, CSS-only */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .al-reveal {
+      animation: al-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry calc(70% + var(--i, 0) * 8%);
+    }
+  }
+}
+@keyframes al-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Full-bleed bands run under the rail gutter so no ivory strip shows beside the rail. */
+.al-page .al-memories,
+.al-page .al-events,
+.al-page .al-close {
+  margin-left: calc(-1 * var(--al-gutter));
+  padding-left: var(--al-gutter);
+}
+
+/* ---------- 1 · Hero: scroll-driven photo grid ---------- */
+.al-hero {
+  position: relative;
+  height: 260svh; /* the scroll distance the grid zooms out over */
+  margin: var(--edge) var(--edge) 0 0;
+  background: var(--al-navy);
+}
+.al-hero-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.al-hero-grid {
+  position: absolute;
+  inset: clamp(10px, 1.4vw, 20px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.2vw, 18px);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.al-hero-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--al-navy);
+}
+.al-hero-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Dimmed so the white headline stays readable over every photo. */
+  filter: grayscale(1) sepia(0.25) brightness(0.55);
+}
+.al-hero-tile.is-centre {
+  z-index: 1;
+}
+.al-page .al-hero-title {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  padding-inline: var(--al-pad);
+  font-size: min(13vw, 24svh);
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 30px rgb(11 45 82 / 38%);
+  pointer-events: none;
+  will-change: transform;
+}
+.al-hero-after {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: clamp(28px, 6vh, 64px);
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+.al-hero-kicker {
+  position: absolute;
+  z-index: 3;
+  top: clamp(28px, 6vh, 56px);
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.al-hero-after .al-scroll {
+  margin-top: 0;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--al-gold-light);
+  color: var(--al-navy);
+}
+.al-eyebrow {
+  font: 600 13px/1 var(--font-nav);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--al-gold-light);
+}
+.al-scroll {
+  display: inline-flex;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+  font-weight: 600;
+  text-decoration: none;
+}
+/* Before the script runs, and whenever motion is reduced: a calm, complete grid. */
+.al-hero:not([data-animated]) {
+  height: calc(100svh - var(--edge));
+  min-height: 560px;
+}
+.al-hero:not([data-animated]) .al-hero-stage {
+  position: relative;
+  height: 100%;
+}
+
+/* ---------- 2 · Remember this spot? — aerial, tab row, story ---------- */
+.al-spots {
+  padding: clamp(88px, 10vw, 152px) 0 clamp(72px, 8vw, 128px);
+}
+.al-spots .al-head {
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+.al-map {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+.al-map-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--al-navy);
+}
+.al-map-canvas {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  transition: transform 700ms cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: transform;
+}
+.al-map-canvas > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.al-map-pin {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 2px solid var(--surface-primary);
+  border-radius: 50%;
+  background: var(--al-navy);
+  color: var(--surface-primary);
+  font: 400 16px/1 var(--display);
+  cursor: pointer;
+  /* Pins stay the same size while the map zooms. */
+  transform: translate(-50%, -50%) scale(calc(1 / var(--z, 1)));
+  transition: transform 700ms cubic-bezier(0.25, 0.8, 0.25, 1), background-color var(--transition-fast) var(--ease-standard);
+  box-shadow: 0 4px 12px rgb(7 24 47 / 60%);
+}
+.al-map-pin[data-hover],
+.al-map-pin:hover {
+  background: var(--color-primary);
+}
+.al-map-pin[data-active] {
+  z-index: 2;
+  background: var(--color-gold);
+  color: var(--al-navy);
+}
+.al-map-controls {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 4px;
+}
+.al-map-controls button {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  background: rgb(11 45 82 / 83%);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: var(--surface-primary);
+  font: 600 0.8rem/1 var(--font-primary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast) var(--ease-standard);
+}
+.al-map-controls button:hover {
+  background: rgb(11 45 82 / 94%);
+}
+.al-map-controls svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.al-map-all {
+  order: -1;
+}
+
+/* Tab row: six equal columns, each a numbered stop; the active one gets a navy bar. */
+.al-map-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-bottom: 1px solid var(--border-strong);
+}
+.al-map-tab {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 84px;
+  padding: 16px 14px 14px 0;
+  border: 0;
+  background: none;
+  color: var(--al-muted);
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--transition-fast) var(--ease-standard);
+}
+.al-map-tab::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--border-strong);
+  transition: background-color var(--transition-normal) var(--ease-standard);
+}
+.al-map-tab + .al-map-tab {
+  padding-left: 14px;
+}
+.al-map-tab:hover {
+  color: var(--al-navy);
+}
+.al-map-tab:hover::before {
+  background: var(--sky, #a8c8e6);
+}
+.al-map-tab[aria-selected="true"] {
+  color: var(--al-navy);
+}
+.al-map-tab[aria-selected="true"]::before {
+  background: var(--al-navy);
+}
+.al-map-tab-num {
+  font: 400 1rem/1 var(--display);
+}
+.al-map-tab-name {
+  font: 400 clamp(1.15rem, 1.5vw, 1.45rem) / 1 var(--display);
+  text-transform: uppercase;
+}
+
+/* Story */
+.al-map-story {
+  min-height: 180px;
+  padding-top: var(--space-8);
+}
+.al-map-story-inner {
+  display: grid;
+  gap: var(--space-8);
+}
+.al-map-story-inner.has-photo {
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: start;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .al-map-story-inner {
+    animation: al-story-in 380ms cubic-bezier(0.25, 0.8, 0.25, 1) both;
+  }
+}
+@keyframes al-story-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.al-map-where {
+  font: 600 11px/1.4 var(--font-nav);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--al-muted);
+}
+.al-page .al-map-story h3 {
+  margin-top: var(--space-2);
+  font: 400 clamp(2.2rem, 3.6vw, 3.2rem) / 0.95 var(--display);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--al-navy);
+}
+.al-map-memory {
+  max-width: 52ch;
+  margin-top: var(--space-4) !important;
+  font: 400 1.15rem/1.55 var(--font-editorial);
+  color: var(--al-ink);
+}
+.al-map-story img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+@media (prefers-reduced-motion: reduce) {
+  .al-map-canvas,
+  .al-map-pin {
+    transition: none;
+  }
+}
+
+/* ---------- 3 · Memory gallery ---------- */
+.al-memories {
+  padding-top: clamp(80px, 10vw, 140px);
+  background: var(--al-navy);
+}
+.al-memories .al-head {
+  margin-bottom: var(--space-6);
+}
+.al-reveal-gallery {
+  padding-bottom: clamp(72px, 9vw, 120px);
+}
+.al-reveal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: clamp(12px, 1.6vw, 22px);
+  perspective: 1400px;
+}
+.al-reveal-tile {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--al-navy);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  box-shadow: 0 30px 60px -36px rgb(7 24 47 / 60%);
+}
+.al-reveal-tile.is-wide {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.al-reveal-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.25) saturate(0.85);
+  transition: filter var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+}
+.al-reveal-tile:hover img {
+  filter: none;
+  transform: scale(1.04);
+}
+.al-see-more {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-6);
+  margin-top: clamp(48px, 6vw, 80px);
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid rgb(250 248 242 / 14%);
+  text-align: center;
+}
+.al-see-more-title {
+  font: 400 min(7vw, 12svh) / 0.9 var(--display);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--al-ivory);
+}
+.al-see-more-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+.al-page .al-see-more .al-btn {
+  cursor: pointer;
+  font-family: var(--font-primary);
+}
+.al-page button.al-btn {
+  border: 0;
+}
+
+/* ---------- 4 · Notable alumni ---------- */
+.al-notable {
+  padding: clamp(80px, 11vw, 160px) 0 clamp(64px, 8vw, 120px);
+}
+.al-people {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(28px, 3vw, 44px) clamp(18px, 2.2vw, 32px);
+}
+.al-person figure {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--al-ivory-deep);
+}
+.al-person img {
+  object-fit: cover;
+  object-position: 50% 22%;
+  filter: grayscale(0.55) sepia(0.15);
+  transition: filter var(--transition-slow) var(--ease-standard), transform var(--transition-slow) var(--ease-standard);
+}
+.al-person:hover img {
+  filter: none;
+  transform: scale(1.03);
+}
+.al-person-body {
+  padding-top: var(--space-5);
+  border-top: 0;
+}
+.al-person-field {
+  font: 600 11.5px/1.3 var(--font-nav);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--al-gold);
+}
+.al-page .al-person h3 {
+  margin-top: var(--space-2);
+  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  line-height: 1.1;
+  color: var(--al-navy);
+}
+.al-person-role {
+  margin-top: var(--space-2) !important;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.al-person-degree {
+  margin-top: var(--space-1) !important;
+  font-size: 0.9rem;
+  color: var(--al-muted);
+}
+.al-person-note {
+  margin-top: var(--space-4) !important;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--al-line);
+  font: italic 400 1.05rem/1.5 var(--font-editorial);
+  color: var(--al-ink);
+}
+.al-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-10);
+  margin-top: clamp(40px, 5vw, 64px) !important;
+}
+.al-more a,
+.al-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--al-navy);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+/* ---------- 5 · Events: the invitation ---------- */
+.al-events {
+  padding: clamp(88px, 11vw, 160px) 0;
+  background: var(--al-ivory-deep);
+}
+.al-events-head {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-5);
+  margin-bottom: clamp(48px, 6vw, 80px);
+  text-align: center;
+}
+.al-events-head .al-eyebrow {
+  color: var(--al-gold);
+}
+.al-page .al-events-head h2 {
+  font-size: min(11vw, 20svh);
+  color: var(--al-navy);
+}
+
+.al-invite-wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+  align-items: center;
+}
+.al-invite {
+  grid-column: 2;
+  position: relative;
+  z-index: 1;
+  padding: clamp(36px, 5vw, 64px) clamp(24px, 5vw, 64px);
+  background: var(--surface-primary);
+  text-align: center;
+  box-shadow: 0 40px 80px -48px rgb(7 24 47 / 22%);
+}
+/* A printed card's double gold rule. */
+.al-invite::before,
+.al-invite::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid var(--border-strong);
+}
+.al-invite::before {
+  inset: 12px;
+}
+.al-invite::after {
+  inset: 17px;
+  border-color: rgb(168 200 230 / 35%);
+}
+.al-invite-from {
+  font: italic 400 1.1rem/1.4 var(--font-editorial);
+  color: var(--al-muted);
+}
+.al-page .al-invite h3 {
+  margin-top: var(--space-3);
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1;
+  color: var(--al-navy);
+}
+.al-invite-quote {
+  max-width: 34ch;
+  margin: var(--space-4) auto 0 !important;
+  font: italic 400 1.05rem/1.45 var(--font-editorial);
+  color: var(--color-gold-muted);
+}
+.al-invite-date {
+  display: grid;
+  gap: 2px;
+  margin: var(--space-8) auto 0;
+  padding-block: var(--space-5);
+  border-block: 1px solid var(--al-line);
+}
+.al-invite-date span {
+  font: 600 12px/1.4 var(--font-nav);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--al-muted);
+}
+.al-invite-date b {
+  font: 400 clamp(2.4rem, 4.6vw, 3.6rem) / 1.05 var(--font-editorial);
+  color: var(--al-navy);
+}
+.al-invite-count {
+  display: inline-block;
+  margin-top: var(--space-4) !important;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: var(--al-navy);
+  font: 600 12px/1.6 var(--font-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--al-gold-light);
+}
+.al-invite-venue {
+  margin-top: var(--space-4) !important;
+  font-weight: 600;
+  color: var(--al-ink);
+}
+.al-invite-expect {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3) var(--space-6);
+  margin: var(--space-8) 0 0 !important;
+  text-align: left;
+  counter-reset: expect;
+}
+.al-invite-expect li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--al-muted);
+  counter-increment: expect;
+}
+.al-invite-expect li::before {
+  content: counter(expect, decimal-leading-zero);
+  font: italic 400 1rem/1.4 var(--font-editorial);
+  color: var(--al-gold);
+}
+.al-invite-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+.al-page .al-btn-navy {
+  background: var(--al-navy);
+  color: var(--al-ivory);
+}
+.al-page .al-btn-navy:hover {
+  background: var(--color-primary);
+}
+.al-invite-note {
+  margin-top: var(--space-5) !important;
+  font-size: 0.85rem;
+  color: var(--color-gold-muted);
+}
+.al-invite-note a {
+  font-weight: 600;
+  color: var(--al-navy);
+  text-underline-offset: 3px;
+}
+
+/* Two photographs tucked behind the card like prints on a table. */
+.al-print {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: min(100%, 250px);
+  padding: 10px 10px 34px;
+  background: var(--surface-primary);
+  box-shadow: 0 24px 50px -30px rgb(7 24 47 / 22%);
+}
+.al-print img {
+  object-fit: cover;
+  inset: 10px 10px 34px !important;
+  width: calc(100% - 20px) !important;
+  height: calc(100% - 44px) !important;
+  filter: sepia(0.3) saturate(0.85);
+}
+.al-print-left {
+  justify-self: end;
+  margin-right: -40px;
+  transform: rotate(-7deg) translateY(30px);
+}
+.al-print-right {
+  justify-self: start;
+  margin-left: -40px;
+  transform: rotate(6deg) translateY(-40px);
+}
+
+/* ---------- 6 · Closing CTA ---------- */
+.al-close {
+  padding: clamp(96px, 13vw, 180px) 0;
+  background: var(--al-navy);
+  color: var(--al-ivory);
+  text-align: center;
+}
+.al-page .al-close h2 {
+  max-width: 14ch;
+  margin-inline: auto;
+  font-size: min(10vw, 18svh);
+}
+.al-close p {
+  max-width: 48ch;
+  margin: var(--space-6) auto 0 !important;
+  font-size: 1.1rem;
+  color: rgb(250 248 242 / 66%);
+}
+.al-close-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-10);
+}
+.al-close .al-contact {
+  margin-top: var(--space-10) !important;
+  font-size: 0.9rem;
+  color: rgb(250 248 242 / 66%);
+}
+.al-contact a {
+  text-underline-offset: 3px;
+}
+.al-contact a:hover {
+  color: var(--al-gold-light);
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1100px) {
+  .al-people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .al-map-tabs {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .al-map-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .al-map-tab {
+    flex: 0 0 auto;
+    width: 168px;
+    scroll-snap-align: start;
+  }
+
+  .al-reveal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .al-invite-wrap {
+    grid-template-columns: 1fr;
+  }
+  .al-invite {
+    grid-column: 1;
+  }
+  .al-print {
+    display: none;
+  }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 760px) {
+  .al-page {
+    --al-pad: 16px;
+    --al-gutter: 0px;
+    padding-left: 0;
+    padding-top: calc(var(--edge) + var(--bar-h));
+  }
+  .al-hero {
+    margin: var(--edge) var(--edge) 0;
+  }
+  .al-hero:not([data-animated]) {
+    height: calc(100svh - var(--bar-h) - 2 * var(--edge));
+    min-height: 480px;
+  }
+  .al-hero-stage {
+    top: calc(var(--bar-h) + var(--edge));
+    height: calc(100svh - var(--bar-h) - var(--edge));
+  }
+  .al-invite-expect {
+    grid-template-columns: 1fr;
+  }
+  .al-head {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  .al-people {
+    grid-template-columns: 1fr;
+  }
+  .al-map-tab {
+    width: 140px;
+  }
+  .al-map-story-inner.has-photo {
+    grid-template-columns: 1fr;
+  }
+  .al-map-story-inner.has-photo img {
+    order: -1;
+  }
+  .al-map-controls button {
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .al-reveal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .al-see-more-actions .al-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .al-invite-actions .al-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .al-close-actions .al-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
