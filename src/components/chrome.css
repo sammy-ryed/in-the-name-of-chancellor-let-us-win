@@ -1,6 +1,7 @@
 @font-face {
   font-family: SRM Display;
-  src: url("/home/Anton.ttf") format("truetype");
+  /* Bebas Neue (SIL OFL, public/home/OFL-BebasNeue.txt) */
+  src: url("/home/BebasNeue-Regular.ttf") format("truetype");
   font-weight: 400;
   font-display: swap;
 }
@@ -73,8 +74,7 @@
 .s-rail button:hover i:last-child {
   transform: translateX(-3px);
 }
-.s-rail-caption,
-.s-edge span {
+.s-rail-caption {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
 }
@@ -86,23 +86,24 @@
 .s-progress {
   position: absolute;
   inset: 0;
-  background: rgb(7 24 47 / 36%);
+  background: rgb(11 45 82 / 36%);
   transform-origin: top;
   transform: scaleY(0);
   pointer-events: none;
 }
-.s-edge {
-  position: fixed;
-  pointer-events: none;
-  z-index: 10;
-  inset: var(--edge) var(--edge) var(--edge) auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* Current-page label on the rail (Rail's `current`); guide.css refines it on guide pages. */
+.guide-spine {
+  position: absolute;
+  top: clamp(130px, 17vh, 195px);
+  writing-mode: vertical-rl;
   font:
-    500 clamp(11px, 1.05vw, 19px)/0.96 Georgia,
-    serif;
-  color: var(--ice);
+    700 1.05rem/1 var(--font-primary);
+  color: var(--muted, var(--light-muted));
+}
+@media (max-width: 760px) {
+  .guide-spine {
+    display: none;
+  }
 }
 .s-menu {
   position: fixed;
@@ -118,29 +119,43 @@
   color: var(--ice);
 }
 .s-menu::backdrop {
-  background: rgb(7 24 47 / 94%);
+  background: rgb(11 45 82 / 94%);
 }
 .s-menu[open] {
   display: block;
 }
+/* Open menu: no logo; strip and panel sit flush to the screen edges.
+   The strip is the rail plus its old gaps, so the × lands where the hamburger was. */
 .s-menu-rail {
   z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(var(--rail) + 2 * var(--edge));
+  justify-content: center;
 }
 .s-menu-rail button {
-  font: 700 40px/1 Arial;
+  font: 700 40px/1 var(--font-primary);
 }
+/* ===== Menu panel =====
+   Opens beside the rail at ~46% width (wireframe frame 2). Choosing an item with
+   sub-pages widens it to full width; the item turns gold and its links appear in a
+   second column (frame 3). Phones: full screen, sub-pages expand in place. */
 .s-menu-sheet {
+  --menu-pad: clamp(22px, 4vw, 70px);
+  position: absolute;
+  inset: 0 auto 0 calc(var(--edge) * 2 + var(--rail));
+  width: min(46vw, 780px);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  inset: var(--edge) auto var(--edge) calc(var(--edge) * 2 + var(--rail));
-  width: min(46vw, 780px);
-  padding: clamp(22px, 4vw, 70px);
-  background-color: var(--cobalt);
-  color: var(--ice);
-  overflow: auto;
-  animation: s-menu-in 0.42s cubic-bezier(0.22, 0.65, 0.15, 1) both;
+  background-color: var(--color-primary);
+  color: var(--surface-primary);
+  overflow: hidden;
+  animation: s-menu-in var(--transition-slow) var(--ease-standard) both;
+  transition: width var(--transition-slow) var(--ease-standard);
+}
+.s-menu-sheet[data-expanded] {
+  width: calc(100% - var(--rail) - 2 * var(--edge));
 }
 @keyframes s-menu-in {
   from {
@@ -150,31 +165,133 @@
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 }
-.s-menu-sheet > a {
-  font: 400 clamp(38px, 5.5vw, 100px)/1.03 var(--display);
+.s-menu-nav {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  padding: var(--menu-pad);
+}
+.s-menu-main {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  justify-items: start;
+  gap: clamp(10px, 2.4vh, 28px);
+}
+/* Each row reacts to the pointer only over its own words, so crossing to the
+   submenu column never opens the item underneath. */
+.s-menu-main > li {
+  width: fit-content;
+}
+.s-menu-item {
+  display: inline-block;
+  padding: 0.04em 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 600 clamp(34px, 4.2vw, 72px)/1.08 var(--font-nav);
   letter-spacing: -0.035em;
-  text-transform: uppercase;
+  text-decoration: none;
+  text-align: left;
+  transition: color var(--transition-fast) ease;
 }
-.s-menu-sheet > a:hover,
-.s-menu-sheet > a:focus-visible {
-  color: var(--action-yellow);
-  text-decoration: underline;
-  text-decoration-thickness: 0.055em;
+.s-menu-item:hover,
+.s-menu-item:focus-visible,
+.s-menu-main > li[data-open] > .s-menu-item {
+  color: var(--color-gold);
 }
-.s-menu-sheet > div {
-  margin-top: auto;
-  padding-top: 36px;
-  font: 400 13px/1.05 var(--display);
+
+/* Second column: the open item's sub-pages (desktop). */
+.s-menu-sub {
+  position: absolute;
+  top: var(--menu-pad);
+  left: max(46%, 30rem);
+  right: var(--menu-pad);
+  padding-left: clamp(18px, 2.5vw, 40px);
+  border-left: 1px solid rgb(168 200 230 / 45%);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-12px);
+  transition:
+    opacity var(--transition-normal) var(--ease-standard),
+    transform var(--transition-normal) var(--ease-standard),
+    visibility 0s linear var(--transition-normal);
+}
+.s-menu-main > li[data-open] > .s-menu-sub {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 120ms, 120ms, 0s;
+}
+.s-menu-sub ul {
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+.s-menu-sub a {
+  display: inline-block;
+  padding: 6px 0;
+  font: 500 clamp(1.05rem, 1.35vw, 1.35rem)/1.3 var(--font-nav);
+  color: var(--color-blue-pale);
+  transition: color var(--transition-fast) ease;
+}
+.s-menu-sub a:hover,
+.s-menu-sub a:focus-visible {
+  color: var(--color-gold);
+}
+.s-menu-sub .s-menu-sub-title {
+  margin: 0;
+  font: 600 0.8125rem/1.2 var(--font-nav);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--color-blue-light);
+}
+
+/* Bottom bar: Close (wireframe, bottom-left) + quick links. */
+.s-menu-foot {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-3) var(--space-6);
+  padding: var(--space-4) var(--menu-pad) calc(var(--space-4) + env(safe-area-inset-bottom));
+  border-top: 1px solid rgb(168 200 230 / 35%);
+  font: 500 0.875rem/1.2 var(--font-nav);
 }
-.s-menu-sheet > div a {
+.s-menu-close {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 8px 14px;
+  gap: 0.5em;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid rgb(168 200 230 / 55%);
+  border-radius: var(--radius-full);
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+.s-menu-close:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+.s-menu-quick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+}
+.s-menu-quick span {
+  color: var(--color-blue-light);
+}
+.s-menu-quick a {
+  color: var(--surface-primary);
+  transition: color var(--transition-fast) ease;
+}
+.s-menu-quick a:hover,
+.s-menu-quick a:focus-visible {
+  color: var(--color-gold);
 }
 
 @media (max-width: 760px) {
@@ -190,17 +307,6 @@
   .s-rail button i {
     width: 20px;
     height: 3px;
-  }
-  .s-edge {
-    right: 4px;
-    font-size: 10px;
-  }
-  .s-menu-sheet {
-    width: calc(100% - var(--rail) - 3 * var(--edge));
-    padding: 26px 16px;
-  }
-  .s-menu-sheet > a {
-    font-size: clamp(32px, 8vw, 58px);
   }
 }
 
@@ -234,45 +340,89 @@
     width: 48px;
     transform: none;
   }
+  /* Open menu bar: flush to the top and sides, × stays where the hamburger was. */
+  .s-menu-rail {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--bar-h) + var(--edge));
+    padding: var(--edge) calc(12px + var(--edge)) 0;
+  }
+  .s-menu-rail button {
+    top: var(--edge);
+    right: var(--edge);
+    height: var(--bar-h);
+  }
   .s-rail-caption,
-  .s-edge,
   .s-progress {
     display: none;
   }
+  /* Phones: the menu takes the full screen; sub-pages expand in place under their item. */
   .s-menu {
-    background-color: var(--cobalt);
+    background-color: var(--color-primary);
   }
-  .s-menu-sheet {
+  .s-menu-sheet,
+  .s-menu-sheet[data-expanded] {
     inset: 0;
     width: 100%;
-    padding: calc(var(--bar-h) + 42px) 18px 20px;
+    transition: none;
   }
-  .s-menu-sheet > a {
-    font-size: clamp(45px, 10vw, 75px);
+  .s-menu-nav {
+    padding: calc(var(--bar-h) + 30px) 18px 20px;
+  }
+  .s-menu-main {
+    gap: 14px;
+  }
+  .s-menu-main > li {
+    width: 100%;
+  }
+  .s-menu-item {
+    font-size: clamp(34px, 9.5vw, 52px);
+  }
+  .s-menu-sub {
+    position: static;
+    display: grid;
+    grid-template-rows: 0fr;
+    padding-left: 14px;
+    transform: none;
+    transition:
+      grid-template-rows var(--transition-normal) var(--ease-standard),
+      opacity var(--transition-normal) var(--ease-standard),
+      visibility 0s linear var(--transition-normal);
+  }
+  .s-menu-sub > div {
+    overflow: hidden;
+  }
+  .s-menu-main > li[data-open] > .s-menu-sub {
+    grid-template-rows: 1fr;
+    margin: 4px 0 14px;
+    transition-delay: 0s;
+  }
+  .s-menu-sub ul {
+    margin-top: 8px;
+  }
+  .s-menu-sub .s-menu-sub-title {
+    font-size: 0.75rem;
+  }
+  .s-menu-foot {
+    padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+  }
+  .s-menu-quick span {
+    display: none;
   }
 }
 
 .s-chrome :is(.s-rail, .s-menu) a {
   text-decoration: none;
 }
-.s-chrome .s-menu-sheet > a[aria-current="page"] {
-  color: var(--action-yellow);
-}
-.s-chrome .s-menu-sheet > a[aria-current="page"]::before {
-  content: "•";
-  font: 0.47em/1 Arial;
-  vertical-align: middle;
-  margin-right: 0.24em;
-}
 .s-chrome :is(.s-rail, .s-menu) button {
   cursor: pointer;
 }
-.s-chrome .s-menu-sheet > div {
-  margin-bottom: env(safe-area-inset-bottom);
-}
 @media (prefers-reduced-motion: reduce) {
-  .s-menu-sheet {
+  .s-menu-sheet,
+  .s-menu-sub {
     animation: none;
+    transition: none !important;
   }
   .s-rail button i {
     transition: none;

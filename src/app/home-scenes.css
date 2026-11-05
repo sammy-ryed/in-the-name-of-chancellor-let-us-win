@@ -1,30 +1,14 @@
+/* Find your way: the illustrated campus map on a light frame. */
 .s-place {
-  color: var(--ice);
-  background: var(--ink);
+  color: var(--ink);
+  background: var(--ice);
 }
 .s-moving .s-place {
   height: 175svh;
 }
 .s-place-frame {
   height: 100svh;
-  background: var(--navy);
-}
-.s-place-frame:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(100deg, rgb(5 22 48 / 70%), rgb(5 22 48 / 59%) 42%, rgb(5 22 48 / 56%)),
-    linear-gradient(0deg, rgb(5 22 48 / 74%), transparent 70%);
-}
-.s-panorama-media {
-  position: absolute;
-  inset: 0;
-}
-.s-panorama {
-  object-fit: cover;
-  object-position: 54% center;
+  background: var(--ice);
 }
 .s-place-grid {
   position: relative;
@@ -32,31 +16,49 @@
   height: 100%;
   margin-left: var(--start);
   display: grid;
-  grid-template-columns: 25% 1fr;
+  grid-template-columns: auto 1fr;
   grid-template-rows: 1fr 1fr;
 }
-.s-vertical {
+.s-map {
   grid-row: 1/3;
+  margin: 0;
+  height: 100svh;
+  padding: 3svh 2.5vw;
   display: grid;
   place-items: center;
-  border-right: 1px solid rgb(237 246 255 / 56%);
+  border-right: 1px solid var(--rule);
   overflow: hidden;
 }
-.s-vertical h2 {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: min(10.4vw, 19svh);
-  letter-spacing: -0.045em;
-  line-height: 0.99;
+.s-map-img {
+  display: block;
+  width: auto;
+  height: 94svh;
+  max-width: 44vw;
+  object-fit: contain;
+  transform-origin: 50% 60%;
 }
 .s-place-intro {
-  border-bottom: 1px solid rgb(237 246 255 / 56%);
+  border-bottom: 1px solid var(--rule);
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2.5svh;
   padding: 2.5vw;
+}
+.s-place-intro h2 {
+  font-size: min(9vw, 17svh);
+  line-height: 0.92;
+  color: var(--brand-blue);
 }
 .s-place-intro p {
   max-width: 24ch;
+  color: var(--navy);
+}
+.s-map-note {
+  display: block;
+  margin-top: 1.2vh;
+  font: italic 400 clamp(12px, 0.95vw, 15px) var(--font-editorial);
+  color: var(--body-muted);
 }
 .s-place-details {
   display: flex;
@@ -75,8 +77,8 @@
   transform: rotate(0);
 }
 .s-compass {
-  color: var(--action-yellow);
-  font: 400 clamp(60px, 9vw, 150px)/1 Georgia;
+  color: var(--brand-blue);
+  font: 400 clamp(60px, 9vw, 150px)/1 var(--font-editorial);
   display: block;
   margin-bottom: 1.2vw;
 }
@@ -86,7 +88,7 @@
 }
 .s-moving .s-people {
   height: 240svh;
-  background: var(--ink);
+  background: var(--color-primary-dark);
 }
 .s-people-frame {
   position: relative;
@@ -198,7 +200,7 @@
   gap: 13vw;
 }
 .s-news-title i {
-  font: normal 0.86em/1 Georgia;
+  font: normal 0.86em/1 var(--font-editorial);
   transform: scaleX(1.45);
   margin-left: 0.25em;
   color: var(--cobalt);
@@ -261,7 +263,7 @@
   margin: 1.1rem 0 0.8rem;
 }
 .s-story-strip small {
-  font: 400 13px/1.25 Arial;
+  font: 400 13px/1.25 var(--font-primary);
 }
 .s-news-controls {
   display: flex;
@@ -349,7 +351,7 @@
   outline-offset: -6px;
 }
 .s-footer {
-  background-color: var(--ink);
+  background-color: var(--color-primary-dark);
   color: var(--ice);
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -361,7 +363,7 @@
   background-image: repeating-linear-gradient(
     74deg,
     transparent 0 33px,
-    rgb(128 186 255 / 15%) 34px,
+    rgb(168 200 230 / 15%) 34px,
     transparent 35px
   );
 }
@@ -371,7 +373,7 @@
   display: block;
 }
 .s-footer p {
-  font: 400 15px/1.2 Arial;
+  font: 400 15px/1.2 var(--font-primary);
   color: var(--light-muted);
   margin-bottom: 12px;
 }
@@ -475,18 +477,32 @@
     margin-top: 0;
   }
   .s-disciplines {
+    --d-gap: 7vw;
+    --d-speed: 22s;
     margin: auto 0 0;
-    gap: 7vw;
     font-size: 25px;
   }
   .s-moving .s-place {
     height: 145svh;
   }
   .s-place-grid {
-    grid-template-columns: 26% 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
   }
-  .s-vertical h2 {
-    font-size: min(10vw, 10svh);
+  .s-map {
+    grid-row: auto;
+    height: auto;
+    min-height: min-content; /* don't let the pinned frame squeeze the map */
+    padding: 2svh 16px 0;
+    border-right: 0;
+    overflow: visible;
+  }
+  .s-map-img {
+    height: 44svh;
+    max-width: 100%;
+  }
+  .s-place-intro h2 {
+    font-size: min(13vw, 9svh);
   }
   .s-place-intro {
     padding: 16px 17px;
@@ -654,15 +670,6 @@
 .s-moving .s-academics {
   z-index: 4;
 }
-.s-edge {
-  mix-blend-mode: normal;
-  color: var(--ice);
-  text-shadow: 0 1px 2px rgb(7 24 47 / 68%);
-}
-.s-home[data-edge="dark"] .s-edge {
-  color: var(--ink);
-  text-shadow: none;
-}
 .s-headline span {
   display: block;
   transform-origin: left center;
@@ -818,7 +825,7 @@
     border-radius: 50%;
     width: 42px;
     height: 42px;
-    font: 700 17px/1 Arial;
+    font: 700 17px/1 var(--font-primary);
   }
 }
 @media (prefers-reduced-motion: reduce) {
