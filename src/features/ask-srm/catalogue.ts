@@ -3,7 +3,9 @@ import { navigation, services } from "@/lib/navigation";
 import { studentServices } from "@/features/students/services";
 import { clubs } from "@/features/campus/clubs";
 import { finderData } from "@/features/programmes/finder/data";
-import { courses, price, criteria } from "@/features/explore/academic";
+import { courses, criteria, faculties } from "@/features/explore/academic";
+import { programmeFee } from "@/features/explore/fee-listing";
+import { siteGuides } from "./site-guides";
 import hostels from "@/features/explore/hostels.json";
 import headlines from "@/features/explore/headlines.json";
 import events from "@/features/explore/events.json";
@@ -25,7 +27,7 @@ const sectionNotes: Record<string, string> = {
   News: "Read campus stories, student achievements and announcements.",
   Home: "Start on the SRM homepage and explore academics, campus life and news.",
   Alumni:
-    "Find reunion events, photo albums and award-winning SRM graduates. Alumni Day 2026 is on 19 December at Dr. T. P. Ganesan Auditorium; register in advance.",
+    "Find alumni events, reunion photo albums, graduate profiles and the alumni network.",
   Placements:
     "Compare published placement outcomes by batch and find training and placement contacts.",
   Research:
@@ -56,7 +58,7 @@ export const universityOverview: Entry[] = [
     keywords:
       "address location directions reach visit headquarters Chennai Potheri main campus",
     summary:
-      "SRMIST’s main campus is in Kattankulathur, near Chennai. Its postal address is SRM Nagar, Kattankulathur, Chengalpattu district, Tamil Nadu 603203.",
+      "KTR is short for Kattankulathur, SRMIST’s main campus near Chennai. Its postal address is SRM Nagar, Kattankulathur, Chengalpattu district, Tamil Nadu 603203.",
   },
   {
     title: "Ramapuram campus address",
@@ -110,12 +112,12 @@ export const universityOverview: Entry[] = [
 
 const guides: Entry[] = [
   {
-    title: "Class timetable and personal records",
+    title: "Student attendance, marks and class timetables",
     section: "Students",
     href: "/students#portals",
     keywords: "timetable schedule section attendance grades marks CGPA",
     summary:
-      "For a section timetable or your own marks, open the academic portal for your programme and intake. The public student guide explains which portal to use; your department can confirm a section’s schedule.",
+      "Open the academic portal for your programme and intake. The student guide lists Academia for years 2–4 of B.Tech at Kattankulathur, and StudentConnect for 2025 onwards in Medicine, Law, Management and Science & Humanities (except PhD). Your department can confirm your section timetable. Personal records require sign-in.",
   },
 
   {
@@ -161,10 +163,10 @@ const guides: Entry[] = [
   {
     title: "Hostels and dining",
     section: "Campus life",
-    href: "/campus#housing",
+    href: "/campus/accommodation",
     keywords: "hostel housing booking accommodation rooms mess fees",
     summary:
-      "Compare Kattankulathur hostel blocks and room types under Housing & dining. Use the booking schedule and hostel office links for current charges and availability.",
+      "Compare Kattankulathur hostel blocks and room types in Accommodation & dining. Use the booking schedule and hostel office links for current charges and availability.",
   },
   {
     title: "Explore the campus in 360°",
@@ -175,26 +177,20 @@ const guides: Entry[] = [
       "Open the SRMIST virtual tour to look around Kattankulathur before a visit.",
   },
   {
-    title: "Placement figures by batch",
-    section: "Career Centre",
-    href: "/career-centre#outcomes",
-    keywords: "placement package salary highest average CTC offers matrix",
-    summary:
-      "The Career Centre guide lists 10,190+ offers, ₹6.5 lakh average annual CTC and ₹61 lakh highest annual CTC for the 2025 batch. Offers can include several per student. These figures apply to the reported batch, across programmes.",
-  },
-  {
     title: "Parent portal by intake",
     section: "Parents",
-    href: "/parents",
+    href: "/parents#parent-portals",
     keywords: "parents parentconnect login guardian",
     summary: sectionNotes.Parents,
   },
 ];
 
 export function catalogue(): Entry[] {
+  const guideSummaries = new Map(guides.map(guide => [guide.href, guide.summary]));
   return [
     ...universityOverview,
     ...guides,
+    ...siteGuides(),
     ...[...navigation, ...services].map((item) => ({
       title: item.label,
       section: item.label,
@@ -209,7 +205,7 @@ export function catalogue(): Entry[] {
         summary:
           child.href.startsWith("/programmes?college=")
             ? "Browse the " + child.label + " programmes in SRM’s finder."
-            : child.label + " in the " + item.label + " guide.",
+            : guideSummaries.get(child.href) ?? child.label + " in the " + item.label + " guide.",
       })),
     ),
     ...studentServices.flatMap((group) =>
@@ -225,45 +221,50 @@ export function catalogue(): Entry[] {
       title: club.name,
       section: "Clubs",
       href: "/campus#clubs",
-      summary:
-        club.name +
-        " is listed under " +
-        club.type +
-        ". Find its contact in the SRM club directory and confirm recruitment dates with the coordinator.",
-      keywords: club.type,
+      summary: club.name + " (" + club.type + "). " + club.description
+        + " Open the club directory to find coordinator contacts and confirm recruitment dates."
+        + (club.social ? " Its profile links to " + club.social.label + "." : ""),
+      keywords: club.type + " student club society",
     })),
     ...Object.entries(hostels).flatMap(([group, rooms]) =>
       rooms.map((room) => ({
         title: room.name + " hostel",
         section: "Housing",
-        href: "/campus#h-" + group,
+        href: "/campus/accommodation#g-" + group,
         summary: group + "’s accommodation in Kattankulathur. " + room.detail,
         keywords: group + " hostel rooms block housing",
       })),
     ),
-    ...courses.map((c) => ({
-      title: c.degree + " " + c.name + " · " + c.campus,
-      section: "Course details",
-      href: "/programmes/" + c.id,
-      summary: [
-        c.degree + " " + c.name + " at " + c.campus + ".",
-        c.period + ": " + price(c.fee) + ".",
-        c.duration && "Duration: " + c.duration + ".",
-        c.notes,
-        criteria(c),
-      ]
-        .filter(Boolean)
-        .join(" "),
-      keywords: "tuition fee fees eligibility duration " + c.faculty,
-    })),
-    ...finderData.programmes.map((p) => ({
-      title: p.name,
-      section: "Programme Finder",
-      href: p.url,
-      summary:
-        [p.name, p.level.join(" / "), p.duration].filter(Boolean).join(" · ") +
-        ". Open the official programme page for its published details.",
-    })),
+    ...courses.map((c): Entry => {
+      const { fee, period } = programmeFee(c);
+      const qualifiers = [c.mode, c.shift].filter(Boolean).join(", ");
+      return {
+        title: c.degree + " " + c.name + " · " + c.campus + (qualifiers ? " · " + qualifiers : ""),
+        section: "Course details",
+        href: "/programmes/" + c.id,
+        summary: [
+          c.degree + " " + c.name + " · " + c.campus + " · " + qualifiers + ".",
+          "Domestic fee listing — " + period + ": " + fee + ".",
+          period === "Listed fee" && "The billing period is unspecified.",
+          c.duration && "Duration: " + c.duration + ".",
+          c.notes,
+          criteria(c),
+        ].filter(Boolean).join(" "),
+        keywords: ["tuition fee eligibility duration", faculties[c.faculty], c.level, period].join(" "),
+      };
+    }),
+    ...finderData.programmes.map((p): Entry => {
+      const campuses = finderData.campuses.filter(campus => p.college.some(id => campus.colleges.includes(id)));
+      const campus = campuses.map(c => c.label).join(", ");
+      return {
+        title: p.name,
+        section: "Programme Finder",
+        href: p.url,
+        summary: [p.name, p.level.join(" / "), campus, p.duration].filter(Boolean).join(" · ")
+          + ". Open the official programme page for its published details.",
+        keywords: [campus, p.certification, p.level.join(" ")].join(" "),
+      };
+    }),
     ...stories.map((s) => ({
       title: s.title,
       section: "News",

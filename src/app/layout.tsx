@@ -12,7 +12,6 @@ const editorial = Newsreader({ subsets: ["latin"], variable: "--font-newsreader"
 // Navigation menu face: --font-nav in globals.css.
 const nav = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 export const metadata: Metadata = {
-  icons: { icon: "/home/srm-white.svg" },
   title: { default: "Explore SRM", template: "%s | Explore SRM" },
   description:
     "Explore programmes, campus life and student services at SRM Institute of Science and Technology.",

@@ -35,6 +35,13 @@ function MenuLink({ href, close, children, ...props }: MenuLinkProps) {
 
 export function SiteNavigation() {
   const pathname = usePathname();
+  const currentSection = navigation.find(
+    item => item.href === pathname || pathname.startsWith(item.href + "/"),
+  );
+  const currentPage = currentSection?.href === pathname
+    ? currentSection
+    : currentSection?.children?.find(link => link.href === pathname) ?? services.find(link => link.href === pathname);
+  const currentLabel = currentPage?.label ?? currentSection?.label;
   const panel = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   // Which top-level item has its sub-pages showing, and whether the panel has widened.
@@ -74,11 +81,13 @@ export function SiteNavigation() {
         <button
           className="rail-menu-toggle"
           aria-label="Open menu"
+          aria-describedby={currentLabel ? "srm-current-location" : undefined}
           aria-controls="srm-menu"
           aria-expanded={open}
           onClick={() => {
-            setSection(null);
-            setWide(false);
+            const nestedPage = currentPage && currentSection && currentPage !== currentSection;
+            setSection(nestedPage ? currentSection.label : null);
+            setWide(Boolean(nestedPage));
             panel.current?.showModal();
             setOpen(true);
           }}
@@ -87,6 +96,7 @@ export function SiteNavigation() {
           <i />
           <i />
         </button>
+        {currentLabel && <span id="srm-current-location" className="s-rail-location" title={currentLabel}>{currentLabel}</span>}
         <Accessibility />
         <span className="s-progress" aria-hidden="true" />
       </aside>
@@ -115,6 +125,7 @@ export function SiteNavigation() {
               {navigation.map((item) => {
                 const id = "sub-" + item.href.slice(1);
                 const isOpen = section === item.label;
+                const current = item === currentSection;
                 return (
                   <li
                     key={item.href}
@@ -128,7 +139,7 @@ export function SiteNavigation() {
                       close={close}
                       className="s-menu-item"
                       href={item.href}
-                      aria-current={item.href === pathname ? "page" : undefined}
+                      aria-current={current ? (item.href === pathname ? "page" : "location") : undefined}
                       onFocus={(e) => item.children && e.currentTarget.matches(":focus-visible") && show(item.label)}
                       onClick={(e) => {
                         if (item.children && !isOpen && !canHover() && e.detail > 0 &&
@@ -146,7 +157,7 @@ export function SiteNavigation() {
                           <ul aria-label={item.label}>
                             {item.children.map((child) => (
                               <li key={child.href}>
-                                <MenuLink close={close} href={child.href} aria-current={child.href === pathname ? "page" : undefined}>
+                                <MenuLink close={close} href={child.href} aria-current={current && child.href === pathname ? "page" : undefined}>
                                   {child.label}
                                 </MenuLink>
                               </li>

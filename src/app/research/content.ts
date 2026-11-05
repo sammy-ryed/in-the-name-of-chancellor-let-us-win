@@ -50,21 +50,41 @@ export const centreGroups = [
 
 export type ResearchProject = {
   title: string; field: string; description: string; agency: string;
-  funding: string; year: string; patent: string; image: string; alt: string; source: string;
+  funding: string; year: string; patent: string; fundingNote?: string; image: string; alt: string; source: string;
 };
 
 // Do not infer project-specific patents or turn reporting years into patent years.
 export const projects: ResearchProject[] = [
   { title: "Electric Mobility Infrastructure", field: "Energy & mobility", description: "Infrastructure and supporting networks for electric-mobility research and startups under DST-PURSE.", agency: "Department of Science & Technology · PURSE", funding: "₹13.63 Cr", year: "2025–26 prospectus", patent: "Not specified in the cited source", image: "/home/racing.webp", alt: "SRMIST student motorsport engineering — research area imagery", source: prospectus + "#page=31" },
   { title: "Plastic Pollution Research", field: "Environment · INOPOL", description: "India–Norway research and capacity building to reduce plastic and chemical pollution, including marine litter and persistent organic pollutants.", agency: "Royal Norwegian Embassy, New Delhi", funding: "Amount not published in the cited report", year: "2021 report", patent: "Not specified in the cited source", image: "/home/subjects/agriculture.webp", alt: "SRMIST environmental fieldwork — research area imagery", source: sources.inopol },
-  { title: "Cancer Models Using CRISPR-Cas9", field: "Genetics & health", description: "Developing zebrafish cancer models using CRISPR-Cas9 gene-editing techniques.", agency: "Department of Biotechnology (DBT)", funding: "₹94.42 lakh (₹175.00 lakh)", year: "2022 grants newsletter", patent: "Not specified in the cited source", image: "/research/laboratory.webp", alt: "SRMIST laboratory — research area imagery", source: sources.genetics },
+  { title: "Cancer Models Using CRISPR-Cas9", field: "Genetics & health", description: "Developing zebrafish cancer models using CRISPR-Cas9 gene-editing techniques.", agency: "Department of Biotechnology (DBT)", funding: "₹94.42 lakh (₹175.00 lakh)", year: "2022 grants newsletter", fundingNote: "The newsletter gives both amounts without explaining the figure in brackets.", patent: "Not specified in the cited source", image: "/research/laboratory.webp", alt: "SRMIST laboratory — research area imagery", source: sources.genetics },
   { title: "Advanced Energy Materials & Lithium-ion Batteries", field: "Materials & energy storage", description: "Electrode materials for high-energy-density lithium-ion batteries, alongside computational studies of solar absorber layers.", agency: "Ministry of New and Renewable Energy (MNRE)", funding: "Amount not published in the cited sources", year: "2025–26 prospectus", patent: "Not specified in the cited sources", image: "/home/research.webp", alt: "Sir C. V. Raman Block at SRMIST — research area imagery", source: prospectus + "#page=32" },
 ];
 
 export const facilities = [
-  { title: "Sir C. V. Raman Research Park", description: "A shared home for advanced instrumentation and interdisciplinary research.", href: sources.infrastructure },
-  { title: "Central Instrumentation Facilities", description: "Explore shared instruments and request time through the SCIF booking portal.", href: "https://scif.srmonline.net/index.php" },
-  { title: "Nanotechnology Research Centre", description: "Access diffraction, microscopy and materials-characterisation instruments.", href: sources.facilities },
-  { title: "High-Performance Computing", description: "Computing infrastructure supporting theoretical and computational research.", href: sources.infrastructure },
-  { title: "Department Research Laboratories", description: "Specialist laboratories across engineering, sciences and health disciplines.", href: sources.facilities },
+  {
+    title: "Sir C. V. Raman Research Park", description: "A shared home for advanced instrumentation and interdisciplinary research.",
+    image: "/research/park.webp", alt: "Sir C. V. Raman Research Park at SRMIST",
+    href: sources.infrastructure, linkLabel: "Read the facilities brochure",
+  },
+  {
+    title: "Central Instrumentation Facilities", description: "Explore shared instruments and request time through the SCIF booking portal.",
+    image: "/research/instrumentation.webp", alt: "Microscope equipment at SRM Central Instrumentation Facility",
+    href: "https://scif.srmonline.net/index.php", linkLabel: "Book instrument time",
+  },
+  {
+    title: "Nanotechnology Research Centre", description: "Access diffraction, microscopy and materials-characterisation instruments.",
+    image: "/research/nano.webp", alt: "SRMIST Nanotechnology Research Centre",
+    href: sources.facilities, linkLabel: "Find instrument services",
+  },
+  {
+    title: "High-Performance Computing", description: "Computing infrastructure supporting theoretical and computational research.",
+    image: "/research/computing.webp", alt: "SRMIST High-Performance Computing Centre",
+    href: sources.infrastructure, linkLabel: "Read the facilities brochure",
+  },
+  {
+    title: "Department Research Laboratories", description: "Specialist laboratories across engineering, sciences and health disciplines.",
+    image: "/research/labs.webp", alt: "Chemistry research laboratory at SRMIST",
+    href: sources.facilities, linkLabel: "Explore laboratory services",
+  },
 ];

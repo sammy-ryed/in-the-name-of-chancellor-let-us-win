@@ -52,22 +52,14 @@ export default function Accessibility() {
         aria-haspopup="dialog"
         aria-keyshortcuts="Alt+M"
         aria-label="Accessibility settings"
-        title="Accessibility settings (Alt+M)"
         ref={trigger}
         popoverTarget="access-settings"
       >
-        <svg
-          aria-hidden="true"
-          width="19"
-          height="19"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <circle cx="12" cy="4" r="2" />
-          <path d="M3 8l9 2 9-2M12 10v4m0 0-5 8m5-8 5 8" />
+        <svg className="access-mark" viewBox="0 0 65 65" fill="currentColor" aria-hidden="true" focusable="false">
+          <circle cx="32" cy="10.7" r="4.2" />
+          <path d="m15.1 15.7 13.9 1.2h6.4l14.5-1.2a2.2 2.2 0 0 1 .5 4.4l-12.7 1.6v11.8l6.1 21a2.3 2.3 0 0 1-4.4 1.4l-6.4-18.7h-1.9l-6 18.7a2.4 2.4 0 0 1-4.6-1.4l5.6-20.3V21.7l-11.5-1.6a2.2 2.2 0 1 1 .5-4.4Z" />
         </svg>
+        <span className="access-caption" aria-hidden="true">Accessibility</span>
       </button>
       <section id="access-settings" popover="auto" role="dialog" aria-labelledby="access-title"
         className="access-panel">

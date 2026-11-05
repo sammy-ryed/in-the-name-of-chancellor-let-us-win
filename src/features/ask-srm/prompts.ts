@@ -1,58 +1,19 @@
-export type Prompt = {
-  question: string;
-  section: string;
-};
+export type Prompt = { section: string; question: string };
 
-const wifi: Prompt = {
-  question: "How do I sign in to hostel Wi-Fi?",
-  section: "Student services",
-};
-const fees: Prompt = {
-  question: "What is the DevSecOps fee at KTR?",
-  section: "Programmes",
-};
-const clubs: Prompt = {
-  question: "How do I join a student club?",
-  section: "Campus life",
-};
-const exam: Prompt = {
-  question: "When is the SRMJEEE entrance exam?",
-  section: "Admissions",
-};
-
-const firstPrompt: Record<string, Prompt> = {
-  programmes: fees,
-  admissions: exam,
-  students: wifi,
-  campus: clubs,
-  parents: {
-    question: "Which parent portal should I use?",
-    section: "Parents",
-  },
-  news: {
-    question: "What did Camber Racing win?",
-    section: "Campus news",
-  },
-  events: {
-    question: "Where is the campus events calendar?",
-    section: "Events",
-  },
-  "career-centre": {
-    question: "Where can I compare placement figures?",
-    section: "Career Centre",
-  },
+const fees: Prompt = { section: "Programmes", question: "What does B.Tech CSE cost at KTR?" };
+const clubs: Prompt = { section: "Campus life", question: "How can I join a student club?" };
+const apply: Prompt = { section: "Admissions", question: "How do international students apply?" };
+const placement: Prompt = { section: "Careers", question: "What are the placement figures?" };
+const first: Record<string, Prompt> = {
+  programmes: fees, admissions: apply, campus: clubs, "career-centre": placement,
+  parents: { section: "Parents", question: "How can a parent check attendance?" },
+  students: { section: "Students", question: "How do I sign in to hostel Wi-Fi?" },
+  news: { section: "News", question: "What did Camber Racing win?" },
+  events: { section: "Events", question: "Where is the campus events calendar?" },
+  research: { section: "Research", question: "Which research labs can I use?" },
+  alumni: { section: "Alumni", question: "How can I reconnect with SRM alumni?" },
 };
 
 export function promptsFor(path: string): Prompt[] {
-  return [
-    ...new Set([
-      firstPrompt[path.split("/")[1]] ?? {
-        section: "Visit SRM",
-        question: "Where is SRM’s main campus?",
-      },
-      wifi,
-      clubs,
-      exam,
-    ]),
-  ].slice(0, 3);
+  return [...new Set([first[path.split("/")[1]] ?? fees, apply, clubs, placement])].slice(0, 3);
 }

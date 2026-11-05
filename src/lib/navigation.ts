@@ -3,7 +3,7 @@ export interface NavLink {
   label: string;
 }
 export interface NavItem extends NavLink {
-  /** Sub-pages shown in the menu's second column (desktop) or accordion (phone). */
+  /** Sub-pages shown in the menu's second column (desktop) or below the destinations (portrait phone). */
   children?: NavLink[];
 }
 
@@ -87,9 +87,10 @@ export const navigation: NavItem[] = [
     { href: "/students#wifi", label: "Wi-Fi & IT" }, routes.score] },
   { ...routes.parents, children: [routes.portals, routes.score, routes.fees, routes.housing] },
   { ...routes.alumni, children: [routes.photos, routes.reunions, routes.graduates] },
+  routes.news,
 ];
 
-export const services: NavLink[] = [routes.news, routes.events];
+export const services: NavLink[] = [routes.events];
 
 export const actions = [
   { label: "Programmes", detail: "Find your programme", href: "/programmes" },
