@@ -2,10 +2,9 @@
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { ProgrammeMasthead } from "./ProgrammeMasthead";
 import { groupStudyAreas } from "./studyAreas";
 import { AreaGallery } from "./AreaGallery";
-import { routes } from "@/lib/navigation";
 import { ActiveChips, ChoiceList, Icon, SearchBox, SelectField, SortSelect, type ActiveChip } from "./controls";
 import { activeCount, buildIndex, campusIndex, facetCounts, filterProgrammes, sortProgrammes } from "./filter";
 import { ProgrammeRow, type RowLabels } from "./ProgrammeRow";
@@ -220,23 +219,11 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
 
   return (
     <div className="pf">
-      <header className={area ? "pf-hero pf-area-hero" : "pf-hero"}>
-        <div className="pf-hero-inner">
-          <div className="pf-hero-copy">
-            {(area || browseAll) && (
-              <Link className="area-return" href="/programmes#study-areas"><Icon name="arrow" /> All study areas</Link>
-            )}
-            <h1>{area ? area.title : browseAll ? "All programmes" : <>Find <em>your</em> <span>programme</span></>}</h1>
-            <SearchBox value={filters.query} onChange={(v) => set("query", v)} inputRef={searchRef}
-              placeholder={area ? "Search within this study area" : undefined} />
-            {!area && <Link className="pf-quiz" href={routes.finder.href}>No idea? Pick what course is right for you <Icon name="arrow" /></Link>}
-          </div>
-          <div className="pf-hero-visual">
-            <Image src={area?.photo || "/campus/tech-park.webp"} alt="" fill
-              sizes="(max-width: 760px) 28vw, (max-width: 1280px) 45vw, 540px" />
-          </div>
-        </div>
-      </header>
+      <ProgrammeMasthead area={area} areas={areas} total={total} browseAll={browseAll}
+        hasFilters={active > 0} onBrowse={() => { if (active) clearAll(); }}>
+        <SearchBox value={filters.query} onChange={(value) => set("query", value)} inputRef={searchRef}
+          placeholder={area ? "Search this study area" : "Search by subject, degree or campus"} />
+      </ProgrammeMasthead>
       {!area && !browseAll && active === 0 ? (
         <AreaGallery areas={areas} total={catalogue.programmes.length} />
       ) : (

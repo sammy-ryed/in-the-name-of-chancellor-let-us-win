@@ -103,7 +103,7 @@ export function Section({
   children,
 }: {
   id?: string;
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (

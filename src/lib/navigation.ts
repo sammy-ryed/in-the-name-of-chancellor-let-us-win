@@ -25,7 +25,7 @@ export const routes = {
   finder: { href: "/admissions#programme-finder", label: "Course finder" },
   fees: { href: "/programmes/fees", label: "Fees & eligibility" },
   india: { href: "/admissions#apply", label: "Admissions in India" },
-  international: { href: srm + "/admission-international/", label: "International admissions" },
+  international: { href: "/admissions#international", label: "International admissions" },
   exam: { href: "/admissions#exam", label: "SRMJEEE dates & deadlines" },
   apply: { href: "https://applications.srmist.edu.in/btech", label: "Apply for SRMJEEE" },
   clubs: { href: "/campus#clubs", label: "Student clubs" },

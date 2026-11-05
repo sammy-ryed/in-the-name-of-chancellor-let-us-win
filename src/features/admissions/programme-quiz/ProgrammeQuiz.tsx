@@ -25,7 +25,10 @@ function Results({ result }: { result: Result }) {
         ? course.earnings.cohort.label + " · " + course.earnings.cohort.year + ". " + course.earnings.cohort.placed + " placed out of " + course.earnings.cohort.graduatedInTime + " graduating on time."
         : "A verified salary figure for this course is unavailable."}{" "}
         {course.earnings.cohort && <a href={course.earnings.cohort.source}>Placement source</a>}</p>}
-      <Link href={course.detailsUrl}>Fees and entry requirements</Link>{" · "}<a href={course.officialUrl}>Official admissions</a>
+      <div className="pq-course-links">
+        <Link href={course.detailsUrl}>Fees and entry requirements <span aria-hidden="true">→</span></Link>
+        <a href={course.officialUrl}>Official admissions <span aria-hidden="true">↗</span></a>
+      </div>
     </article>)}
     {result.earningsNote && <>
       <p>{result.earningsNote}</p>
@@ -99,7 +102,16 @@ export function ProgrammeQuiz({ initial }: { initial: FirstStep }) {
 
   const q = step.state === "question" ? step.question : null;
   return <div className="pq-panel" aria-busy={busy}>
-    <h3 ref={heading} tabIndex={-1}>{q?.prompt ?? "Your programme shortlist"}</h3>
+    <header className="pq-prompt">
+      <div className="pq-step">
+        {q ? <>
+          <span>Question {history.length + 1}</span>
+          {q.kind === "single" && <span>Choose one</span>}
+          {q.kind === "multiple" && <span>Choose up to {q.maxChoices ?? 1}</span>}
+        </> : <span>Course finder results</span>}
+      </div>
+      <h3 ref={heading} tabIndex={-1}>{q?.prompt ?? "Your programme shortlist"}</h3>
+    </header>
     {q && <form onSubmit={e => {
       e.preventDefault();
       if (q.kind === "amount") void answer(Number(amount));
@@ -108,7 +120,7 @@ export function ProgrammeQuiz({ initial }: { initial: FirstStep }) {
       <div key={q.id} className="pq-options">
         {q.options?.map(option => q.kind === "single" ?
           <button type="button" className="pq-choice" aria-pressed={picked.includes(option.id)} disabled={busy}
-            key={option.id} onClick={() => void answer(option.id)}>{option.label} <span aria-hidden="true">→</span></button>
+            key={option.id} onClick={() => { setPicked([option.id]); void answer(option.id); }}>{option.label} <span className="pq-arrow" aria-hidden="true">{picked.includes(option.id) ? "✓" : "→"}</span></button>
           : <label className="pq-choice" key={option.id}><input type="checkbox" checked={picked.includes(option.id)}
               disabled={busy || (!picked.includes(option.id) && picked.length >= (q.maxChoices ?? 1))}
               onChange={e => setPicked(e.target.checked ? [...picked, option.id] : picked.filter(id => id !== option.id))} />
@@ -123,11 +135,11 @@ export function ProgrammeQuiz({ initial }: { initial: FirstStep }) {
         {q.kind !== "single" && <button type="submit" className="pq-next" disabled={busy || (q.kind === "amount" ? !amount : !picked.length)}>Continue →</button>}
       </div>
     </form>}
-    {step.state === "complete" && <>
+    {step.state === "complete" && <div className="pq-results">
       <Results result={step.result} />
       <div className="pq-actions"><button type="button" onClick={back}>Back</button>
         <button type="button" onClick={() => show(initial, [])}>Start again</button></div>
-    </>}
+    </div>}
     {error && <p role="alert">{error}</p>}
   </div>;
 }

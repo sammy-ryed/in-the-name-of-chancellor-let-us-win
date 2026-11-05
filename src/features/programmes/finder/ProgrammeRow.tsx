@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { routes } from "@/lib/navigation";
 import { Icon } from "./controls";
 import type { Programme } from "./types";
 
@@ -16,7 +18,7 @@ export function ProgrammeRow({ programme: p, labels }: { programme: Programme; l
   return (
     <li className="pf-card">
       <div className="pf-photo">
-        <Image src={p.photo || "/home/campus.webp"} alt="" fill sizes="(max-width: 640px) 96vw, (max-width: 960px) 48vw, 360px" />
+        <Image src={p.photo || "/home/campus.webp"} alt="" fill sizes="(max-width: 480px) 58px, (max-width: 720px) 66px, (max-width: 1460px) 10vw, 146px" />
       </div>
       <div className="pf-card-content">
         <div className="pf-qualification">{p.certification}{campus && <span>{campus}</span>}</div>
@@ -24,7 +26,11 @@ export function ProgrammeRow({ programme: p, labels }: { programme: Programme; l
         <dl className="pf-facts">
           <div className="pf-school"><dt>School / faculty</dt><dd>{school}</dd></div>
           <div><dt>Duration</dt><dd>{p.duration || <a href={p.url}>Check duration</a>}</dd></div>
-          <div><dt>{p.feePeriod || "Tuition fees"}</dt><dd>{p.fee || <a href={p.feeUrl || p.url}>Fee schedule</a>}</dd></div>
+          <div>
+            <dt>{p.feePeriod || "Tuition fees"}</dt>
+            <dd>{p.fee || <a href={p.feeUrl || p.url}>Fee schedule</a>}</dd>
+            {p.feeCourseId && <dd><Link prefetch={false} href={{ pathname: routes.fees.href, query: { compare: p.feeCourseId } }} aria-label={`Compare the fee for ${p.name}`}>Compare fee</Link></dd>}
+          </div>
         </dl>
         <div className="pf-card-actions">
           <a href={p.url} aria-label={`Programme details for ${p.name}`}>View details</a>
