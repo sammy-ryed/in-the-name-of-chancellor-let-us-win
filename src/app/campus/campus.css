@@ -1112,7 +1112,6 @@ a:hover .cl-cta-go .cl-arrow {
     overflow-x: auto;
     margin-inline: calc(-1 * var(--cl-pad));
     padding-inline: var(--cl-pad);
-    scrollbar-width: none;
   }
   .cl-dir-filters button {
     flex: none;

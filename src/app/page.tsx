@@ -25,7 +25,7 @@ export default function Page() {
               <div className="s-hero-copy">
                 <h1 className="s-hero-title"><span>Ready for</span>{" "}<span>life at</span>{" "}<span>SRMIST?</span></h1>
                 <div className="s-hero-actions">
-                  <p className="s-motto">Learn. Leap. Lead.</p>
+                  <p className="s-motto">Learn<span>.</span> Leap<span>.</span> Lead<span>.</span></p>
                   <HomeAction href={routes.admissions.href}>Apply now</HomeAction>
                 </div>
               </div>

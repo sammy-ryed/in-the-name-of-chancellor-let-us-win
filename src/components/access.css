@@ -5,20 +5,50 @@
 }
 .access button { cursor: pointer; font: inherit; }
 .access-trigger {
+  --access-disc: var(--surface-primary);
+  position: relative;
   display: grid;
   place-items: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--color-gold-light);
-  background: var(--navy);
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--color-gold-light);
 }
-.access-trigger:is(:hover, :focus-visible) { background: var(--color-gold-light); color: var(--navy); }
-.access-trigger svg { width: 23px; height: 23px; }
-.access:has(:popover-open) .access-trigger {
-  background: var(--color-gold-light);
+.access-mark {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--access-disc);
   color: var(--navy);
+}
+.access-caption {
+  position: absolute;
+  inset-inline-start: calc(100% + 10px);
+  inset-block-end: 3px;
+  visibility: hidden;
+  pointer-events: none;
+  padding: 6px 10px;
+  border: 1px solid var(--color-blue-light);
+  border-radius: var(--radius-sm);
+  background: var(--navy);
+  color: var(--surface-primary);
+  white-space: nowrap;
+  font: 600 .8rem/1.4 var(--font-nav);
+}
+.access-trigger:focus-visible {
+  --access-disc: var(--color-gold);
+}
+.access-trigger:focus-visible .access-caption { visibility: visible; }
+@media (hover: hover) {
+  .access-trigger:hover { --access-disc: var(--color-gold); }
+  .access-trigger:hover .access-caption { visibility: visible; }
+}
+.access:has(:popover-open) .access-caption { visibility: hidden; }
+@media (forced-colors: active) {
+  .access-mark { forced-color-adjust: none; background: ButtonText; color: ButtonFace; }
 }
 .access-panel {
   position: fixed;
@@ -109,7 +139,8 @@
   .access-option input::before { transition: transform 120ms ease; }
 }
 @media (max-width: 760px) {
-  .access-trigger { width: 44px; height: 44px; border-color: transparent; background: transparent; }
+  .access-mark { width: 36px; height: 36px; }
+  .access-caption { inset: calc(100% + 5px) 0 auto auto; }
   .access-panel { inset: calc(var(--header-height) + 5px) 10px auto auto; max-height: calc(100dvh - var(--header-height) - 15px); }
 }
 html[data-large-text] {
