@@ -1,82 +1,165 @@
+.admissions-edit .guide-shell {
+  --paper: var(--surface-warm);
+  --copy: var(--navy);
+  --panel: var(--surface-primary);
+  --line: #c9cec8;
+}
+.admissions-edit .guide {
+  --pad: clamp(1.125rem, 4.3vw, 5rem);
+}
 .admission-cover {
-  position: relative;
-  isolation: isolate;
-  color: white;
-  background: var(--navy);
-  overflow: hidden;
-  border-bottom: 4px solid var(--action-yellow);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .84fr);
+  gap: clamp(1.75rem, 5.5vw, 7rem);
+  max-width: 100rem;
+  margin-inline: auto;
+  padding: calc(var(--header-height) + 1.5rem) var(--pad) clamp(2rem, 3.8vw, 4.25rem);
 }
-.admission-cover > img {
-  object-fit: cover;
-  object-position: 66% 38%;
-  width: 62% !important;
-  left: auto !important;
-}
-.admission-cover::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  background: var(--navy);
-  clip-path: polygon(0 0, 57% 0, 46% 100%, 0 100%);
-}
-.admission-cover-copy {
-  position: relative;
-  z-index: 2;
-  width: 49%;
-  padding: clamp(4.5rem, 6vw, 7rem) 0 clamp(2.25rem, 3.75vw, 4rem) var(--pad);
-}
-.admission-crumb { display: flex; gap: .7rem; align-items: center; font: 600 .83rem/1.3 var(--font-nav); }
-.admission-crumb a { color: var(--color-blue-pale); }
-.admission-crumb span[aria-hidden] { color: var(--action-yellow); }
-.admissions-edit .admission-cover h1 {
-  margin: clamp(1.6rem, 2.9vw, 3rem) 0 .5rem;
-  color: var(--color-gold-light);
-  font: 400 clamp(3.9rem, 8.8vw, 9rem)/.96 var(--display);
-  text-transform: uppercase;
-  letter-spacing: -.025em;
-}
-.admission-cover-copy > p { font: 400 clamp(1.35rem, 2vw, 2.2rem)/1.2 var(--font-editorial); }
-.admission-routes { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.5rem 0 .45rem; }
-.admission-routes a, .admission-quiz-link {
-  display: inline-flex;
+.admission-cover-copy { min-width: 0; }
+.admission-campus figcaption {
+  display: flex;
   align-items: center;
   gap: .65rem;
-  min-height: 44px;
-  font: 650 .94rem/1.32 var(--font-nav);
+  font: 600 .8rem/1.4 var(--font-nav);
 }
-.admission-routes a {
-  text-decoration: none;
-  padding: .65rem .85rem;
+.admissions-edit .admission-intro {
+  margin: clamp(.9rem, 1.3vw, 1.3rem) 0 clamp(1.15rem, 2.3vw, 2rem);
+  color: var(--text-secondary);
+  font: 400 clamp(1.35rem, 1.8vw, 2rem)/1.22 var(--font-editorial);
+}
+.admission-routes section {
+  border-top: 1px solid var(--line);
+  padding: 1rem 0 .7rem;
+  scroll-margin-block-start: 1rem;
+}
+.admission-routes section:last-child { padding-bottom: 0; }
+.admissions-experience .admission-routes h2 {
+  margin: 0;
   color: var(--navy);
+  font: 600 clamp(1.3rem, 1.85vw, 2rem)/1.16 var(--font-primary);
+  letter-spacing: -.045em;
+}
+.admission-routes section > p {
+  margin: .38rem 0 .45rem;
+  color: var(--text-secondary);
+  font-size: .98rem;
+}
+.admission-route-links { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem 1.15rem; }
+.admission-route-links a, .admission-course-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  gap: .45rem;
+  color: var(--navy);
+  font: 700 .88rem/1.3 var(--font-nav);
+}
+.admission-route-links a:first-child {
+  padding: .55rem .8rem;
+  background: var(--color-gold-light);
+  text-decoration: none;
+}
+.admission-route-links a:first-child:is(:hover,:focus-visible) { background: var(--color-amber); }
+.admission-route-links a:not(:first-child):hover, .admission-course-link:hover { color: var(--color-secondary); }
+.admission-campus {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-width: 0;
+  margin: 0;
+}
+.admission-photo { position: relative; min-height: 16rem; background: var(--surface-blue); }
+.admission-photo img { object-fit: cover; object-position: 52% 50%; }
+.admission-campus figcaption {
+  justify-content: space-between;
+  gap: .6rem 1rem;
+  flex-wrap: wrap;
+  min-height: 44px;
+  border-top: 4px solid var(--action-yellow);
+  color: var(--navy);
+}
+.admission-campus figcaption a { display: inline-flex; gap: .55rem; align-items: center; min-height: 44px; }
+.admission-planning {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding-inline: max(var(--pad), calc((100% - 90rem) / 2));
+  background: var(--navy);
+  color: var(--surface-primary);
+}
+.admission-planning a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: 1.15rem clamp(.8rem, 2.1vw, 2rem);
+  min-height: 52px;
+  font: 600 clamp(.9rem, 1.25vw, 1.2rem)/1.3 var(--font-nav);
+  text-decoration: none;
+}
+.admission-planning a + a { border-left: 1px solid #54708c; }
+.admission-planning a:first-child { padding-left: 0; }
+.admission-planning a:last-child { padding-right: 0; }
+.admission-planning a span { color: var(--color-gold-light); font-size: 1.35rem; }
+.admission-planning a:is(:hover,:focus-visible) { text-decoration: underline; text-underline-offset: .25em; }
+.admissions-edit .guide .admission-planning a:focus-visible { outline: 3px solid var(--color-gold-light); outline-offset: -3px; }
+.admissions-edit .guide-body > .guide-section { margin-bottom: clamp(3rem, 6vw, 6rem); }
+.admissions-edit .guide-body > .guide-section > h2 {
+  margin: 0 0 .8rem;
+  border: 0;
+  color: var(--navy);
+  font: 400 clamp(2.5rem, 4vw, 4.5rem)/1.05 var(--font-editorial);
+  letter-spacing: -.055em;
+  text-transform: none;
+}
+.admissions-edit .guide-section > h2 span { padding: 0; border: 0; }
+.admissions-edit .guide-body > .guide-section > p {
+  max-width: 65ch;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.admissions-edit .guide-body > .guide-section > p a { color: var(--navy); }
+.admissions-experience .admission-dates {
+  margin-top: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+.admissions-experience .admission-dates caption {
+  padding: .55rem 0;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: .875rem;
+}
+.admissions-experience .admission-dates thead {
+  background: var(--navy);
+  color: var(--surface-primary);
+  font: 650 .87rem/1.3 var(--font-nav);
+}
+.admissions-experience .admission-dates :is(th,td) { padding: .9rem clamp(.45rem, 1.3vw, 1.35rem); }
+.admissions-experience .admission-dates tbody tr { background: var(--surface-primary); }
+.admissions-experience .admission-dates tbody th { font-weight: 600; }
+.admissions-experience .admission-dates td { font: 500 clamp(1.18rem, 2.2vw, 2.25rem)/1.16 var(--font-editorial); }
+.admissions-experience .admission-dates td:nth-child(2) { background: var(--color-gold-pale); }
+.admissions-edit .guide details { padding: .65rem 0; }
+.admissions-edit .guide summary { min-height: 44px; padding: .65rem .3rem; color: var(--navy); }
+.admissions-edit .guide details p { max-width: 65ch; }
+.admissions-edit .guide .enquiry {
+  max-width: none;
+  margin-top: 1.25rem;
   background: var(--surface-primary);
-  border: 1px solid currentColor;
 }
-.admission-routes a:nth-child(2) { background: var(--color-gold-light); }
-.admission-routes a:is(:hover,:focus-visible) { background: var(--action-yellow); }
-.admission-quiz-link { color: white; text-underline-offset: .24em; }
-.admission-cover a:focus-visible { outline: 3px solid white; outline-offset: 3px; }
-.admissions-edit #international {
-  padding: clamp(1.2rem, 2.5vw, 2.4rem);
-  background: var(--surface-blue);
-  border-left: 4px solid var(--color-secondary);
+.admissions-edit .guide .enquiry { border-left: 3px solid var(--color-gold); }
+.admissions-edit .guide .enquiry p:first-child { margin-top: 0 !important; }
+@media (min-width: 960px) {
+  .admissions-edit #guide-content[data-index] { grid-template-columns: minmax(10rem, .75fr) minmax(0, 3fr); gap: clamp(3rem, 8vw, 8rem); }
 }
-.admissions-edit #international > h2, .admissions-edit #international > h2 span { padding: 0; border: 0; }
-.admissions-edit #international .source-note { overflow-wrap: anywhere; }
+@media (max-width: 740px) {
+  .admission-cover { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-top: 1.2rem; padding-bottom: .8rem; }
+  .admission-photo { min-height: 0; height: clamp(9rem, 40vw, 16rem); }
+  .admission-photo img { object-position: 50% 64%; }
+  .admission-campus figcaption { justify-content: flex-start; font-size: .78rem; }
+  .admission-planning { grid-template-columns: 1fr; }
+  .admission-planning a, .admission-planning a:first-child, .admission-planning a:last-child { padding: .7rem .15rem; min-height: 45px; }
+  .admission-planning a + a { border: 0; border-top: 1px solid #54708c; }
+}
 @media (prefers-reduced-motion: no-preference) {
-  html:not([data-quiet-motion]) .admission-routes span { transition: transform .18s ease-out; }
-  .admission-routes a:is(:hover,:focus-visible) span { transform: translateY(2px); }
-}
-@media (max-width: 800px) {
-  .admission-cover { display: flex; flex-direction: column; }
-  .admission-cover-copy { width: 100%; padding: 2rem var(--pad) 1.25rem; }
-  .admission-cover::before { display: none; }
-  .admission-cover > img {
-    order: 1;
-    position: relative !important;
-    width: 100% !important;
-    height: clamp(8rem, 36vw, 16rem) !important;
-    object-position: 50% 36%;
-    clip-path: polygon(0 13%,100% 0,100% 100%,0 100%);
-  }
+  html:not([data-quiet-motion]) .admissions-experience :is(.admission-route-links a, .admission-planning a span) { transition: background .18s ease, transform .18s ease; }
+  html:not([data-quiet-motion]) .admission-planning a:is(:hover,:focus-visible) span { transform: translateX(3px); }
 }

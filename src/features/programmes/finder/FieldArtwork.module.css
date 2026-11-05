@@ -1,0 +1,46 @@
+.art {
+  /* The notches leave room for the mark and allow the campus photograph to read as one scene. */
+  --field-cut: polygon(0 0, 78% 0, 78% 8%, 100% 8%, 100% 66%, 86% 66%, 86% 83%, 72% 83%, 72% 100%, 0 100%);
+  display: block;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 8 / 5;
+}
+
+.art::before,
+.photo {
+  position: absolute;
+  inset: 0 5% 8% 0;
+  clip-path: var(--field-cut);
+}
+
+.art::before {
+  content: "";
+  background-color: var(--field-paper);
+  transform: translate(3.5%, 5%);
+}
+
+.photo {
+  overflow: hidden;
+  background-color: var(--field-ink);
+}
+
+.photo img {
+  object-fit: cover;
+  filter: saturate(.8) contrast(1.04);
+}
+
+.mark {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 32%;
+  height: auto;
+  display: block;
+}
+
+@media (forced-colors: active) {
+  .art::before, .mark { display: none; }
+  .photo { inset: 0; clip-path: none; }
+}

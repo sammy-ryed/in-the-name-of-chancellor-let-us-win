@@ -18,9 +18,12 @@ export default function Page() {
         <Suspense fallback={<ProgrammeFinder data={finderData} />}>
           <FinderFromURL data={finderData} />
         </Suspense>
-        <p className="pf-source">
-          Catalogue from the <a href={finderData.source}>SRMIST Program Finder</a>. “Most applied to” uses <a href={applicantSource}>2024–25 Kattankulathur application counts</a>. Study areas are ordered by their total reported applications, then by the number of programmes they offer. Within each area, courses without a matched count follow alphabetically. Check the official programme page for intake-specific fees and eligibility.
-        </p>
+        <details className="pf-source">
+          <summary>Catalogue sources and how courses are ordered</summary>
+          <p>
+            Catalogue from the <a href={finderData.source}>SRMIST Program Finder</a>. “Most applied to” uses <a href={applicantSource}>2024–25 Kattankulathur application counts</a>. Study areas are ordered by their total reported applications, then by the number of programmes they offer. Within each area, courses without a matched count follow alphabetically. Check the official programme page for intake-specific fees and eligibility.
+          </p>
+        </details>
       </div>
       <SiteFooter />
     </>

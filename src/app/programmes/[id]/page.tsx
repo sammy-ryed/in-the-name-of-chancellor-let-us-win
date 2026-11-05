@@ -1,79 +1,97 @@
-import { Disclosure } from "@/components/Disclosure";
+import { Suspense } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Guide, Section, Action } from "@/components/Guide";
-import {
-  courses,
-  faculties,
-  price,
-  criteria,
-  source,
-  application,
-} from "@/features/explore/academic";
-export const metadata = { title: "Programme details" };
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { SiteFooter } from "@/components/SiteFooter";
+import { application, courses, criteria, faculties, source } from "@/features/explore/academic";
+import { programmeFee } from "@/features/explore/fee-listing";
+import { routes } from "@/lib/navigation";
+import { CompareCourseLink } from "./CompareCourseLink";
+import styles from "./detail.module.css";
 
-// The catalogue ships with the app. Reject unknown IDs before a loading boundary can stream a 200.
+// All course pages and their metadata come from the same local catalogue.
 export const dynamicParams = false;
 export function generateStaticParams() {
   return courses.map(({ id }) => ({ id }));
 }
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const c = courses.find((c) => c.id === id);
-  if (!c) notFound();
+
+type Props = { params: Promise<{ id: string }> };
+
+const byId = new Map(courses.map(course => [course.id, course]));
+const facultyPhoto: Record<string, string> = {
+  engineering: "/home/subjects/engineering.webp",
+  "medicine-health-sciences": "/home/subjects/health.webp",
+  "agricultural-science": "/home/subjects/agriculture.webp",
+  law: "/home/subjects/law.webp",
+  phd: "/home/research.webp",
+};
+
+async function getCourse(params: Props["params"]) {
+  const course = byId.get((await params).id);
+  if (!course) notFound();
+  return course;
+}
+
+export async function generateMetadata({ params }: Props) {
+  const course = await getCourse(params);
+  return { title: `${course.degree} · ${course.name} · ${course.campus}` };
+}
+
+export default async function Page({ params }: Props) {
+  const course = await getCourse(params);
+  const { fee, period } = programmeFee(course);
+  const official = source(course);
+  const apply = application(course);
+  const facts = [
+    ["Campus", course.campus], ["Duration", course.duration], ["Study level", course.level],
+    ["Approved intake", course.intake], ["Mode", course.mode], ["Shift", course.shift],
+  ].filter(([, value]) => value);
+
   return (
-    <Guide
-      section="Programmes"
-      title={c.name}
-      intro={c.degree + " · " + c.campus + " · " + faculties[c.faculty]}
-      image="research"
-    >
-      <div className="facts">
-        {[
-          [c.period, price(c.fee)],
-          ["Duration", c.duration],
-          ["Study level", c.level],
-          ["Approved intake", c.intake],
-        ].map(([k, v]) => (
-          <div key={k}>
-            <small>{k}</small>
-            <strong>{v || "Check faculty listing"}</strong>
+    <>
+      <article className={styles.page}>
+        <div className={styles.inner}>
+          <Breadcrumbs className={styles.crumbs} parents={[routes.home, routes.programmes]} current="Course details" />
+          <header className={styles.header}>
+            <div>
+              <p className={styles.degree}>{course.degree}</p>
+              <h1>{course.name}</h1>
+              <p className={styles.faculty}>{faculties[course.faculty]}</p>
+            </div>
+            <div className={styles.photo}>
+              <Image src={facultyPhoto[course.faculty] ?? "/home/campus.webp"} alt="" fill sizes="(max-width: 700px) 0px, 26vw" />
+            </div>
+          </header>
+          <div className={styles.body} id="guide-content">
+            <div className={styles.details}>
+              <section aria-labelledby="at-a-glance">
+                <h2 id="at-a-glance">At a glance</h2>
+                <dl>{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+              </section>
+              <section aria-labelledby="eligibility">
+                <h2 id="eligibility">Entry requirements</h2>
+                <p>{criteria(course)}</p>
+                <a href={official}>Full eligibility and selection rules <span aria-hidden="true">↗</span></a>
+              </section>
+            </div>
+            <aside className={styles.fees} aria-labelledby="fee-label">
+              <h2 id="fee-label">{period || "Listed fee"}</h2>
+              <p className={styles.amount} data-prose={fee.length > 19 || undefined}>{fee}</p>
+              <Suspense fallback={<Link className={styles.compare} href={`${routes.fees.href}?compare=${course.id}`}>Compare this fee <span aria-hidden="true">→</span></Link>}>
+                <CompareCourseLink className={styles.compare} courseId={course.id} />
+              </Suspense>
+              <p>{course.notes || "Check the faculty schedule for registration, exams and other charges. Hostel and dining are listed separately."}</p>
+              <p className={styles.note}>Listing checked 5 November 2026. Confirm the fee for your intake in the <a href={official}>official fee schedule</a>.</p>
+              <div className={styles.actions}>
+                <a className={styles.apply} href={apply}>{apply === official ? "See application routes" : "Apply for this programme"} <span aria-hidden="true">↗</span></a>
+                <Link href={{ pathname: routes.admissions.href, query: { course: course.id }, hash: "enquiry" }}>Ask admissions about this course</Link>
+              </div>
+            </aside>
           </div>
-        ))}
-      </div>
-      <Section title="Fees & eligibility">
-        <Disclosure summary="What does this fee cover?" open>
-          <p>
-            {c.period}: {price(c.fee)}.{" "}
-            {c.notes ||
-              "Check the faculty schedule for registration, examination and other charges. Hostel and dining costs are listed separately."}
-          </p>
-          <p>
-            Fee listing checked 5 November 2026. Confirm the applicable intake
-            and amounts before payment.
-          </p>
-          <a href={source(c)}>Official fee schedule ↗</a>
-        </Disclosure>
-        <Disclosure summary="Am I eligible to apply?" open>
-          <p>{criteria(c)}</p>
-          <a href={source(c)}>Full eligibility and selection rules ↗</a>
-        </Disclosure>
-        <div className="action-row">
-          <Action href={application(c)}>
-            {application(c) === source(c)
-              ? "See official application routes"
-              : "Open official application"}
-          </Action>
-          <Action href={"/admissions?course=" + c.id + "#enquiry"}>
-            Ask about this course
-          </Action>
-          <Link href="/programmes">Back to programmes</Link>
         </div>
-      </Section>
-    </Guide>
+      </article>
+      <SiteFooter />
+    </>
   );
 }

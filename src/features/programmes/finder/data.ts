@@ -1,4 +1,5 @@
 import { application, courses, price } from "@/features/explore/academic";
+import { programmeFee } from "@/features/explore/fee-listing";
 import raw from "./programmes.json";
 import facts from "./card-facts.json";
 import type { FinderData, Programme } from "./types";
@@ -22,6 +23,7 @@ const programmes = raw.programmes.map((p): Programme => {
     : /external/i.test(p.name) ? "Part Time - External" : undefined;
   const research = doctoral ? researchFees.find(c => c.name === researchGroup && c.mode === researchMode) : undefined;
   const match = research || (matches.length === 1 ? matches[0] : undefined);
+  const matchedFee = match?.fee ? programmeFee(match) : undefined;
   const publishedFee = published?.fee?.trim();
   // A few source rows contain a contradictory unit ("5,00,000 lakhs").
   // Point to the official listing for those rather than interpreting the amount.
@@ -32,8 +34,9 @@ const programmes = raw.programmes.map((p): Programme => {
   return {
     ...p,
     duration: p.duration || published?.duration || match?.duration,
-    fee: ambiguous ? undefined : fee || (match?.fee ? price(match.fee) : undefined),
-    feePeriod: ambiguous ? undefined : fee ? period : match?.period,
+    fee: ambiguous ? undefined : fee || matchedFee?.fee,
+    feePeriod: ambiguous ? undefined : fee ? period : matchedFee?.period,
+    feeCourseId: match?.id,
     feeUrl: doctoral ? "https://www.srmist.edu.in/admission-india/phd/" : undefined,
     photo: published?.photo,
     applyUrl: doctoral ? "https://admissions.srmist.edu.in/srmistonline/phdapplication"
