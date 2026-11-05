@@ -54,7 +54,7 @@ export function FooterColumns({ groups }: { groups: FooterGroup[] }) {
 /** Opens the site's accessibility settings dialog. */
 export function AccessibilityButton() {
   return (
-    <button type="button" className="ft-util-link" onClick={() => window.dispatchEvent(new Event("srm-open-access"))}>
+    <button type="button" className="ft-util-link" popoverTarget="access-settings" popoverTargetAction="show" aria-haspopup="dialog">
       Accessibility
     </button>
   );

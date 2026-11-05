@@ -1,0 +1,24 @@
+.pq-panel {
+  max-width: 48rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+.guide .pq-panel h3 { margin: 0 0 1rem; font-size: clamp(1.25rem, 2.4vw, 1.8rem); line-height: 1.25; scroll-margin-top: calc(var(--header-height, 6rem) + 1.5rem); }
+.pq-options { display: grid; gap: .65rem; }
+.pq-panel button, .pq-panel input { font: inherit; }
+.pq-panel .pq-choice { display: flex; align-items: center; gap: .8rem; width: 100%; text-align: left; padding: .85rem 1rem; min-height: 48px; border: 1px solid var(--border-strong); border-radius: .4rem; background: var(--surface-secondary); color: var(--text-primary); cursor: pointer; }
+.pq-choice span { margin-left: auto; }
+.pq-panel .pq-choice:hover, .pq-choice[aria-pressed=true], .pq-choice:has(:checked) { outline: 1px solid var(--color-primary); }
+.pq-choice input { width: 1.1rem; height: 1.1rem; flex: none; accent-color: var(--color-primary); }
+.pq-actions { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
+.pq-actions button { border: 1px solid var(--border-strong); background: transparent; color: inherit; padding: .55rem .85rem; min-height: 44px; border-radius: .4rem; cursor: pointer; }
+.pq-actions .pq-next { background: var(--color-primary); color: white; }
+.pq-panel button:disabled { opacity: .6; cursor: default; }
+.pq-amount { display: grid; gap: .35rem; max-width: 22rem; }
+.pq-amount input { border: 1px solid var(--border-strong); background: var(--surface-secondary); color: inherit; border-radius: .4rem; padding: .8rem; width: 100%; }
+.pq-course { border-top: 1px solid var(--border-strong); padding: 1.25rem 0; }
+.pq-panel ul { padding-left: 1.3rem; list-style: disc; }
+.pq-panel h4 { font-size: 1.25rem; }
+.pq-panel :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }

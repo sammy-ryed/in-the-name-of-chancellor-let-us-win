@@ -3,8 +3,8 @@ import { DM_Sans, Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import "@/components/chrome.css";
 import AskSRM from "@/features/ask-srm/AskSRM";
+import { RouteContent } from "@/components/RouteContent";
 import { SiteNavigation } from "@/components/SiteNavigation";
-import Accessibility from "@/components/Accessibility";
 import "@/components/access.css";
 // Design-system fonts: --font-primary (DM Sans) and --font-editorial (Newsreader) in globals.css.
 const sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
@@ -24,10 +24,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <a className="skip" href="#main">
           Skip to content
         </a>
-        <SiteNavigation />
-        <main id="main">{children}</main>
-        <Accessibility />
-        <AskSRM />
+        <header className="site-header">
+          <AskSRM />
+          <SiteNavigation />
+        </header>
+        <RouteContent>{children}</RouteContent>
       </body>
     </html>
   );

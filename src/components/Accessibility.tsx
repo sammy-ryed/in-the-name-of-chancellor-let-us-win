@@ -11,10 +11,8 @@ function apply(p: Prefs) {
   window.dispatchEvent(new Event("srm-reading-change"));
 }
 export default function Accessibility() {
-  const [prefs, setPrefs] = useState(defaults),
-    [compact, setCompact] = useState(false);
-  const dialog = useRef<HTMLDialogElement>(null),
-    trigger = useRef<HTMLButtonElement>(null);
+  const [prefs, setPrefs] = useState(defaults);
+  const trigger = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     try {
       const raw = JSON.parse(localStorage.getItem(storage) || "{}");
@@ -31,16 +29,12 @@ export default function Accessibility() {
     const keys = (e: KeyboardEvent) => {
       if (e.altKey && !e.ctrlKey && !e.metaKey && e.key.toLowerCase() === "m") {
         e.preventDefault();
-        if (dialog.current?.open) dialog.current.close();
-        else dialog.current?.showModal();
+        if (!document.querySelector("dialog:modal")) trigger.current?.click();
       }
     };
-    const openFromLink = () => dialog.current?.showModal();
     window.addEventListener("keydown", keys);
-    window.addEventListener("srm-open-access", openFromLink);
     return () => {
       window.removeEventListener("keydown", keys);
-      window.removeEventListener("srm-open-access", openFromLink);
     };
   }, []);
   function update(p: Prefs) {
@@ -51,80 +45,65 @@ export default function Accessibility() {
     } catch {}
   }
   return (
-    <aside className="access" aria-label="Accessibility tools">
-      <div className="access-chip">
-        <button
-          ref={trigger}
-          aria-haspopup="dialog"
-          aria-keyshortcuts="Alt+M"
-          aria-describedby="access-hint"
-          aria-label="Accessibility settings"
-          onClick={() => dialog.current?.showModal()}
-        >
-          <svg
-            aria-hidden="true"
-            width="19"
-            height="19"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <circle cx="12" cy="4" r="2" />
-            <path d="M3 8l9 2 9-2M12 10v4m0 0-5 8m5-8 5 8" />
-          </svg>
-          {!compact && "Accessibility"}
-        </button>
-        {!compact && (
-          <button
-            aria-label="Collapse accessibility label"
-            onClick={() => {
-              setCompact(true);
-              trigger.current?.focus();
-            }}
-          >
-            ×
-          </button>
-        )}
-      </div>
-      <div className="access-hint" id="access-hint" role="tooltip">
-        Adjust text, contrast and motion. <kbd>Alt</kbd> <kbd>M</kbd>
-      </div>
-      <dialog
-        ref={dialog}
+    <div className="access">
+      <button
+        type="button"
+        className="access-trigger"
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Alt+M"
         aria-label="Accessibility settings"
-        onClose={() => trigger.current?.focus({ preventScroll: true })}
+        title="Accessibility settings (Alt+M)"
+        ref={trigger}
+        popoverTarget="access-settings"
       >
-        <div className="access-tabs">
-          <strong>Accessibility</strong>
-          <button
-            aria-label="Close accessibility settings"
-            onClick={() => dialog.current?.close()}
-          >
-            ×
+        <svg
+          aria-hidden="true"
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <circle cx="12" cy="4" r="2" />
+          <path d="M3 8l9 2 9-2M12 10v4m0 0-5 8m5-8 5 8" />
+        </svg>
+      </button>
+      <section id="access-settings" popover="auto" role="dialog" aria-labelledby="access-title"
+        className="access-panel">
+        <header className="access-heading">
+          <h2 id="access-title">Accessibility</h2>
+          <button type="button" aria-label="Close accessibility settings"
+            popoverTarget="access-settings" popoverTargetAction="hide">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="m3 3 10 10m0-10L3 13" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
           </button>
-        </div>
-        <p>Choose how this site looks on this device.</p>
-        {(
-          [
+        </header>
+        <div className="access-options">
+          {([
             ["large", "Larger text"],
             ["contrast", "High contrast"],
             ["motion", "Reduce motion"],
-          ] as const
-        ).map(([key, label]) => (
-          <label key={key}>
-            {label}
-            <input
-              type="checkbox"
-              checked={prefs[key]}
-              onChange={(e) => update({ ...prefs, [key]: e.target.checked })}
-            />
-          </label>
-        ))}
-        <button className="access-reset" onClick={() => update(defaults)}>
-          Reset preferences
-        </button>
-      </dialog>
-    </aside>
+          ] as const).map(([key, label]) => (
+            <label key={key} className="access-option">
+              {label}
+              <input
+                type="checkbox"
+                role="switch"
+                checked={prefs[key]}
+                onChange={(e) => update({ ...prefs, [key]: e.target.checked })}
+              />
+            </label>
+          ))}
+        </div>
+        <footer className="access-footer">
+          <button type="button" className="access-reset"
+            disabled={!prefs.large && !prefs.contrast && !prefs.motion}
+            onClick={() => update(defaults)}>Reset preferences</button>
+          <kbd aria-label="Keyboard shortcut Alt M">Alt + M</kbd>
+        </footer>
+      </section>
+    </div>
   );
 }

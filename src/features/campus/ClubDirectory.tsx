@@ -106,6 +106,8 @@ export function ClubDirectory() {
             </button>
             <span className="cl-tile-type">{open.type}</span>
             <h3 id="cl-drawer-title">{open.name}</h3>
+            <p>{open.description}</p>
+            {open.social && <a href={open.social.href}>{open.social.label} ↗</a>}
             <p className="cl-drawer-note">
               Recruitment dates and weekly commitment aren’t published yet. The club’s coordinator can tell you about
               the next intake.

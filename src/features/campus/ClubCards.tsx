@@ -81,6 +81,8 @@ export function ClubCards() {
     <dialog ref={dialog} className="ce-dialog" aria-labelledby="ce-dialog-title" onClick={event => { if (event.target === dialog.current) dialog.current.close(); }}
       onClose={() => { setSelected(null); opener.current?.focus({ preventScroll: true }); }}>
       {selected && <div className="ce-dialog-inner"><button type="button" className="ce-dialog-close" onClick={() => dialog.current?.close()}>Close <span aria-hidden="true">×</span></button><small className="ce-eyebrow">{selected.type}</small><h3 id="ce-dialog-title">{selected.name}</h3>
+        <p>{selected.description}</p>
+        {selected.social && <a href={selected.social.href}>{selected.social.label} ↗</a>}
         <p className="ce-notice">Recruitment dates and weekly commitment aren’t published yet. The club’s coordinator can tell you about the next intake.</p>
         <h4>How to join</h4><ol><li><strong>Find the coordinator.</strong> Look up {selected.name} in Student Affairs’ club contact directory.<a href={clubContacts}>Club contact directory (PDF) ↗</a></li><li><strong>Ask about the next intake.</strong> Check meeting times, weekly commitment and how to apply.</li><li><strong>Confirm with Student Affairs.</strong> The Directorate of Student Affairs oversees the clubs.<a href={studentAffairs}>Directorate of Student Affairs ↗</a></li></ol>
         <h4>More in {selected.type}</h4><div className="ce-related">{clubs.filter(club => club.type === selected.type && club.name !== selected.name).map(club => <button type="button" key={club.name} onClick={() => setSelected(club)}>{club.name}</button>)}{clubs.filter(club => club.type === selected.type).length === 1 && <a href={clubProfiles}>Explore the official club profiles ↗</a>}</div>

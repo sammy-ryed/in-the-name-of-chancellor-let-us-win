@@ -1,3 +1,4 @@
+import { applicantCounts } from "./applicants";
 import type { FinderData, Filters, Group, Programme, SortKey } from "./types";
 
 const fold = (s: string) =>
@@ -5,21 +6,39 @@ const fold = (s: string) =>
     .toLowerCase()
     .normalize("NFKD")
     .replace(/[̀-ͯ]/g, "")
+    .replace(/\b([bm])\.?\s+(tech|sc|com|arch|des|phil)\b/g, "$1$2")
     .replace(/\./g, "")
     .replace(/[,()&/-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
-/** Searchable text per programme: name, degree, department and college labels. */
+const subjectAliases: [RegExp, string][] = [
+  [/computer science (and )?engineering/, "cse coding programming"],
+  [/computer science|software engineering/, "coding programming"],
+  [/artificial intelligence/, "ai"],
+  [/machine learning/, "ml"],
+  [/electronics (and )?communication/, "ece"],
+  [/electrical (and )?electronics/, "eee"],
+  [/information technology/, "it"],
+  [/mechanical engineering/, "mech"],
+  [/business administration/, "business management"],
+];
+
 export function buildIndex(data: FinderData) {
-  const label = new Map<string, string>();
-  for (const o of [...data.colleges, ...data.departments]) label.set(o.value, o.label);
-  return new Map(
-    data.programmes.map((p) => [
-      p.id,
-      fold([p.name, p.certification, ...p.department.map((d) => label.get(d)), ...p.college.map((c) => label.get(c))].join(" ")),
-    ]),
-  );
+  const labels = new Map([...data.colleges, ...data.departments].map(o => [o.value, o.label]));
+  return new Map(data.programmes.map(p => {
+    const title = fold(p.name);
+    const aliases = subjectAliases.filter(([pattern]) => pattern.test(title)).map(([, term]) => term);
+    const campuses = data.campuses.filter(c => p.college.some(id => c.colleges.includes(id)));
+    const terms = [
+      p.name, p.certification, ...aliases, ...p.level, ...p.mode, ...p.type,
+      ...p.level.map(level => ({ Undergraduate: "ug bachelors", "Post Graduate": "pg postgraduate masters", "Ph.D": "doctoral research" })[level]),
+      ...campuses.map(c => c.label.includes("Kattankulathur") ? c.label + " KTR" : c.label),
+      ...p.department.map(id => labels.get(id)), ...p.college.map(id => labels.get(id)),
+    ];
+    const text = fold(terms.join(" "));
+    return [p.id, text] as const;
+  }));
 }
 
 /** Campus values each programme belongs to, via its colleges (the site's campus → college cascade). */
@@ -49,7 +68,9 @@ function matches(p: Programme, f: Filters, ix: FinderIndex, w: string[], except?
     (except === "campus" || !f.campus || (ix.campuses.get(p.id) ?? []).includes(f.campus)) &&
     (except === "college" || !f.college || p.college.includes(f.college)) &&
     (except === "department" || !f.department || p.department.includes(f.department)) &&
-    w.every((word) => ix.text.get(p.id)!.includes(word))
+    w.every((word) => word.length <= 2
+      ? (` ${ix.text.get(p.id)} `).includes(` ${word} `)
+      : ix.text.get(p.id)!.includes(word))
   );
 }
 
@@ -92,10 +113,14 @@ export function sortProgrammes(list: Programme[], sort: SortKey, data: FinderDat
   const byName = (a: Programme, b: Programme) =>
     a.subject.localeCompare(b.subject, "en", { sensitivity: "base" }) ||
     a.certification.localeCompare(b.certification, "en", { sensitivity: "base" });
+  const byApplications = (a: Programme, b: Programme) =>
+    (applicantCounts.get(b.id) ?? -1) - (applicantCounts.get(a.id) ?? -1) || byName(a, b);
   const levelRank = (p: Programme) =>
     Math.min(99, ...p.level.map((l) => data.levels.findIndex((o) => o.value === l)).filter((i) => i >= 0));
   const out = [...list];
   switch (sort) {
+    case "applications":
+      return out.sort(byApplications);
     case "name-desc":
       return out.sort((a, b) => byName(b, a));
     case "level":
@@ -103,14 +128,13 @@ export function sortProgrammes(list: Programme[], sort: SortKey, data: FinderDat
     case "duration":
       return out.sort((a, b) => years(a.duration) - years(b.duration) || byName(a, b));
     case "relevance": {
-      // With a search, titles that start with, then contain, the query rank first; otherwise A–Z.
       const q = fold(query);
-      if (!q) return out.sort(byName);
+      if (!q) return out.sort(byApplications);
       const score = (p: Programme) => {
         const t = fold(p.subject);
         return t.startsWith(q) ? 0 : t.includes(q) ? 1 : fold(p.name).includes(q) ? 2 : 3;
       };
-      return out.sort((a, b) => score(a) - score(b) || byName(a, b));
+      return out.sort((a, b) => score(a) - score(b) || byApplications(a, b));
     }
     default:
       return out.sort(byName);

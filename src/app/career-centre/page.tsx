@@ -9,6 +9,7 @@ export default function Page() {
       intro="Prepare for placement, read the published outcomes and reach the placement team."
       links={[
         ["Placement figures", "outcomes"],
+        ["Recruiters & offers", "recruiters"],
         ["Training & contacts", "support"],
       ]}
     >
@@ -53,6 +54,14 @@ export default function Page() {
           CTC means cost to company. The sources do not specify the same
           threshold for high-paying offers or a campus breakdown.
         </p>
+      </Section>
+      <Section id="recruiters" title="Recruiters &amp; Super Dream offers">
+        <Resources items={[
+          { title: "Companies that recruit at SRM", href: "https://webstor.srmist.edu.in/web_assets/downloads/2025/srmist-university-prospectus-2025-26.pdf#page=37",
+            note: "SRM’s 2025–26 prospectus lists employers by sector, including Adobe, Barclays and Tata Motors." },
+          { title: "Super Dream offers by graduating batch", href: "https://webstor.srmist.edu.in/web_assets/downloads/2022/netcomm-bulletin-december-2021.pdf",
+            note: "See the Networking and Communications department’s published offer breakdown and historical examples from the 2022 and 2023 batches." },
+        ]} />
       </Section>
       <Section id="support" title="Training & contacts">
         <Resources

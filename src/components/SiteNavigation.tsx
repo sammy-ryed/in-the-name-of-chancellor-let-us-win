@@ -1,28 +1,41 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import Link, { useLinkStatus } from "next/link";
+import type { ComponentProps } from "react";
 import { usePathname } from "next/navigation";
+import Accessibility from "./Accessibility";
 import { HomeLogo } from "./HomeLogo";
 import { navigation, services, srm, tourUrl } from "@/lib/navigation";
 
-// Preserve each page’s existing “Scroll for more” destination.
-const scrollTargets: Record<string, string> = {
-  "/": "#explore",
-  "/students": "#explore",
-  "/programmes": "#pf-results-title",
-  "/campus": "#life",
-  "/campus/accommodation": "#booking",
+function MenuLabel({ children }: { children: React.ReactNode }) {
+  const { pending } = useLinkStatus();
+  return <span className="s-menu-label" aria-busy={pending}>{children}</span>;
+}
+
+type MenuLinkProps = Omit<ComponentProps<typeof Link>, "href" | "onNavigate"> & {
+  href: string;
+  close: () => void;
 };
+
+function MenuLink({ href, close, children, ...props }: MenuLinkProps) {
+  return (
+    <Link
+      {...props}
+      href={href}
+      onNavigate={() => {
+        // Hash and query links can stay on this pathname. Other links keep the
+        // menu visible until the next page is ready underneath it.
+        if (new URL(href, location.href).pathname === location.pathname) close();
+      }}
+    >
+      <MenuLabel>{children}</MenuLabel>
+    </Link>
+  );
+}
 
 export function SiteNavigation() {
   const pathname = usePathname();
-  return <NavigationMenu key={pathname} pathname={pathname} />;
-}
-
-function NavigationMenu({ pathname }: { pathname: string }) {
-  const scrollHref = scrollTargets[pathname] ?? "#guide-content";
   const panel = useRef<HTMLDialogElement>(null);
-  const trigger = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   // Which top-level item has its sub-pages showing, and whether the panel has widened.
   // Once wide it stays wide while the menu is open, so hovering between items doesn't jump.
@@ -30,6 +43,9 @@ function NavigationMenu({ pathname }: { pathname: string }) {
   const [wide, setWide] = useState(false);
   const hoverTimer = useRef<number | undefined>(undefined);
   const close = () => panel.current?.close();
+  useLayoutEffect(() => {
+    if (panel.current?.open) panel.current.close();
+  }, [pathname]);
   const canHover = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const show = (label: string | null) => {
     setSection(label);
@@ -39,7 +55,7 @@ function NavigationMenu({ pathname }: { pathname: string }) {
   const hoverIn = (label: string | null) => {
     if (!canHover()) return;
     window.clearTimeout(hoverTimer.current);
-    hoverTimer.current = window.setTimeout(() => show(label), 90);
+    hoverTimer.current = window.setTimeout(() => show(label), wide ? 65 : 30);
   };
   const hoverOut = () => window.clearTimeout(hoverTimer.current);
   useEffect(() => {
@@ -54,13 +70,15 @@ function NavigationMenu({ pathname }: { pathname: string }) {
   return (
     <>
       <aside className="s-rail" aria-label="Site controls">
-        <HomeLogo />
+        <HomeLogo crest />
         <button
-          ref={trigger}
+          className="rail-menu-toggle"
           aria-label="Open menu"
           aria-controls="srm-menu"
           aria-expanded={open}
           onClick={() => {
+            setSection(null);
+            setWide(false);
             panel.current?.showModal();
             setOpen(true);
           }}
@@ -69,9 +87,7 @@ function NavigationMenu({ pathname }: { pathname: string }) {
           <i />
           <i />
         </button>
-        <a className="s-rail-caption" href={scrollHref}>
-          Scroll for more
-        </a>
+        <Accessibility />
         <span className="s-progress" aria-hidden="true" />
       </aside>
       <dialog
@@ -80,11 +96,9 @@ function NavigationMenu({ pathname }: { pathname: string }) {
         aria-label="Main navigation"
         className="s-menu"
         onClose={() => {
+          if (panel.current?.open) return;
           setOpen(false);
           window.clearTimeout(hoverTimer.current);
-          setSection(null);
-          setWide(false);
-          trigger.current?.focus({ preventScroll: true });
         }}
         onClick={(e) => {
           if (e.target === panel.current) close();
@@ -110,32 +124,31 @@ function NavigationMenu({ pathname }: { pathname: string }) {
                   >
                     {/* The title always opens its page. Hover (or keyboard focus) reveals the
                         sub-pages; on touch screens the first tap reveals them, the second opens the page. */}
-                    <Link
+                    <MenuLink
+                      close={close}
                       className="s-menu-item"
                       href={item.href}
                       aria-current={item.href === pathname ? "page" : undefined}
                       onFocus={(e) => item.children && e.currentTarget.matches(":focus-visible") && show(item.label)}
                       onClick={(e) => {
-                        if (item.children && !isOpen && !canHover()) {
+                        if (item.children && !isOpen && !canHover() && e.detail > 0 &&
+                            !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
                           e.preventDefault();
                           show(item.label);
-                          return;
                         }
-                        close();
                       }}
                     >
                       {item.label}
-                    </Link>
+                    </MenuLink>
                     {item.children && (
                       <div className="s-menu-sub" id={id} inert={!isOpen}>
                         <div>
-                          <p className="s-menu-sub-title">{item.label}</p>
-                          <ul>
+                          <ul aria-label={item.label}>
                             {item.children.map((child) => (
                               <li key={child.href}>
-                                <Link href={child.href} aria-current={child.href === pathname ? "page" : undefined} onClick={close}>
+                                <MenuLink close={close} href={child.href} aria-current={child.href === pathname ? "page" : undefined}>
                                   {child.label}
-                                </Link>
+                                </MenuLink>
                               </li>
                             ))}
                           </ul>
@@ -155,14 +168,14 @@ function NavigationMenu({ pathname }: { pathname: string }) {
               <span aria-hidden="true">Quick links ›</span>
               <a href={tourUrl}>Virtual tour ↗</a>
               {services.map((a) => (
-                <Link
+                <MenuLink
+                  close={close}
                   key={a.href}
                   href={a.href}
                   aria-current={a.href === pathname ? "page" : undefined}
-                  onClick={close}
                 >
                   {a.label}
-                </Link>
+                </MenuLink>
               ))}
               <a href={srm + "/contact-us/"}>Contact SRM ↗</a>
             </nav>

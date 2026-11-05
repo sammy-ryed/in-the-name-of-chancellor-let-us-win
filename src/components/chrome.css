@@ -7,8 +7,7 @@
 }
 .s-chrome {
   --edge: clamp(8px, 1.05vw, 20px);
-  --rail: clamp(54px, 4.5vw, 82px);
-  --start: calc(var(--edge) * 3 + var(--rail));
+  --start: clamp(16px, 4vw, 64px);
   --display: "SRM Display", Impact, "Arial Narrow", sans-serif;
 }
 .s-lines {
@@ -16,12 +15,36 @@
   background-image: var(--pattern);
   background-size: auto 100%;
 }
+:root {
+  --rail: clamp(56px, 4.5vw, 80px);
+  --search-row: 52px;
+  --header-height: var(--search-row);
+  scroll-padding-top: var(--header-height);
+}
+.s-chrome { padding-left: var(--rail); }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.site-header :is(.s-rail, .s-menu, .ask-launch, .ask-panel) { pointer-events: auto; }
+@media (min-width: 761px) {
+  .site-header { margin-bottom: calc(0px - var(--search-row)); }
+}
+.site-crest {
+  flex: none;
+  display: block;
+  width: 46px;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+/* The circular seal occupies the first 178 × 178 units of the official 600-wide SVG. */
+.site-crest img { display: block; width: 337.079%; max-width: none; height: auto; }
 .s-rail,
 .s-menu-rail {
   position: fixed;
-  top: var(--edge);
-  bottom: var(--edge);
-  left: var(--edge);
+  inset: 0 auto 0 0;
   width: var(--rail);
   z-index: 20;
   background: var(--brand-blue);
@@ -29,24 +52,15 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  padding: 12px 4px;
+  padding: 0;
   color: var(--ice);
 }
 .s-rail > *:not(.s-progress),
 .s-menu-rail > * {
   z-index: 1;
 }
-.s-rail > a:first-child,
-.s-menu-rail > img {
-  width: 95%;
-}
-.s-rail img,
-.s-menu-rail img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.s-rail button,
+.s-rail .site-crest { margin-block: 10px; }
+.rail-menu-toggle,
 .s-menu-rail button {
   position: absolute;
   left: 0;
@@ -61,27 +75,18 @@
   gap: 4px;
   color: var(--action-yellow);
 }
-.s-rail button i {
+.rail-menu-toggle i {
   width: 25px;
   height: 4px;
   background: currentColor;
   display: block;
   transition: transform 0.2s;
 }
-.s-rail button:hover i:first-child {
+.rail-menu-toggle:hover i:first-child {
   transform: translateX(3px);
 }
-.s-rail button:hover i:last-child {
+.rail-menu-toggle:hover i:last-child {
   transform: translateX(-3px);
-}
-.s-rail-caption {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-.s-rail-caption {
-  font: 400 11px/1 var(--display);
-  text-transform: uppercase;
-  padding: 4px 8px;
 }
 .s-progress {
   position: absolute;
@@ -110,9 +115,6 @@
 :is(.s-rail, .s-menu) :is(button, a) {
   -webkit-tap-highlight-color: transparent;
 }
-@media (max-height: 530px) and (orientation: landscape) {
-  .s-rail-caption { font-size: 9px; }
-}
 .s-menu {
   position: fixed;
   inset: 0;
@@ -126,20 +128,35 @@
   padding: 0;
   color: var(--ice);
 }
+.s-menu,
+.s-menu::backdrop {
+  opacity: 0;
+  transition: opacity 140ms ease-out, display 140ms allow-discrete, overlay 140ms allow-discrete;
+}
+.s-menu[open],
+.s-menu[open]::backdrop {
+  opacity: 1;
+}
+.s-menu:not([open]),
+.s-menu:not([open])::backdrop {
+  pointer-events: none;
+}
+@starting-style {
+  .s-menu[open], .s-menu[open]::backdrop { opacity: 0; }
+}
 .s-menu::backdrop {
   background: rgb(11 45 82 / 94%);
 }
 .s-menu[open] {
   display: block;
 }
-/* Open menu: no logo; strip and panel sit flush to the screen edges.
-   The strip is the rail plus its old gaps, so the × lands where the hamburger was. */
+/* Keep the close control aligned with the hamburger. */
 .s-menu-rail {
   z-index: 1;
   top: 0;
   bottom: 0;
   left: 0;
-  width: calc(var(--rail) + 2 * var(--edge));
+  width: var(--rail);
   justify-content: center;
 }
 .s-menu-rail button {
@@ -152,26 +169,19 @@
 .s-menu-sheet {
   --menu-pad: clamp(22px, 4vw, 70px);
   position: absolute;
-  inset: 0 auto 0 calc(var(--edge) * 2 + var(--rail));
-  width: min(46vw, 780px);
+  inset: 0 auto 0 var(--rail);
+  --compact-width: min(46vw, 780px);
+  width: calc(100% - var(--rail));
+  clip-path: inset(0 calc(100% - var(--compact-width)) 0 0);
   display: flex;
   flex-direction: column;
   background-color: var(--color-primary);
   color: var(--surface-primary);
   overflow: hidden;
-  animation: s-menu-in var(--transition-slow) var(--ease-standard) both;
-  transition: width var(--transition-slow) var(--ease-standard);
+  transition: clip-path 220ms var(--ease-standard);
 }
 .s-menu-sheet[data-expanded] {
-  width: calc(100% - var(--rail) - 2 * var(--edge));
-}
-@keyframes s-menu-in {
-  from {
-    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-  }
-  to {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
+  clip-path: inset(0);
 }
 .s-menu-nav {
   position: relative;
@@ -210,6 +220,27 @@
   color: var(--color-gold);
 }
 
+.s-menu-label {
+  position: relative;
+}
+.s-menu-label[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -0.1em;
+  height: 2px;
+  background: currentColor;
+  animation: menu-pending 220ms 100ms backwards;
+  transform-origin: left;
+}
+@keyframes menu-pending {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .s-menu-label[aria-busy="true"]::after { animation: none; }
+}
+html[data-quiet-motion] .s-menu::backdrop { transition: none; }
+
 /* Second column: the open item's sub-pages (desktop). */
 .s-menu-sub {
   position: absolute;
@@ -220,21 +251,19 @@
   border-left: 1px solid rgb(168 200 230 / 45%);
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-12px);
+  transform: translateX(-6px);
   transition:
-    opacity var(--transition-normal) var(--ease-standard),
-    transform var(--transition-normal) var(--ease-standard),
-    visibility 0s linear var(--transition-normal);
+    opacity 100ms ease-out, transform 160ms var(--ease-standard), visibility 0s;
 }
 .s-menu-main > li[data-open] > .s-menu-sub {
   opacity: 1;
   visibility: visible;
   transform: none;
-  transition-delay: 120ms, 120ms, 0s;
+  transition-delay: 0s;
 }
 .s-menu-sub ul {
   list-style: none;
-  margin: var(--space-4) 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
   gap: var(--space-1);
@@ -250,16 +279,10 @@
 .s-menu-sub a:focus-visible {
   color: var(--color-gold);
 }
-.s-menu-sub .s-menu-sub-title {
-  margin: 0;
-  font: 600 0.8125rem/1.2 var(--font-nav);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-blue-light);
-}
 
 /* Bottom bar: Close (wireframe, bottom-left) + quick links. */
 .s-menu-foot {
+  width: var(--compact-width);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -290,7 +313,7 @@
   align-items: center;
   gap: var(--space-2) var(--space-5);
 }
-.s-menu-quick span {
+.s-menu-quick > span {
   color: var(--color-blue-light);
 }
 .s-menu-quick a {
@@ -302,66 +325,35 @@
   color: var(--color-gold);
 }
 
-@media (max-width: 760px) {
-  .s-chrome {
-    --edge: 7px;
-    --rail: 44px;
-    --start: 65px;
-  }
-  .s-rail,
-  .s-menu-rail {
-    padding: 9px 2px;
-  }
-  .s-rail button i {
-    width: 20px;
-    height: 3px;
-  }
+/* Keep the destination list and its open submenu independently reachable on short screens. */
+@media (min-width: 761px) {
+  .s-menu-nav { min-height: 0; overflow: visible; }
+  .s-menu-main { height: 100%; overflow-y: auto; align-content: start; gap: clamp(6px, 1.5vh, 16px); }
+  .s-menu-item { font-size: clamp(32px, min(4.2vw, 5.6vh), 64px); }
+  .s-menu-sub { bottom: var(--space-4); overflow-y: auto; left: max(44%, 16rem); }
 }
-
 @media (max-width: 760px) {
-  .s-chrome {
-    --edge: 8px;
-    --start: 16px;
-    --bar-h: 46px;
+  :root {
+    --rail: 0px;
+    --bar-h: 48px;
+    --header-height: var(--bar-h);
   }
-  .s-rail,
-  .s-menu-rail {
-    left: var(--edge);
-    right: var(--edge);
-    top: var(--edge);
-    bottom: auto;
-    width: auto;
+  .s-rail, .s-menu-rail {
+    width: 100%;
     height: var(--bar-h);
-    padding: 5px 12px;
     flex-direction: row;
+    padding-inline: 10px;
   }
-  .s-rail > a:first-child,
-  .s-menu-rail > img {
-    width: 79px;
-  }
-  .s-rail button,
-  .s-menu-rail button {
-    top: 0;
-    right: 0;
-    left: auto;
+  .s-rail { position: relative; }
+  .s-rail .site-crest { width: 36px; margin: 0; }
+  .rail-menu-toggle, .s-menu-rail button {
+    inset: 0 0 auto auto;
     height: 100%;
     width: 48px;
     transform: none;
   }
-  /* Open menu bar: flush to the top and sides, × stays where the hamburger was. */
-  .s-menu-rail {
-    top: 0;
-    left: 0;
-    right: 0;
-    height: calc(var(--bar-h) + var(--edge));
-    padding: var(--edge) calc(12px + var(--edge)) 0;
-  }
-  .s-menu-rail button {
-    top: var(--edge);
-    right: var(--edge);
-    height: var(--bar-h);
-  }
-  .s-rail-caption,
+  .rail-menu-toggle i { width: 21px; height: 3px; }
+  .s-rail .access { margin: 0 44px 0 auto; }
   .s-progress {
     display: none;
   }
@@ -373,6 +365,7 @@
   .s-menu-sheet[data-expanded] {
     inset: 0;
     width: 100%;
+    clip-path: none;
     transition: none;
   }
   .s-menu-nav {
@@ -403,19 +396,17 @@
   }
   .s-menu-main > li[data-open] > .s-menu-sub {
     grid-template-rows: 1fr;
-    margin: 4px 0 14px;
     transition-delay: 0s;
   }
   .s-menu-sub ul {
     margin-top: 8px;
-  }
-  .s-menu-sub .s-menu-sub-title {
-    font-size: 0.75rem;
+    padding-bottom: 14px;
   }
   .s-menu-foot {
+    width: 100%;
     padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
   }
-  .s-menu-quick span {
+  .s-menu-quick > span {
     display: none;
   }
 }
@@ -427,12 +418,14 @@
   cursor: pointer;
 }
 @media (prefers-reduced-motion: reduce) {
+  .s-menu,
+  .s-menu::backdrop,
   .s-menu-sheet,
   .s-menu-sub {
     animation: none;
     transition: none !important;
   }
-  .s-rail button i {
+  .rail-menu-toggle i {
     transition: none;
   }
 }

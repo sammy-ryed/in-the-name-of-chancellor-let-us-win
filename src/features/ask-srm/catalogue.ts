@@ -23,7 +23,9 @@ const sectionNotes: Record<string, string> = {
   Admissions:
     "Find the right application, entrance exam schedule and eligibility guidance for your programme.",
   News: "Read campus stories, student achievements and announcements.",
-  "Career Centre":
+  Home: "Start on the SRM homepage and explore academics, campus life and news.",
+  Alumni: "Find reunion events, photo albums and award-winning SRM graduates.",
+  Placements:
     "Compare published placement outcomes by batch and find training and placement contacts.",
   Events:
     "Use the campus calendar to see upcoming events, filter by date or find an organiser’s registration page.",
@@ -202,7 +204,7 @@ export function catalogue(): Entry[] {
         section: item.label,
         href: child.href,
         summary:
-          item.label === "Programmes"
+          child.href.startsWith("/programmes?college=")
             ? "Browse the " + child.label + " programmes in SRM’s finder."
             : child.label + " in the " + item.label + " guide.",
       })),

@@ -78,7 +78,11 @@ export default function Page() {
               <dd>{events.length}</dd>
             </div>
           </dl>
+          <h3 id="festivals">Aaruush &amp; Milan</h3>
+          <p>Aaruush brings student-built projects and technical competitions to campus. Milan is the cultural festival, with performances and intercollegiate competitions.</p>
           <p className="cl-inline-links">
+            <a href="https://www.aaruush.org/about">Explore Aaruush</a>
+            <a href="https://www.srmist.edu.in/events/milan-26/">Milan ’26 at SRM</a>
             <a href={campusLinks.culture}>Arts &amp; culture</a>
             <a href={campusLinks.sports}>Sports</a>
           </p>
