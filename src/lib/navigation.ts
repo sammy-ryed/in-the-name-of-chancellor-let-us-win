@@ -26,13 +26,12 @@ export const navigation: NavItem[] = [
     href: "/campus",
     label: "Campus life",
     children: [
-      { href: "/campus#people", label: "Find your people" },
-      { href: "/campus#housing", label: "Housing & dining" },
-      { href: "/campus#after-class", label: "After class" },
+      { href: "/campus#life", label: "More than a campus" },
+      { href: "/campus#clubs", label: "Find your people" },
+      { href: "/campus#whats-on", label: "What’s happening" },
+      { href: "/campus/accommodation", label: "Accommodation & dining" },
       { href: "/campus#explore", label: "Explore Kattankulathur" },
-      { href: "/campus#clubs", label: "Clubs & organisations" },
-      { href: "/campus#whats-on", label: "What’s on" },
-      { href: "/campus#safety", label: "Safety & support" },
+      { href: "/campus#support", label: "Student support" },
     ],
   },
   {
@@ -60,4 +59,14 @@ export const services: NavLink[] = [
   { href: "/career-centre", label: "Career Centre" },
   { href: "/events", label: "Events" },
   { href: "/parents", label: "Parents" },
+];
+
+export const srm = "https://www.srmist.edu.in";
+export const tourUrl =
+  "https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm";
+
+export const actions = [
+  { label: "Programmes", detail: "Find your programme", href: "/programmes" },
+  { label: "Campus life", detail: "Find your people", href: "/campus" },
+  { label: "Students", detail: "Open student services", href: "/students" },
 ];

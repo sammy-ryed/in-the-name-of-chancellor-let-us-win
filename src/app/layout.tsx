@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans, Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import "@/components/chrome.css";
+import AskSRM from "@/features/ask-srm/AskSRM";
+import { SiteNavigation } from "@/components/SiteNavigation";
 import Accessibility from "@/components/Accessibility";
 import "@/components/access.css";
 // Design-system fonts: --font-primary (DM Sans) and --font-editorial (Newsreader) in globals.css.
@@ -18,12 +20,14 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${editorial.variable} ${nav.variable}`}>
-      <body>
+      <body className="s-chrome">
         <a className="skip" href="#main">
           Skip to content
         </a>
+        <SiteNavigation />
         <main id="main">{children}</main>
         <Accessibility />
+        <AskSRM />
       </body>
     </html>
   );

@@ -1,8 +1,7 @@
-export const srm = "https://www.srmist.edu.in";
+import { srm } from "@/lib/navigation";
+
 export const filmId = "S_xAJo_siHA";
 export const filmUrl = "https://www.youtube.com/watch?v=" + filmId;
-export const tourUrl =
-  "https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm";
 export const community = [
   {
     name: "Student clubs",
@@ -61,9 +60,4 @@ export const stories = [
     alt: "Graduates and university dignitaries at the convocation",
     href: srm + "/srmist-22nd-convocation/",
   },
-];
-export const actions = [
-  { label: "Programmes", detail: "Find your programme", href: "/programmes" },
-  { label: "Campus life", detail: "Find your people", href: "/campus" },
-  { label: "Students", detail: "Open student services", href: "/students" },
 ];

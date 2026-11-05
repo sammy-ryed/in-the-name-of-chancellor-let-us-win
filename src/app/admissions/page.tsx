@@ -1,3 +1,4 @@
+import { Disclosure } from "@/components/Disclosure";
 import Link from "next/link";
 import { Guide, Action, Section, Resources } from "@/components/Guide";
 import {
@@ -7,7 +8,6 @@ import {
   university,
 } from "@/features/explore/academic";
 import Enquiry from "@/features/explore/Enquiry";
-import "@/components/inset-guide.css";
 import "@/components/light-guide.css";
 export const metadata = { title: "Admissions" };
 export default async function Page({
@@ -18,7 +18,7 @@ export default async function Page({
   const { course } = await searchParams;
   const selected = courses.find((c) => c.id === course);
   return (
-    <div className="admissions-experience inset-guide light-guide">
+    <div className="admissions-experience light-guide">
     <Guide
       title="Admissions"
       section="Admissions"
@@ -84,8 +84,7 @@ export default async function Page({
         </p>
       </Section>
       <Section id="faq" title="Admissions questions">
-        <details open>
-          <summary>What are the B.Tech entry requirements?</summary>
+        <Disclosure summary="What are the B.Tech entry requirements?" open>
           <p>
             For the regular domestic route, SRM lists 60% aggregate across
             Physics, Mathematics and an approved third subject in 10+2.
@@ -95,26 +94,21 @@ export default async function Page({
           <a href={university + "/admission-india/engineering/"}>
             Read the eligibility rules ↗
           </a>
-        </details>
-        <details>
-          <summary>How much does it cost to apply?</summary>
+        </Disclosure>
+        <Disclosure summary="How much does it cost to apply?">
           <p>
             The official 2027 B.Tech form lists a non-refundable ₹1,400 fee per
             SRMJEEE phase. Tuition depends on the programme and campus.
           </p>
-        </details>
-        <details>
-          <summary>Does my course use SRMJEEE?</summary>
+        </Disclosure>
+        <Disclosure summary="Does my course use SRMJEEE?">
           <p>
             SRMJEEE is the engineering entrance route. Law, medicine, management
             and other degrees have their own selection rules and forms.
           </p>
           <Link href="/programmes">Look up your course</Link>
-        </details>
-        <details>
-          <summary>
-            Where do I find scholarships or international admissions?
-          </summary>
+        </Disclosure>
+        <Disclosure summary="Where do I find scholarships or international admissions?">
           <p>
             <a href={university + "/admission-india/engineering/scholarships/"}>
               Scholarships and aid
@@ -124,7 +118,7 @@ export default async function Page({
               International applicants
             </a>
           </p>
-        </details>
+        </Disclosure>
       </Section>
       <Section id="enquiry" title="Ask admissions">
         <Enquiry

@@ -1,6 +1,6 @@
 # Students experience
 
-`StudentsPage` is server rendered and reuses the homepage's Rail, display font,
+`StudentsPage` is server rendered and reuses the site navigation, display font,
 palette, footer styles, and local WebP assets. Resource URLs and cohort guidance
 remain in `services.ts`. SCORE is an unfinished student project; its showcase
 must not be presented as an available application.

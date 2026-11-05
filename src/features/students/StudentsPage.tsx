@@ -1,7 +1,7 @@
+import { SiteFooter } from "@/components/SiteFooter";
 import Image from "next/image";
 import Link from "next/link";
-import { Rail } from "@/features/home/Rail";
-import { actions, srm, tourUrl } from "@/features/home/content";
+import { srm } from "@/lib/navigation";
 import { studentServices, type StudentService } from "./services";
 import { StudentMotion } from "./StudentMotion";
 import "@/app/home.css";
@@ -28,8 +28,7 @@ export function StudentsPage() {
   const [academics, wifi, campus, score] = studentServices;
   const career = campus.links.find(link => link.label === "Career Centre")!;
   const academicLinks = [...academics.links.filter(link => link.label !== "Student gateway"), career];
-  return <div className="s-home s-chrome students-page">
-    <Rail />
+  return <div className="s-home students-page">
     <StudentMotion />
     <section id="explore" className="st-academics st-section" aria-labelledby="academic-title">
       <div id="portals" className="st-academic-intro">
@@ -145,26 +144,6 @@ export function StudentsPage() {
         </a>
       </div>
     </section>
-    <footer className="s-footer s-lines">
-      <Link href="/" aria-label="SRM home">
-        <Image src="/home/srm-white.svg" width={600} height={203} alt="SRM Institute of Science and Technology" unoptimized />
-      </Link>
-      <div>
-        <p>Address</p>
-        <a href={srm + "/visitors/"}>Kattankulathur, Chengalpattu<br />Tamil Nadu, India</a>
-        <div className="s-foot-cols">
-          <div>
-            <p>Explore</p>{actions.map(a => <Link key={a.href} href={a.href}>{a.label}</Link>)}</div>
-          <div>
-            <p>Connect</p>
-            <a href={srm + "/contact-us/"}>Contact SRM</a>
-            <a href={srm + "/admissions/"}>Admissions</a>
-            <a href={tourUrl}>Visit campus</a>
-          </div>
-        </div>
-      </div>
-      <small>SRMIST · Student redesign prototype</small>
-      <a className="s-foot-top yellow-action" href="#main">Back to top ↑</a>
-    </footer>
+    <SiteFooter admissionsHref={srm + "/admissions/"} />
   </div>;
 }

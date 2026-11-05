@@ -25,27 +25,6 @@
 .guide button {
   cursor: pointer;
 }
-.guide-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  background: var(--navy);
-  color: var(--ice);
-  padding: 14px var(--pad);
-}
-.guide-footer nav {
-  display: flex;
-  gap: clamp(12px, 2.2vw, 36px);
-  flex-wrap: wrap;
-}
-.guide-footer a {
-  text-decoration: none;
-}
-.guide-footer a:hover {
-  color: var(--action-yellow);
-  text-decoration: underline;
-}
 .guide-jump,
 .guide-body {
   padding-inline: var(--pad);
@@ -398,9 +377,6 @@
 .news-bento a:first-child h3 {
   font-size: clamp(1.5rem, 3vw, 3rem);
 }
-.guide-footer {
-  padding-block: 26px 60px;
-}
 @media (max-width: 800px) {
   .filter-bar,
   .course-grid {
@@ -422,10 +398,6 @@
   }
   .news-bento a:first-child {
     grid-row: auto;
-  }
-  .guide-footer {
-    align-items: flex-start;
-    flex-direction: column;
   }
   .event-list a,
   .headline-list a {
@@ -450,88 +422,24 @@
   }
 }
 
-/* The section spine, masthead and content share one ruled editorial grid. */
 .guide-shell {
   --paper: var(--color-primary-dark);
   --panel: var(--color-primary);
   --copy: var(--surface-blue);
   --muted: var(--color-blue-light);
   --line: var(--color-blue-mid);
-  --spine: clamp(58px, 5.7vw, 92px);
   color: var(--copy);
   background: var(--paper);
-  padding-left: var(--spine);
-}
-.guide-shell .s-rail {
-  inset: 0 auto 0 0;
-  width: var(--spine);
-  background: var(--paper);
-  border-right: 1px solid var(--line);
-  padding: 0;
-}
-.guide-shell .s-rail > a:first-child,
-.guide-shell .s-rail-caption {
-  display: none;
-}
-.guide-spine {
-  position: absolute;
-  top: clamp(130px, 17vh, 195px);
-  writing-mode: vertical-rl;
-  font:
-    700 1.05rem/1 var(--font-primary);
-  color: var(--muted);
-}
-.guide-shell .s-rail button {
-  top: auto;
-  bottom: 0;
-  transform: none;
-  height: var(--spine);
-  background: var(--action-yellow);
-  color: var(--ink);
-}
-.guide-shell .s-progress {
-  inset: 0 -1px 0 auto;
-  width: 2px;
-  background: var(--sky);
+  padding-left: calc(var(--rail) + 2 * var(--edge));
 }
 .guide {
   --pad: clamp(20px, 3.15vw, 64px);
   background: var(--paper);
   color: var(--copy);
 }
-.guide-mast {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: clamp(20px, 2.8vw, 46px) var(--pad);
-  gap: 24px;
-}
-.guide-mast img {
-  display: block;
-  width: clamp(108px, 10vw, 168px);
-  height: auto;
-}
-.guide-mast nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(16px, 2.3vw, 42px);
-}
-.guide-mast nav a {
-  display: flex;
-  align-items: center;
-  gap: 0.4em;
-  min-height: 44px;
-  text-decoration: none;
-  font-weight: 600;
-}
-.guide-mast nav span,
-.guide-crumbs i {
+.guide-crumbs [aria-hidden] {
   color: var(--action-yellow);
   font-style: normal;
-}
-.guide-mast a[aria-current],
-.guide-mast a:hover {
-  color: var(--action-yellow);
 }
 .guide-cover {
   display: flex;
@@ -637,8 +545,7 @@
   min-height: 44px;
   color: var(--copy);
 }
-.guide-jump a:hover,
-.guide-footer a:hover {
+.guide-jump a:hover {
   color: var(--action-yellow);
 }
 .guide-body {
@@ -772,21 +679,12 @@
 .guide .news-bento a:hover h3 {
   text-decoration: underline;
 }
-.guide-footer {
-  background: var(--paper);
-  border-top: 1px solid var(--line);
-}
 @keyframes guide-film-pan {
   from {
     transform: scale(1.02);
   }
   to {
     transform: scale(1.1) translateY(2%);
-  }
-}
-@keyframes guide-trace {
-  to {
-    transform: scaleY(1);
   }
 }
 @supports (animation-timeline: view()) {
@@ -799,10 +697,6 @@
       animation-timeline: --spread;
       animation-range: exit;
     }
-    html:not([data-quiet-motion]) .guide-shell .s-progress {
-      animation: guide-trace 1s linear both;
-      animation-timeline: scroll(root);
-    }
   }
 }
 html[data-high-contrast] .guide-shell {
@@ -814,31 +708,7 @@ html[data-high-contrast] .guide-shell {
 }
 @media (max-width: 760px) {
   .guide-shell {
-    padding: 66px 0 0;
-  }
-  .guide-shell .s-rail {
-    inset: 0 0 auto;
-    width: 100%;
-    height: 62px;
-    padding: 10px 16px;
-    border: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .guide-shell .s-rail > a:first-child {
-    display: block;
-    width: 100px;
-  }
-  .guide-shell .s-rail button {
-    right: 16px;
-    top: 10px;
-    bottom: auto;
-    border-radius: 999px;
-    height: 42px;
-    width: 54px;
-  }
-  .guide-spine,
-  .guide-mast {
-    display: none;
+    padding: calc(var(--bar-h) + 2 * var(--edge)) 0 0;
   }
   .guide {
     --pad: 16px;
