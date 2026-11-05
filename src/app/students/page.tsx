@@ -1,7 +1,7 @@
-import { Directory } from "@/components/Directory";
-import { content } from "@/features/students/content";
+import { StudentsPage } from "@/features/students/StudentsPage";
 
-export const metadata = { title: content.title };
+export const metadata = { title: "Students" };
+
 export default function Page() {
-  return <Directory {...content} />;
+  return <StudentsPage />;
 }
