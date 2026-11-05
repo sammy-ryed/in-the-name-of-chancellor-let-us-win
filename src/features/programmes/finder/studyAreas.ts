@@ -2,16 +2,16 @@ import { applicantCounts } from "./applicants";
 import type { Programme } from "./types";
 
 const areas = {
-  computing: { title: "Computer Science & AI", cover: 14920 },
-  engineering: { title: "Engineering & Technology", cover: 15559 },
-  health: { title: "Medicine & Health Sciences", cover: 28566 },
-  business: { title: "Business & Commerce", cover: 28390 },
-  sciences: { title: "Natural Sciences & Mathematics", cover: 28452 },
-  humanities: { title: "Arts, Humanities & Education", cover: 28434 },
-  design: { title: "Architecture, Design & Media", cover: 15511 },
-  agriculture: { title: "Agriculture", cover: 31962 },
-  law: { title: "Law", cover: 31949 },
-  hospitality: { title: "Hotel Management & Culinary Arts", cover: 30830 },
+  computing: { title: "Computer Science & AI", photo: "/career-centre/training.webp" },
+  engineering: { title: "Engineering & Technology", photo: "/home/racing.webp" },
+  health: { title: "Medicine & Health Sciences", photo: "/home/subjects/health.webp" },
+  business: { title: "Business & Commerce", photo: "/programmes/43f1c39be556.webp" },
+  sciences: { title: "Natural Sciences & Mathematics", photo: "/home/subjects/sciences.webp" },
+  humanities: { title: "Arts, Humanities & Education", photo: "/home/subjects/humanities.webp" },
+  design: { title: "Architecture, Design & Media", photo: "/home/subjects/design.webp" },
+  agriculture: { title: "Agriculture", photo: "/home/subjects/agriculture.webp" },
+  law: { title: "Law", photo: "/home/subjects/law.webp" },
+  hospitality: { title: "Hotel Management & Culinary Arts", photo: "/programmes/3ea73b8f3f7a.webp" },
 };
 
 export type StudyAreaId = keyof typeof areas;
@@ -33,9 +33,8 @@ export function studyAreaOf(p: Programme): StudyAreaId {
 }
 
 export function groupStudyAreas(programmes: Programme[]) {
-  const photos = new Map(programmes.map(p => [p.id, p.photo]));
   const groups = new Map((Object.keys(areas) as StudyAreaId[]).map(id => [
-    id, { id, title: areas[id].title, photo: photos.get(areas[id].cover), programmes: [] as Programme[], applications: 0 },
+    id, { id, ...areas[id], programmes: [] as Programme[], applications: 0 },
   ]));
   for (const p of programmes) {
     const group = groups.get(studyAreaOf(p))!;
@@ -47,3 +46,5 @@ export function groupStudyAreas(programmes: Programme[]) {
 }
 
 export type StudyArea = ReturnType<typeof groupStudyAreas>[number];
+
+export const studyAreaHref = (area: StudyArea) => `/programmes?area=${area.id}`;

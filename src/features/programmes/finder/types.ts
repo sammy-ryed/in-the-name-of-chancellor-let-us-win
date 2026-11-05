@@ -17,6 +17,7 @@ export interface Programme {
   duration?: string;
   fee?: string;
   feeUrl?: string;
+  feeCourseId?: string;
   feePeriod?: string;
   photo?: string;
   applyUrl?: string;

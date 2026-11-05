@@ -1,153 +1,71 @@
+import Link from "next/link";
 import { start } from "@/features/admissions/programme-quiz/guided/flow";
 import { ProgrammeQuiz } from "@/features/admissions/programme-quiz/ProgrammeQuiz";
 import { Disclosure } from "@/components/Disclosure";
-import Link from "next/link";
-import { Action, Section, Resources } from "@/components/Guide";
-import {
-  courses,
-  applyBtech,
-  application,
-  university,
-} from "@/features/explore/academic";
-import { AdmissionsLayout, internationalAdmissions, internationalApplication } from "./AdmissionsLayout";
+import { Section, Resources } from "@/components/Guide";
+import { courses, applyBtech, university } from "@/features/explore/academic";
+import { routes } from "@/lib/navigation";
 import Enquiry from "@/features/explore/Enquiry";
+import { AdmissionsLayout } from "./AdmissionsLayout";
+import { InitialSectionScroll } from "./InitialSectionScroll";
 import "@/components/light-guide.css";
-export const metadata = { title: "Admissions" };
-export default async function Page({
-  searchParams,
-}: {
+
+export const metadata = {
+  title: "Admissions",
+  description: "Find your SRMIST application, check SRMJEEE deadlines, compare fees and ask the admissions team about your programme.",
+};
+
+const examPhases = [
+  { name: "Phase 1", applyBy: "2 April", deadline: "2027-04-02", exams: "17–18 April" },
+  { name: "Phase 2", applyBy: "4 June", deadline: "2027-06-04", exams: "19–20 June" },
+];
+
+export default async function AdmissionsPage({ searchParams }: {
   searchParams: Promise<{ course?: string; view?: string }>;
 }) {
   const { course, view } = await searchParams;
-  const selected = courses.find((c) => c.id === course);
+  const selected = courses.find((item) => item.id === course);
   return (
-    <AdmissionsLayout classic={view === "classic"}>
-      <Section id="programme-finder" title="Which SRM programme fits your interests?">
+    <AdmissionsLayout classic={view === "classic"} course={selected}>
+      <InitialSectionScroll />
+      <Section id="exam" title="SRMJEEE 2027 dates">
+        <p>Applying for B.Tech or integrated M.Tech? Check the application deadline and exam window for each phase of the centre-based test.</p>
+        <table className="admission-dates">
+          <caption>Tentative schedule for 2027</caption>
+          <thead><tr><th scope="col">Phase</th><th scope="col">Apply by</th><th scope="col">Exam dates</th></tr></thead>
+          <tbody>{examPhases.map((phase) => <tr key={phase.name}>
+            <th scope="row">{phase.name}</th>
+            <td><time dateTime={phase.deadline}>{phase.applyBy}</time></td>
+            <td>{phase.exams}</td>
+          </tr>)}</tbody>
+        </table>
+        <p className="source-note">Dates may change. <a href={applyBtech}>Confirm the schedule with SRM <span aria-hidden="true">↗</span></a></p>
+      </Section>
+      <Section id="programme-finder" title={<>Find a course <em>that fits</em></>}>
+        <p>Tell us what you enjoy studying. The course finder builds a shortlist you can explore by campus, cost and entry requirements.</p>
         <ProgrammeQuiz initial={start()} />
       </Section>
-      <Section
-        id="apply"
-        title={selected ? "Domestic application for your programme" : "Domestic applications"}
-      >
-        {selected && (
-          <p>
-            <strong>
-              {selected.degree} · {selected.name}
-            </strong>{" "}
-            / {selected.campus}
-          </p>
-        )}
-        <div className="action-row">
-          <Action href={selected ? application(selected) : applyBtech}>
-            {selected
-              ? "Official application route"
-              : "Apply for B.Tech / SRMJEEE"}
-          </Action>
-          <Action
-            href={selected ? "/programmes/" + selected.id : "/programmes"}
-          >
-            {selected ? "Review fees & eligibility" : "Explore courses & fees"}
-          </Action>
-          <a href={university + "/admission-india/"}>
-            All domestic application forms ↗
-          </a>
-        </div>
-      </Section>
-      <Section id="international" title="International applications">
-        <p>Applying as a foreign national, NRI or NRI-sponsored student? Start with SRM’s international admissions portal. Check the applicant category and programme requirements before you register.</p>
-        <div className="action-row">
-          <Action href={internationalApplication}>Start the 2027 international application</Action>
-          <a href={internationalAdmissions}>Eligibility, programmes and fees ↗</a>
-        </div>
-        <p className="source-note">For help choosing your category, email International Relations at{" "}
-          <a href="mailto:admissions.ir@srmist.edu.in">admissions.ir@srmist.edu.in</a>.
-        </p>
-      </Section>
-      <Section id="exam" title="SRMJEEE 2027">
-        <p>
-          B.Tech and integrated M.Tech entrance examination. SRM lists two
-          tentative phases for its centre-based computer test.
-        </p>
-        <div className="phase-grid">
-          {[
-            ["Phase 1", "2 April 2027", "17–18 April 2027"],
-            ["Phase 2", "4 June 2027", "19–20 June 2027"],
-          ].map(([phase, deadline, date]) => (
-            <article key={phase}>
-              <small>{phase}</small>
-              <h3>{date}</h3>
-              <p>
-                Application deadline <strong>{deadline}</strong>
-              </p>
-            </article>
-          ))}
-        </div>
-        <p className="source-note">
-          Dates may change.{" "}
-          <a href={applyBtech}>Check the official schedule and apply ↗</a>
-        </p>
-      </Section>
-      <Section id="faq" title="Admissions questions">
-        <Disclosure summary="What are the B.Tech entry requirements?" open>
-          <p>
-            For the regular domestic route, SRM lists 60% aggregate across
-            Physics, Mathematics and an approved third subject in 10+2.
-            Biomedical, biotechnology and genetic engineering have additional
-            subject combinations. Check the requirements for your chosen branch.
-          </p>
-          <a href={university + "/admission-india/engineering/"}>
-            Read the eligibility rules ↗
-          </a>
+      <Section id="faq" title="Before you apply">
+        <Disclosure summary="What are the B.Tech entry requirements?">
+          <p>For the regular domestic route, SRM lists a 60% aggregate across Physics, Mathematics and an approved third subject in 10+2. Biomedical, biotechnology and genetic engineering have additional subject combinations.</p>
+          <a href={university + "/admission-india/engineering/"}>Check the requirements for your branch ↗</a>
         </Disclosure>
-        <Disclosure summary="How much does it cost to apply?">
-          <p>
-            The official 2027 B.Tech form lists a non-refundable ₹1,400 fee per
-            SRMJEEE phase. Tuition depends on the programme and campus.
-          </p>
+        <Disclosure summary="How much does the B.Tech application cost?">
+          <p>The 2027 B.Tech application fee is ₹1,400 per SRMJEEE phase and is non-refundable. <Link href={routes.fees.href}>Compare tuition fees</Link> for your programme and campus.</p>
         </Disclosure>
         <Disclosure summary="Does my course use SRMJEEE?">
-          <p>
-            SRMJEEE is the engineering entrance route. Law, medicine, management
-            and other degrees have their own selection rules and forms.
-          </p>
-          <Link href="/programmes">Look up your course</Link>
+          <p>SRMJEEE is the engineering entrance route. Law, medicine, management and other degrees have their own selection rules and forms.</p>
+          <Link href={routes.programmes.href}>Look up your course</Link>
         </Disclosure>
-        <Disclosure summary="Where do I find scholarships or international admissions?">
-          <p>
-            <a href={university + "/admission-india/engineering/scholarships/"}>
-              Scholarships and aid
-            </a>{" "}
-            ·{" "}
-            <a href="#international">
-              International applicants
-            </a>
-          </p>
+        <Disclosure summary="Where can I check scholarship eligibility?">
+          <p>SRM lists its engineering scholarships and the criteria for each award on the <a href={university + "/admission-india/engineering/scholarships/"}>scholarships and aid page ↗</a>.</p>
         </Disclosure>
       </Section>
-      <Section id="enquiry" title="Ask admissions">
-        <p>For an international application, <a href="mailto:admissions.ir@srmist.edu.in">email International Relations</a>. For a domestic enquiry, prepare your email below.</p>
-        <Enquiry
-          context={
-            selected
-              ? selected.degree +
-                " · " +
-                selected.name +
-                " / " +
-                selected.campus
-              : "General admissions"
-          }
-          courseId={selected?.id}
-        />
+      <Section id="enquiry" title="Contact admissions">
+        <p>For an international application or a question about your applicant category, <a href="mailto:admissions.ir@srmist.edu.in">email International Relations</a>. For a domestic application, write your question below.</p>
+        <Enquiry context={selected ? `${selected.degree} · ${selected.name} / ${selected.campus}` : "General admissions"} courseId={selected?.id} />
       </Section>
-      <Resources
-        items={[
-          {
-            href: "/parents",
-            title: "For parents",
-            note: "Portal access, fees, housing and student support.",
-          },
-        ]}
-      />
+      <Resources items={[{ href: routes.parents.href, title: "For parents", note: "Portal access, fees, housing and student support." }]} />
     </AdmissionsLayout>
   );
 }
