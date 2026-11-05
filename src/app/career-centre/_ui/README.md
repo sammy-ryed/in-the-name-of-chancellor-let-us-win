@@ -6,10 +6,11 @@ and no Your Future, Your Way section.
 
 ## Setup
 
-From this `_ui` directory run `npm ci --legacy-peer-deps`, then run the main app
-from the repository root with `npm run dev`. Route dependencies are kept here to
-respect the restriction against editing shared package/configuration files.
-Run `npm run styles` from `_ui` after changing prefixed Tailwind classes.
+Run `npm ci` and `npm run dev` from the repository root. All runtime dependencies,
+including Motion, are declared in the root package manifest and lockfile so
+Vercel's standard install also prepares this route. No nested install is needed.
+Run `npm run career:styles` from the root after changing prefixed Tailwind classes.
+The generated utilities remain route-specific and contain no global reset.
 
 ## Sources
 
