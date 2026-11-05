@@ -16,57 +16,101 @@
 }
 .access-trigger:is(:hover, :focus-visible) { background: var(--color-gold-light); color: var(--navy); }
 .access-trigger svg { width: 23px; height: 23px; }
-.access-hint {
-  position: absolute;
-  inset: auto auto 0 calc(100% + 12px);
-  width: max-content;
-  max-width: 220px;
-  background: var(--navy);
-  color: white;
-  border-left: 3px solid var(--action-yellow);
-  padding: 8px 12px;
-  pointer-events: none;
-  visibility: hidden;
+.access:has(:popover-open) .access-trigger {
+  background: var(--color-gold-light);
+  color: var(--navy);
 }
-.access-trigger:is(:hover, :focus-visible) + .access-hint { visibility: visible; }
-.access:has(dialog[open]) .access-hint { visibility: hidden; }
-.access dialog {
+.access-panel {
   position: fixed;
-  inset: auto auto 10px calc(var(--rail) + 10px);
+  inset: auto auto max(10px, env(safe-area-inset-bottom)) calc(var(--rail) + 10px);
   margin: 0;
-  width: min(320px, calc(100% - 20px));
+  width: min(324px, calc(100% - 20px));
   max-height: calc(100dvh - 20px);
   overflow: auto;
-  padding: 0 18px 18px;
-  background: var(--surface-primary);
+  padding: 0;
+  font: 500 .94rem/1.4 var(--font-nav);
+  background: var(--surface-warm);
   color: var(--text-primary);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  box-shadow: 0 12px 32px rgb(7 24 47 / 22%);
+  border: 1px solid var(--navy);
+  border-radius: 7px;
+  box-shadow: 0 8px 28px rgb(7 24 47 / 22%);
 }
-.access dialog::backdrop { background: rgb(7 24 47 / 42%); }
-.access-tabs, .access dialog label {
+.access-heading, .access-option, .access-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
-.access-tabs {
-  margin-inline: -18px;
-  padding: 6px 8px 6px 18px;
+.access-heading {
+  padding: 16px 12px 14px 20px;
+  background: linear-gradient(112deg, var(--navy) 65%, var(--brand-blue) 65%);
+  color: white;
   border-bottom: 3px solid var(--action-yellow);
-  background: var(--brand-blue);
+}
+.access-heading h2 {
+  margin: 0;
+  font: 400 2.3rem/1 var(--display);
+  text-transform: uppercase;
+}
+.access-heading button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
   color: white;
 }
-.access-tabs strong { font: 400 1.75rem/1 var(--display); }
-.access-tabs button { width: 44px; height: 44px; border: 0; color: inherit; background: transparent; font-size: 1.5rem; }
-.access dialog label { min-height: 46px; border-top: 1px solid var(--border-default); font-size: 1rem; }
-.access input { width: 20px; height: 20px; accent-color: var(--brand-blue); }
-.access-reset { margin-top: 8px; padding: 8px 12px; border: 1px solid var(--brand-blue); background: var(--surface-blue); color: var(--brand-blue); }
-.access :focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+.access-heading button:hover { color: var(--color-gold-light); }
+.access-options { padding-inline: 20px; }
+.access-option { min-height: 54px; cursor: pointer; font-weight: 600; }
+.access-option + .access-option { border-top: 1px solid var(--border-strong); }
+.access-option input {
+  appearance: none;
+  display: inline-grid;
+  align-items: center;
+  flex: none;
+  margin: 0;
+  width: 40px;
+  height: 24px;
+  padding: 3px;
+  border: 1px solid var(--text-secondary);
+  border-radius: 20px;
+  background: var(--surface-secondary);
+  cursor: pointer;
+}
+.access-option input::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+}
+.access-option input:checked { background: var(--navy); border-color: var(--navy); }
+.access-option input:checked::before { transform: translateX(16px); background: var(--color-gold-light); }
+@media (forced-colors: active) {
+  .access-option input { appearance: auto; }
+  .access-option input::before { content: none; }
+}
+.access-footer { padding: 2px 20px; background: var(--surface-blue); border-top: 1px solid var(--border-strong); }
+.access-reset {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--brand-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.access-reset:disabled { color: var(--text-secondary); cursor: default; text-decoration: none; }
+.access-footer kbd { font-size: .75rem; color: var(--text-secondary); }
+.access :focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .access-option input::before { transition: transform 120ms ease; }
+}
 @media (max-width: 760px) {
   .access-trigger { width: 44px; height: 44px; border-color: transparent; background: transparent; }
-  .access-hint { inset: calc(100% + 5px) 0 auto auto; }
-  .access dialog { inset: var(--header-height) 10px auto auto; max-height: calc(100dvh - var(--header-height) - 10px); }
+  .access-panel { inset: calc(var(--header-height) + 5px) 10px auto auto; max-height: calc(100dvh - var(--header-height) - 15px); }
 }
 html[data-large-text] {
   font-size: 125%;

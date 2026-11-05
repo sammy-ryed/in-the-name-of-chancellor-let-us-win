@@ -610,7 +610,7 @@
   .s-headline {
     font-size: min(12vw, 20.3svh);
     line-height: 0.955;
-    top: 4svh;
+    top: max(4svh, var(--search-row));
   }
   .s-headline span:first-child {
     transform: scaleX(1.24);

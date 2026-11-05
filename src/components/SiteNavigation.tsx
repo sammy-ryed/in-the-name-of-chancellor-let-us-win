@@ -7,15 +7,6 @@ import Accessibility from "./Accessibility";
 import { HomeLogo } from "./HomeLogo";
 import { navigation, services, srm, tourUrl } from "@/lib/navigation";
 
-// Preserve each page’s existing “Scroll for more” destination.
-const scrollTargets: Record<string, string> = {
-  "/": "#explore",
-  "/students": "#explore",
-  "/programmes": "#pf-results-title",
-  "/campus": "#life",
-  "/campus/accommodation": "#booking",
-};
-
 function MenuLabel({ children }: { children: React.ReactNode }) {
   const { pending } = useLinkStatus();
   return <span className="s-menu-label" aria-busy={pending}>{children}</span>;
@@ -44,7 +35,6 @@ function MenuLink({ href, close, children, ...props }: MenuLinkProps) {
 
 export function SiteNavigation() {
   const pathname = usePathname();
-  const scrollHref = scrollTargets[pathname] ?? "#guide-content";
   const panel = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   // Which top-level item has its sub-pages showing, and whether the panel has widened.
@@ -97,9 +87,6 @@ export function SiteNavigation() {
           <i />
           <i />
         </button>
-        <a className="s-rail-caption" href={scrollHref}>
-          Scroll for more
-        </a>
         <Accessibility />
         <span className="s-progress" aria-hidden="true" />
       </aside>

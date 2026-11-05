@@ -11,13 +11,11 @@
 .ask-dock {
   height: var(--search-row);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding-inline: 14px;
-  background: rgb(11 45 82 / 80%);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgb(168 200 230 / 22%);
 }
-html[data-high-contrast] .ask-dock { background: var(--navy); }
+html[data-high-contrast] .ask-launch { background: var(--navy); }
 .ask-launch {
   width: min(100%, 580px);
   display: flex;
@@ -27,13 +25,14 @@ html[data-high-contrast] .ask-dock { background: var(--navy); }
   padding: 0 12px;
   border: 1px solid rgb(168 200 230 / 48%);
   border-radius: 6px;
-  background: rgb(255 255 255 / 7%);
+  background: rgb(11 45 82 / 83%);
+  backdrop-filter: blur(14px);
   color: white;
   cursor: pointer;
   font: 600 .9rem/1.2 var(--font-nav);
   text-align: left;
 }
-.ask-launch:hover { background: rgb(255 255 255 / 12%); border-color: var(--ask-gold); }
+.ask-launch:hover { background: rgb(11 45 82 / 94%); border-color: var(--ask-gold); }
 .ask-launch > .ask-icon { color: var(--ask-gold); }
 .ask-launch strong { flex: none; }
 .ask-prompt { padding-left: 12px; border-left: 1px solid #7290ac; font-weight: 400; color: #d6e5f3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

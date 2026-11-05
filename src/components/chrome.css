@@ -22,7 +22,16 @@
   scroll-padding-top: var(--header-height);
 }
 .s-chrome { padding-left: var(--rail); }
-.site-header { position: sticky; top: 0; z-index: 60; }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.site-header :is(.s-rail, .s-menu, .ask-launch, .ask-panel) { pointer-events: auto; }
+@media (min-width: 761px) {
+  .site-header { margin-bottom: calc(0px - var(--search-row)); }
+}
 .site-crest {
   flex: none;
   display: block;
@@ -79,16 +88,6 @@
 .rail-menu-toggle:hover i:last-child {
   transform: translateX(-3px);
 }
-.s-rail-caption {
-  margin-top: auto;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-.s-rail-caption {
-  font: 400 11px/1 var(--display);
-  text-transform: uppercase;
-  padding: 4px 8px;
-}
 .s-progress {
   position: absolute;
   inset: 0;
@@ -115,9 +114,6 @@
 }
 :is(.s-rail, .s-menu) :is(button, a) {
   -webkit-tap-highlight-color: transparent;
-}
-@media (max-height: 530px) and (orientation: landscape) {
-  .s-rail-caption { font-size: 9px; }
 }
 .s-menu {
   position: fixed;
@@ -359,7 +355,6 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
   }
   .rail-menu-toggle i { width: 21px; height: 3px; }
   .s-rail .access { margin: 0 44px 0 auto; }
-  .s-rail-caption,
   .s-progress {
     display: none;
   }
