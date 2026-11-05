@@ -1,10 +1,8 @@
 .s-home {
   color: var(--ink);
-  background: var(--ink);
+  background: var(--color-primary-dark);
   font:
-    400 16px/1.16 Arial,
-    Helvetica,
-    sans-serif;
+    400 16px/1.16 var(--font-primary);
   isolation: isolate;
 }
 .s-home h1,
@@ -40,9 +38,7 @@
 .s-home .s-serif,
 .s-opening-note > p {
   font:
-    400 clamp(23px, 2.8vw, 62px)/0.99 Georgia,
-    "Times New Roman",
-    serif;
+    400 clamp(23px, 2.8vw, 62px)/0.99 var(--font-editorial);
   letter-spacing: -0.052em;
 }
 .s-opening,
@@ -122,7 +118,7 @@
   );
 }
 .s-film-pane .s-headline {
-  text-shadow: 0 1px 7px rgb(7 24 47 / 38%);
+  text-shadow: 0 1px 7px rgb(11 45 82 / 38%);
 }
 .s-hero > .s-headline {
   z-index: 0;
@@ -144,7 +140,7 @@
   display: block;
   margin-top: 3vh;
   width: 90%;
-  font: 400 clamp(13px, 1.16vw, 19px)/1.2 Arial;
+  font: 400 clamp(13px, 1.16vw, 19px)/1.2 var(--font-primary);
   letter-spacing: -0.025em;
 }
 .s-arrow {
@@ -184,7 +180,7 @@
   height: 100%;
 }
 .s-film {
-  background: var(--ink);
+  background: var(--color-primary-dark);
 }
 .s-film-poster {
   object-fit: cover;
@@ -241,7 +237,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font: 700 16px/1 Arial;
+  font: 700 16px/1 var(--font-primary);
 }
 .s-cursor small {
   position: absolute;
@@ -348,31 +344,79 @@
 .s-acad-note .s-button {
   margin-top: 3vh;
 }
+/* Fields of study: an endless horizontal marquee. */
 .s-disciplines {
-  display: flex;
-  gap: 5vw;
-  align-items: center;
+  --d-gap: 5vw;
+  --d-speed: 32s;
+  /* Choreography slides this row to x: -7vw while scrolling, so it is 7vw wider
+     and its first 7vw stays masked: no sliver beside the rail, no gap on the right. */
+  --d-nudge: 7vw;
+  --d-fade: linear-gradient(
+    90deg,
+    transparent var(--d-nudge),
+    #000 calc(var(--d-nudge) + 5%),
+    #000 95%,
+    transparent
+  );
   margin: 0 0 6svh;
-  width: 100%;
+  width: calc(100% + var(--d-nudge));
   min-width: 0;
-  white-space: nowrap;
+  overflow: hidden;
   grid-column: 1/-1;
   font: 400 clamp(22px, 3vw, 58px)/1 var(--display);
   letter-spacing: -0.025em;
   text-transform: uppercase;
+  white-space: nowrap;
+  -webkit-mask-image: var(--d-fade);
+  mask-image: var(--d-fade);
 }
-.s-disciplines span:nth-child(even) {
-  font-family: Georgia, serif;
+.s-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: s-marquee var(--d-speed) linear infinite;
+}
+.s-disciplines:hover .s-marquee-track {
+  animation-play-state: paused;
+}
+@keyframes s-marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.s-marquee-group {
+  display: flex;
+  align-items: center;
+  gap: var(--d-gap);
+  /* Trailing space equals the gap so the seam between copies matches. */
+  padding: 0 var(--d-gap) 0 0;
+  margin: 0;
+  list-style: none;
+}
+.s-marquee-group li {
+  flex: none;
+}
+.s-marquee-group li:nth-child(even) {
+  font-family: var(--font-editorial);
   font-style: italic;
   text-transform: none;
 }
-
-.s-disciplines span {
-  flex: none;
-}
-.s-disciplines span:nth-child(3n + 2) {
+.s-marquee-group li:nth-child(3n + 2) {
   color: var(--seafoam);
 }
-.s-disciplines span:nth-child(3n) {
+.s-marquee-group li:nth-child(3n) {
   color: var(--apricot);
+}
+@media (prefers-reduced-motion: reduce) {
+  .s-disciplines {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .s-marquee-track {
+    animation: none;
+  }
+  .s-marquee-group[aria-hidden] {
+    display: none;
+  }
 }

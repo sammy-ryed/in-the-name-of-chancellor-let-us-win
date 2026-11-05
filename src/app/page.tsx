@@ -9,6 +9,14 @@ import "./home.css";
 import "./home-scenes.css";
 
 export const metadata = { title: "Life at SRM" };
+const disciplines = [
+  "Engineering",
+  "Medicine",
+  "Architecture",
+  "Science & Humanities",
+  "Law",
+  "Agriculture",
+];
 function Headline({ primary = false }: { primary?: boolean }) {
   const Tag = primary ? "h1" : "div";
   return (
@@ -67,17 +75,22 @@ export default function Page() {
                   Find a programme <Arrow />
                 </Link>
               </div>
-              <div className="s-disciplines" aria-label="Fields of study">
-                {[
-                  "Engineering",
-                  "Medicine",
-                  "Architecture",
-                  "Science & Humanities",
-                  "Law",
-                  "Agriculture",
-                ].map((x) => (
-                  <span key={x}>{x}</span>
-                ))}
+              <div className="s-disciplines">
+                {/* Two identical groups: the track slides one group's width, then repeats seamlessly. */}
+                <div className="s-marquee-track">
+                  {[0, 1].map((copy) => (
+                    <ul
+                      key={copy}
+                      className="s-marquee-group"
+                      aria-label={copy ? undefined : "Fields of study"}
+                      aria-hidden={copy ? true : undefined}
+                    >
+                      {disciplines.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
@@ -85,25 +98,20 @@ export default function Page() {
       </div>
       <section id="explore" className="s-place" aria-labelledby="place-title">
         <div className="s-place-frame">
-          <div className="s-panorama-media">
-            <Image
-              className="s-panorama"
-              src="/home/campus.webp"
-              fill
-              sizes="100vw"
-              alt="Panorama of the SRM campus at Kattankulathur"
-              unoptimized
-            />
-          </div>
           <div className="s-place-grid">
-            <div className="s-vertical">
-              <h2 id="place-title">
-                Made in
-                <br />
-                Chennai
-              </h2>
-            </div>
+            <figure className="s-map">
+              <Image
+                className="s-map-img"
+                src="/home/campus-map.webp"
+                width={876}
+                height={1446}
+                sizes="(max-width: 760px) 70vw, 40vw"
+                alt="Illustrated transit-style map of the Kattankulathur campus: coloured routes link the academic blocks, the pond and Potheri railway station."
+                unoptimized
+              />
+            </figure>
             <div className="s-place-intro">
+              <h2 id="place-title">Find your way</h2>
               <p className="s-serif">
                 Follow the road through Kattankulathur. The next turn could be
                 your department.
@@ -121,6 +129,7 @@ export default function Page() {
                   Walk between the labs, the library and the grounds. Get a feel
                   for the campus before your first day.
                 </p>
+                <small className="s-map-note">Illustrated map, not to scale.</small>
               </div>
             </div>
           </div>

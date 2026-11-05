@@ -23,20 +23,6 @@ export function Choreography() {
           const stage = q(".s-stage")[0] as HTMLElement,
             hero = q(".s-hero")[0] as HTMLElement,
             acad = q(".s-academics")[0] as HTMLElement;
-          const setEdge = () => {
-            const news = q(".s-news")[0].getBoundingClientRect();
-            home.dataset.edge =
-              window.scrollY < innerHeight * 0.3 ||
-              (news.top < 50 && news.bottom > 50)
-                ? "dark"
-                : "light";
-          };
-          ScrollTrigger.create({
-            start: 0,
-            end: "max",
-            onUpdate: setEdge,
-            onRefresh: setEdge,
-          });
           const opening = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: {
@@ -101,12 +87,12 @@ export function Choreography() {
               0.9,
             );
           gsap.fromTo(
-            q(".s-panorama"),
-            { scale: 1.3, xPercent: 3, yPercent: 5 },
+            q(".s-map-img"),
+            { scale: 1.18, yPercent: 6, rotate: -2 },
             {
-              scale: 1.01,
-              xPercent: 0,
-              yPercent: -2,
+              scale: 1,
+              yPercent: 0,
+              rotate: 0,
               ease: "none",
               scrollTrigger: {
                 trigger: q(".s-place")[0],

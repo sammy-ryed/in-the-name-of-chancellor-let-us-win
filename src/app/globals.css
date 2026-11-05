@@ -1,37 +1,112 @@
 * {
   box-sizing: border-box;
 }
+/* ===== SRM design system: the single source of truth for colour, type and spacing ===== */
 :root {
-  /* The SRM crest blue anchors navigation; films use navy and reading surfaces use frost. */
-  --brand-blue: #034da1;
-  --cobalt: #1959c7;
-  --navy: #0b2857;
-  --ink: #07182f;
-  --sky: #80baff;
-  --cyan: #92e5ff;
-  --ice: #edf6ff;
-  --mist: #e1efff;
-  --steel: #5788b6;
-  --body-muted: #45607d;
-  --light-muted: #b8d3f2;
-  --rule: #9bb9d6;
-  --action-yellow: #ffda35;
-  --action-hover: #ffea83;
-  --action-pressed: #f4bd16;
-  --seafoam: #a4e8d1;
-  --apricot: #ffb093;
+  /* BRAND */
+  --color-primary: #123f78;
+  --color-primary-dark: #0b2d52;
+  --color-secondary: #1c5794;
+  --color-blue-mid: #477cb0;
+  --color-blue-light: #a8c8e6;
+  --color-blue-pale: #dcebfa;
+
+  --color-gold: #d6a928;
+  --color-gold-dark: #8d6813;
+  --color-gold-muted: #b48a20;
+  --color-amber: #f0b83d;
+  --color-gold-light: #f7d987;
+  --color-gold-pale: #fcf3d9;
+
+  /* SURFACES */
+  --surface-primary: #ffffff;
+  --surface-secondary: #f5f7fa;
+  --surface-warm: #faf8f2;
+  --surface-blue: #edf4fb;
+
+  /* TEXT */
+  --text-primary: #202b38;
+  --text-secondary: #536170;
+  --text-muted: #788493;
+  --text-disabled: #a5adb7;
+
+  /* BORDERS */
+  --border-default: #dfe5ec;
+  --border-strong: #c9d3de;
+
+  /* STATUS */
+  --color-success: #26845b;
+  --color-warning: #b7791f;
+  --color-error: #c74747;
+  --color-info: #2875b8;
+
+  /* TYPOGRAPHY (fonts are loaded in layout.tsx; the display face stays Bebas Neue, see chrome.css) */
+  --font-primary: var(--font-dm-sans, "DM Sans"), system-ui, sans-serif;
+  --font-editorial: var(--font-newsreader, "Newsreader"), Georgia, serif;
+  --font-nav: var(--font-manrope, "Manrope"), var(--font-primary);
+
+  /* SPACING */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* RADIUS */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 999px;
+
+  /* LAYOUT */
+  --container-width: 1280px;
+  --article-width: 760px;
+  --body-width: 680px;
+
+  /* ANIMATION */
+  --transition-fast: 150ms;
+  --transition-normal: 250ms;
+  --transition-slow: 400ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Legacy names used across the site — aliases onto the system above. Prefer the system names in new code. */
+  --brand-blue: var(--color-primary);
+  --cobalt: var(--color-secondary);
+  --navy: var(--color-primary-dark);
+  --ink: var(--text-primary);
+  --steel: var(--color-blue-mid);
+  --sky: var(--color-blue-light);
+  --light-muted: var(--color-blue-light);
+  --cyan: var(--color-blue-pale);
+  --ice: var(--surface-secondary);
+  --mist: var(--surface-blue);
+  --body-muted: var(--text-secondary);
+  --rule: var(--border-strong);
+  --action-yellow: var(--color-gold);
+  --action-hover: var(--color-amber);
+  --action-pressed: var(--color-gold-muted);
+  --seafoam: var(--color-gold-light);
+  --apricot: var(--color-amber);
 }
 ::selection {
-  color: var(--ink);
-  background: var(--action-yellow);
+  color: var(--text-primary);
+  background: var(--color-gold-light);
 }
 body {
   margin: 0;
-  background: var(--ice);
-  color: var(--ink);
-  font:
-    1rem/1.55 system-ui,
-    sans-serif;
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+  font: 1rem/1.55 var(--font-primary);
 }
 .directory-shell {
   --directory-gutter: max(5vw, calc((100% - 70rem) / 2));
@@ -60,8 +135,7 @@ a:focus-visible {
 }
 .brand {
   font:
-    bold 1.9rem Georgia,
-    serif;
+    bold 1.9rem var(--font-editorial);
   text-decoration: none;
 }
 .directory-shell nav {
@@ -94,8 +168,7 @@ a:focus-visible {
 }
 .intro h1 {
   font:
-    normal clamp(3rem, 7vw, 6rem)/1.05 Georgia,
-    serif;
+    normal clamp(3rem, 7vw, 6rem)/1.05 var(--font-editorial);
   margin: 0;
   max-width: 13ch;
 }
@@ -130,8 +203,7 @@ a:focus-visible {
   min-height: 44px;
   padding: 6px 12px;
   font:
-    1.55rem Georgia,
-    serif;
+    1.55rem var(--font-editorial);
 }
 .directory .yellow-action::after {
   content: "";
