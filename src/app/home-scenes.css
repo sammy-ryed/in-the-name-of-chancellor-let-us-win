@@ -18,6 +18,10 @@
     linear-gradient(100deg, rgb(5 22 48 / 70%), rgb(5 22 48 / 59%) 42%, rgb(5 22 48 / 56%)),
     linear-gradient(0deg, rgb(5 22 48 / 74%), transparent 70%);
 }
+.s-panorama-media {
+  position: absolute;
+  inset: 0;
+}
 .s-panorama {
   object-fit: cover;
   object-position: 54% center;

@@ -85,14 +85,16 @@ export default function Page() {
       </div>
       <section id="explore" className="s-place" aria-labelledby="place-title">
         <div className="s-place-frame">
-          <Image
-            className="s-panorama"
-            src="/home/campus.webp"
-            fill
-            sizes="100vw"
-            alt="Panorama of the SRM campus at Kattankulathur"
-            unoptimized
-          />
+          <div className="s-panorama-media">
+            <Image
+              className="s-panorama"
+              src="/home/campus.webp"
+              fill
+              sizes="100vw"
+              alt="Panorama of the SRM campus at Kattankulathur"
+              unoptimized
+            />
+          </div>
           <div className="s-place-grid">
             <div className="s-vertical">
               <h2 id="place-title">

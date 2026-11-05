@@ -18,13 +18,14 @@ type Options = {
   height: string;
   playerVars: Record<string, string | number>;
   events: {
-    onReady(): void;
+    onReady(event: { target: Player }): void;
     onStateChange(e: { data: number }): void;
     onError(): void;
     onAutoplayBlocked(): void;
   };
 };
-type API = { Player: new (el: HTMLElement, opts: Options) => Player };
+type PlayerHandle = Pick<Player, "destroy">;
+type API = { Player: new (el: HTMLElement, opts: Options) => PlayerHandle };
 declare global {
   interface Window {
     YT?: API;
@@ -59,11 +60,11 @@ function youtube() {
 export function Film() {
   const root = useRef<HTMLDivElement>(null),
     mount = useRef<HTMLDivElement>(null),
-    player = useRef<Player | null>(null);
+    readyPlayer = useRef<Player | null>(null);
   const active = useRef(false),
     inView = useRef(true),
     stopped = useRef(false),
-    manual = useRef(false),
+    soundEnabled = useRef(false),
     tried = useRef(false);
   const [mode, setMode] = useState<"preview" | "reel">("preview"),
     [playing, setPlaying] = useState(false),
@@ -78,6 +79,7 @@ export function Film() {
       element = root.current!,
       section = element.closest<HTMLElement>(".s-stage")!;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    let playerHandle: PlayerHandle | undefined;
     let dead = false,
       watchdog = 0;
     const hero = section.querySelector<HTMLElement>(".s-hero")!;
@@ -88,9 +90,9 @@ export function Film() {
       !stopped.current &&
       (!reduce.matches || active.current || previewChoice.current === true);
     const sync = () => {
-      if (!player.current) return;
-      if (shouldPlay()) player.current.playVideo();
-      else player.current.pauseVideo();
+      if (dead || !readyPlayer.current) return;
+      if (shouldPlay()) readyPlayer.current.playVideo();
+      else readyPlayer.current.pauseVideo();
     };
     const pref = () => {
       if (!active.current && previewChoice.current === null) {
@@ -109,6 +111,7 @@ export function Film() {
     });
     const obs = new IntersectionObserver(
       ([entry]) => {
+        if (dead) return;
         inView.current = entry.isIntersecting;
         sync();
       },
@@ -122,7 +125,7 @@ export function Film() {
         if (dead) return;
         const target = document.createElement("div");
         container.append(target);
-        player.current = new api.Player(target, {
+        playerHandle = new api.Player(target, {
           host: "https://www.youtube-nocookie.com",
           videoId: filmId,
           width: "100%",
@@ -139,10 +142,12 @@ export function Film() {
             mute: 1,
           },
           events: {
-            onReady() {
+            onReady({ target }) {
               if (dead) return;
-              if (manual.current) player.current?.unMute();
-              else player.current?.mute();
+              // YouTube installs the playback methods when the iframe is ready.
+              readyPlayer.current = target;
+              if (soundEnabled.current) target.unMute();
+              else target.mute();
               sync();
             },
             onStateChange(e) {
@@ -189,38 +194,38 @@ export function Film() {
       reduce.removeEventListener("change", pref);
       document.removeEventListener("visibilitychange", sync);
       delete section.dataset.viewing;
-      player.current?.destroy();
-      player.current = null;
+      readyPlayer.current = null;
+      playerHandle?.destroy();
     };
   }, []);
   function exitFilm() {
     active.current = false;
-    manual.current = false;
+    soundEnabled.current = false;
     stopped.current = previewPaused;
     delete root.current!.closest<HTMLElement>(".s-stage")!.dataset.viewing;
     setMode("preview");
     setMuted(true);
-    player.current?.mute();
-    if (previewPaused) player.current?.pauseVideo();
-    else player.current?.playVideo();
+    readyPlayer.current?.mute();
+    if (previewPaused) readyPlayer.current?.pauseVideo();
+    else readyPlayer.current?.playVideo();
   }
   function toggle() {
     if (mode === "preview") {
       active.current = true;
-      manual.current = true;
+      soundEnabled.current = true;
       stopped.current = false;
       setMode("reel");
       setMuted(false);
       root.current!.closest<HTMLElement>(".s-stage")!.dataset.viewing = "true";
-      player.current?.seekTo(0, true);
-      player.current?.unMute();
-      player.current?.playVideo();
+      readyPlayer.current?.seekTo(0, true);
+      readyPlayer.current?.unMute();
+      readyPlayer.current?.playVideo();
     } else if (playing) {
       stopped.current = true;
-      player.current?.pauseVideo();
+      readyPlayer.current?.pauseVideo();
     } else {
       stopped.current = false;
-      player.current?.playVideo();
+      readyPlayer.current?.playVideo();
     }
   }
   const label = mode === "reel" && playing ? "Pause" : "Play";
@@ -283,8 +288,9 @@ export function Film() {
             <button onClick={exitFilm}>Close film ×</button>
             <button
               onClick={() => {
-                if (muted) player.current?.unMute();
-                else player.current?.mute();
+                soundEnabled.current = muted;
+                if (muted) readyPlayer.current?.unMute();
+                else readyPlayer.current?.mute();
                 setMuted(!muted);
               }}
             >
@@ -299,8 +305,8 @@ export function Film() {
               stopped.current = next;
               previewChoice.current = !next;
               setPreviewPaused(next);
-              if (next) player.current?.pauseVideo();
-              else player.current?.playVideo();
+              if (next) readyPlayer.current?.pauseVideo();
+              else readyPlayer.current?.playVideo();
             }}
           >
             {previewPaused ? "Resume preview" : "Pause preview"}
