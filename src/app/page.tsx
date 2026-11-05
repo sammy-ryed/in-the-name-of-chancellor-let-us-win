@@ -172,7 +172,7 @@ export default function Page() {
               from SRM.
             </p>
             <p>Meet the students, teams and ideas making news on campus.</p>
-            <a className="yellow-action s-button" href={srm + "/news/"}>
+            <a className="yellow-action s-button" href="/news">
               All news <Arrow />
             </a>
           </div>
@@ -221,8 +221,11 @@ export default function Page() {
             <div>
               <p>Connect</p>
               <a href={srm + "/contact-us/"}>Contact SRM</a>
-              <a href={srm + "/admissions/"}>Admissions</a>
+              <a href="/admissions">Admissions</a>
               <a href={tourUrl}>Visit campus</a>
+              <Link href="/career-centre">Career Centre</Link>
+              <Link href="/events">Events</Link>
+              <Link href="/parents">Parents</Link>
             </div>
           </div>
         </div>

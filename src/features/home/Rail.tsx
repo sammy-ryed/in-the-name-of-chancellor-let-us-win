@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { actions, srm, tourUrl } from "./content";
+import { navigation, services } from "@/lib/navigation";
+import { srm, tourUrl } from "./content";
 export function Rail() {
   const panel = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -88,11 +89,7 @@ export function Rail() {
           </button>
         </div>
         <nav className="s-menu-sheet s-lines">
-          {[
-            ...actions,
-            { label: "News", href: srm + "/news/" },
-            { label: "Admissions", href: srm + "/admissions/" },
-          ].map((a) => (
+          {navigation.map((a) => (
             <Link
               key={a.href}
               href={a.href}
@@ -102,8 +99,22 @@ export function Rail() {
             </Link>
           ))}
           <div>
-            <a className="yellow-action" href={tourUrl}>Virtual tour ↗</a>
-            <a className="yellow-action" href={srm + "/contact-us/"}>Contact SRM ↗</a>
+            <a className="yellow-action" href={tourUrl}>
+              Virtual tour ↗
+            </a>
+            {services.map((a) => (
+              <Link
+                className="yellow-action"
+                key={a.href}
+                href={a.href}
+                onClick={() => panel.current?.close()}
+              >
+                {a.label}
+              </Link>
+            ))}
+            <a className="yellow-action" href={srm + "/contact-us/"}>
+              Contact SRM ↗
+            </a>
           </div>
         </nav>
       </dialog>

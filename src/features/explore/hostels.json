@@ -1,0 +1,96 @@
+{
+  "Men": [
+    {
+      "name": "Paari",
+      "detail": "Four or five sharing, non-AC, common washrooms."
+    },
+    {
+      "name": "Kaari",
+      "detail": "Four or five sharing, non-AC, common washrooms."
+    },
+    {
+      "name": "Oori",
+      "detail": "AC rooms, shared washrooms."
+    },
+    {
+      "name": "Adhiyaman",
+      "detail": "AC: two to four sharing. Non-AC: three or four sharing. Attached washrooms."
+    },
+    {
+      "name": "Nelson Mandela",
+      "detail": "Triple sharing, AC, attached washrooms."
+    },
+    {
+      "name": "Manoranjitham",
+      "detail": "Triple sharing, non-AC, common washrooms."
+    },
+    {
+      "name": "Sannasi A",
+      "detail": "Triple sharing, AC or non-AC, attached washrooms."
+    },
+    {
+      "name": "Agasthiyar",
+      "detail": "Four sharing, AC or non-AC, attached washrooms."
+    },
+    {
+      "name": "Began",
+      "detail": "Non-AC rooms with two or three occupants. Confirm washroom type with the warden."
+    },
+    {
+      "name": "N Block",
+      "detail": "Two- and three-sharing options."
+    }
+  ],
+  "Women": [
+    {
+      "name": "Kopperundevi (M Block)",
+      "detail": "Twin sharing, AC or non-AC, attached washrooms."
+    },
+    {
+      "name": "Senbagam",
+      "detail": "Three or six sharing, non-AC, common washrooms."
+    },
+    {
+      "name": "ESQ A",
+      "detail": "Two to four sharing, non-AC flats, attached washrooms."
+    },
+    {
+      "name": "ESQ B",
+      "detail": "Two or three sharing, non-AC flats, attached washrooms."
+    },
+    {
+      "name": "Kalpana Chawla",
+      "detail": "Two or four sharing, AC, attached washrooms."
+    },
+    {
+      "name": "Meenakshi",
+      "detail": "Four-sharing AC or three-sharing non-AC, attached washrooms."
+    },
+    {
+      "name": "Malligai",
+      "detail": "Twin sharing, non-AC, common washrooms."
+    },
+    {
+      "name": "Thamarai",
+      "detail": "Twin sharing, non-AC, common washrooms."
+    },
+    {
+      "name": "Sannasi C",
+      "detail": "Triple sharing, AC or non-AC, attached washrooms."
+    },
+    {
+      "name": "Mullai",
+      "detail": "Triple sharing, non-AC, common washrooms."
+    }
+  ],
+  "International": [
+    {
+      "name": "NRI Premium International Hostel",
+      "detail": "AC, triple-sharing accommodation."
+    },
+    {
+      "name": "Green Pearl",
+      "detail": "Off-campus serviced apartments with a shuttle and multi-cuisine dining."
+    }
+  ]
+}
