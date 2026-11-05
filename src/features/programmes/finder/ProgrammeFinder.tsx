@@ -221,15 +221,20 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
   return (
     <div className="pf">
       <header className={area ? "pf-hero pf-area-hero" : "pf-hero"}>
-        {area && <div className="area-cover"><Image src={area.photo || "/home/campus.webp"} alt="" fill sizes="48vw" /></div>}
         <div className="pf-hero-inner">
-          {area || browseAll ? (
-            <Link className="area-return" href="/programmes#study-areas"><Icon name="arrow" /> All study areas</Link>
-          ) : null}
-          <h1>{area ? area.title : browseAll ? "All programmes" : <>Find your <span>programme</span></>}</h1>
-          <SearchBox value={filters.query} onChange={(v) => set("query", v)} inputRef={searchRef}
-            placeholder={area ? "Search within this study area" : undefined} />
-          {!area && <Link className="pf-quiz" href={routes.finder.href}>No idea? Pick what course is right for you <Icon name="arrow" /></Link>}
+          <div className="pf-hero-copy">
+            {(area || browseAll) && (
+              <Link className="area-return" href="/programmes#study-areas"><Icon name="arrow" /> All study areas</Link>
+            )}
+            <h1>{area ? area.title : browseAll ? "All programmes" : <>Find <em>your</em> <span>programme</span></>}</h1>
+            <SearchBox value={filters.query} onChange={(v) => set("query", v)} inputRef={searchRef}
+              placeholder={area ? "Search within this study area" : undefined} />
+            {!area && <Link className="pf-quiz" href={routes.finder.href}>No idea? Pick what course is right for you <Icon name="arrow" /></Link>}
+          </div>
+          <div className="pf-hero-visual">
+            <Image src={area?.photo || "/campus/tech-park.webp"} alt="" fill
+              sizes="(max-width: 760px) 28vw, (max-width: 1280px) 45vw, 540px" />
+          </div>
         </div>
       </header>
       {!area && !browseAll && active === 0 ? (
