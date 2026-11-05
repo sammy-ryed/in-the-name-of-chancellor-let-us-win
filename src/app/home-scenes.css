@@ -69,10 +69,13 @@
   max-width: 24vw;
 }
 .s-place-details .s-button {
-  background: var(--ice);
-  color: var(--ink);
+  transform: rotate(-2deg);
+}
+.s-place-details .s-button:is(:hover, :focus-visible) {
+  transform: rotate(0);
 }
 .s-compass {
+  color: var(--action-yellow);
   font: 400 clamp(60px, 9vw, 150px)/1 Georgia;
   display: block;
   margin-bottom: 1.2vw;
@@ -170,8 +173,6 @@
 .s-people-cta {
   position: relative;
   z-index: 4;
-  background: var(--ink);
-  color: var(--ice);
 }
 .s-moving .s-people-cta {
   position: absolute;
@@ -216,8 +217,6 @@
 }
 .s-news-aside .s-button {
   margin-top: auto;
-  background: var(--cobalt);
-  color: var(--ice);
 }
 .s-stories {
   border-left: 1px solid var(--rule);
@@ -231,6 +230,7 @@
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: 3px;
   scrollbar-width: thin;
   scrollbar-color: var(--cobalt) transparent;
   gap: 2.6vw;
@@ -269,14 +269,15 @@
   justify-content: flex-end;
 }
 .s-news-controls button {
-  border: 1px solid currentColor;
-  background: transparent;
+  border: 0;
   width: 44px;
   height: 44px;
   font-size: 24px;
 }
 .s-news-controls button:disabled {
-  opacity: 0.32;
+  background: var(--mist);
+  color: var(--body-muted);
+  box-shadow: inset 0 0 0 1px var(--rule);
   cursor: default;
 }
 .s-actions {
@@ -303,8 +304,19 @@
   color: var(--ice);
 }
 .s-actions > a:nth-child(3) {
-  background: var(--cyan);
+  background: var(--seafoam);
   color: var(--navy);
+}
+.s-action-mark {
+  display: grid;
+  flex: none;
+  width: 1.2em;
+  height: 1.2em;
+  place-items: center;
+  border-radius: 50%;
+}
+.s-action-mark .s-arrow {
+  font-size: 0.65em;
 }
 .s-action-face,
 .s-action-reveal,
@@ -368,6 +380,10 @@
   display: block;
   text-transform: uppercase;
   font: 400 clamp(18px, 1.8vw, 34px)/1.12 var(--display);
+}
+.s-foot-top {
+  justify-self: start;
+  padding: 14px 16px;
 }
 .s-footer a:hover {
   text-decoration: underline;
@@ -868,8 +884,6 @@
     place-content: center;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    background: var(--cyan);
-    color: var(--ink);
     border-radius: 50%;
     width: 42px;
     height: 42px;

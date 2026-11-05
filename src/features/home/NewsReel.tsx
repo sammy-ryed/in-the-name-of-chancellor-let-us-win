@@ -108,11 +108,12 @@ export function NewsReel() {
           </a>
         ))}
       </div>
-      <span ref={hover} className="s-news-pointer" aria-hidden="true">
+      <span ref={hover} className="s-news-pointer yellow-action" aria-hidden="true">
         ↔
       </span>
       <div className="s-news-controls">
         <button
+          className="yellow-action"
           aria-controls="s-stories"
           disabled={edges.start}
           onClick={() => move(-1)}
@@ -121,6 +122,7 @@ export function NewsReel() {
           ←
         </button>
         <button
+          className="yellow-action"
           aria-controls="s-stories"
           disabled={edges.end}
           onClick={() => move(1)}

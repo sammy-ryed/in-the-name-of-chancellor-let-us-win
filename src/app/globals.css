@@ -15,10 +15,15 @@
   --body-muted: #45607d;
   --light-muted: #b8d3f2;
   --rule: #9bb9d6;
+  --action-yellow: #ffda35;
+  --action-hover: #ffea83;
+  --action-pressed: #f4bd16;
+  --seafoam: #a4e8d1;
+  --apricot: #ffb093;
 }
 ::selection {
-  color: var(--ice);
-  background: var(--brand-blue);
+  color: var(--ink);
+  background: var(--action-yellow);
 }
 body {
   margin: 0;
@@ -77,10 +82,10 @@ a:focus-visible {
   top: 1rem;
 }
 .directory-shell header a:focus-visible {
-  outline-color: var(--cyan);
+  outline-color: var(--action-yellow);
 }
 .directory-shell header a:hover {
-  color: var(--cyan);
+  color: var(--action-yellow);
 }
 .intro {
   color: var(--ice);
@@ -117,18 +122,48 @@ a:focus-visible {
 .directory a p {
   color: var(--body-muted);
 }
-.directory span {
-  color: var(--brand-blue);
+.directory .yellow-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+  padding: 6px 12px;
   font:
     1.55rem Georgia,
     serif;
 }
-.directory a:hover span {
-  text-decoration: underline;
+.directory .yellow-action::after {
+  content: "";
+  width: 0.58em;
+  height: 0.58em;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(45deg);
 }
 .directory-shell footer {
   background: var(--mist);
   color: var(--body-muted);
   border-top: 1px solid var(--rule);
   padding-block: 1.5rem;
+}
+
+/* Use on an interactive surface, or on the visible label inside a larger link. */
+.yellow-action {
+  background-color: var(--action-yellow);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+.yellow-action:is(:hover, :focus-visible):not(:disabled),
+:is(a, button):is(:hover, :focus-visible) .yellow-action {
+  background-color: var(--action-hover);
+}
+.yellow-action:active:not(:disabled),
+:is(a, button):active .yellow-action {
+  background-color: var(--action-pressed);
+}
+:where(.s-home, .directory) .yellow-action:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--action-yellow);
 }

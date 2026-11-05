@@ -273,20 +273,23 @@ export function Film() {
         }}
       >
         <span className="s-cursor">
-          <b>{label === "Pause" ? "Ⅱ" : "▶"}</b>
+          <b className="yellow-action">{label === "Pause" ? "Ⅱ" : "▶"}</b>
           <small>{label}</small>
         </span>
       </button>
       <noscript>
-        <a className="s-film-tools" href={filmUrl}>
+        <a className="s-film-tools yellow-action" href={filmUrl}>
           Watch the campus film on YouTube
         </a>
       </noscript>
       <div className="s-film-tools">
         {mode === "reel" && (
           <>
-            <button onClick={exitFilm}>Close film ×</button>
+            <button className="yellow-action" onClick={exitFilm}>
+              Close film ×
+            </button>
             <button
+              className="yellow-action"
               onClick={() => {
                 soundEnabled.current = muted;
                 if (muted) readyPlayer.current?.unMute();
@@ -300,6 +303,7 @@ export function Film() {
         )}
         {mode === "preview" && !failed && (!blocked || started) && (
           <button
+            className="yellow-action"
             onClick={() => {
               const next = !stopped.current;
               stopped.current = next;
@@ -313,7 +317,12 @@ export function Film() {
           </button>
         )}
         {(mode === "reel" || failed || blocked) && (
-          <a href={filmUrl} target="_blank" rel="noreferrer">
+          <a
+            className="yellow-action"
+            href={filmUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             Watch on YouTube ↗
           </a>
         )}

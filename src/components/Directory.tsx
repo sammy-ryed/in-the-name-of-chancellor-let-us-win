@@ -28,7 +28,7 @@ export function Directory({ title, intro, links }: DirectoryContent) {
         {links.map((item) => (
           <li key={item.href}>
             <Link href={item.href}>
-              <span>{item.label}</span>
+              <span className="yellow-action">{item.label}</span>
               <p>{item.detail}</p>
             </Link>
           </li>

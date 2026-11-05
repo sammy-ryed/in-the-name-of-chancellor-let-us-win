@@ -63,7 +63,7 @@ export default function Page() {
                   Design a building, test a circuit, grow a crop. Start with a
                   subject and see where you can take it.
                 </p>
-                <Link className="s-button" href="/programmes">
+                <Link className="yellow-action s-button" href="/programmes">
                   Find a programme <Arrow />
                 </Link>
               </div>
@@ -110,7 +110,7 @@ export default function Page() {
               </p>
             </div>
             <div className="s-place-details">
-              <a className="s-button" href={tourUrl}>
+              <a className="yellow-action s-button" href={tourUrl}>
                 Take the 360° tour <Arrow />
               </a>
               <div>
@@ -151,7 +151,7 @@ export default function Page() {
               </a>
             ))}
           </div>
-          <Link className="s-button s-people-cta" href="/campus">
+          <Link className="yellow-action s-button s-people-cta" href="/campus">
             Explore campus life <Arrow />
           </Link>
         </div>
@@ -172,7 +172,7 @@ export default function Page() {
               from SRM.
             </p>
             <p>Meet the students, teams and ideas making news on campus.</p>
-            <a className="s-button" href={srm + "/news/"}>
+            <a className="yellow-action s-button" href={srm + "/news/"}>
               All news <Arrow />
             </a>
           </div>
@@ -186,7 +186,9 @@ export default function Page() {
             <span className="s-action-reveal" aria-hidden="true">
               {a.detail}
             </span>
-            <Arrow />
+            <span className="s-action-mark yellow-action" aria-hidden="true">
+              <Arrow />
+            </span>
           </Link>
         ))}
       </section>
@@ -225,7 +227,7 @@ export default function Page() {
           </div>
         </div>
         <small>SRMIST · Student redesign prototype</small>
-        <a className="s-foot-top" href="#main">
+        <a className="s-foot-top yellow-action" href="#main">
           Back to top ↑
         </a>
       </footer>

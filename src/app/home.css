@@ -38,7 +38,7 @@
 .s-home a {
   -webkit-tap-highlight-color: transparent;
 }
-.s-home button {
+:where(.s-home) button {
   font: inherit;
   color: inherit;
   cursor: pointer;
@@ -103,7 +103,7 @@
   display: grid;
   place-content: center;
   gap: 4px;
-  color: var(--ice);
+  color: var(--action-yellow);
 }
 .s-rail button i {
   width: 25px;
@@ -202,7 +202,7 @@
 }
 .s-menu-sheet > a:hover,
 .s-menu-sheet > a:focus-visible {
-  color: var(--cyan);
+  color: var(--action-yellow);
   text-decoration: underline;
   text-decoration-thickness: 0.055em;
 }
@@ -211,10 +211,15 @@
   padding-top: 36px;
   font: 400 13px/1.05 var(--display);
   text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .s-menu-sheet > div a {
-  display: block;
-  padding: 4px 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 14px;
 }
 .s-opening,
 .s-place,
@@ -277,6 +282,9 @@
   background: var(--navy);
   color: var(--sky);
   clip-path: polygon(0 0, var(--lt) 0, var(--lk) 32%, var(--lb) 100%, 0 100%);
+}
+.s-intro-pane .s-headline span:last-child {
+  color: var(--action-yellow);
 }
 .s-film-pane {
   z-index: 2;
@@ -407,8 +415,6 @@
   width: clamp(46px, 5.3vw, 78px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--cyan);
-  color: var(--ink);
   display: grid;
   place-items: center;
   font: 700 16px/1 Arial;
@@ -449,8 +455,6 @@
   border: 0;
   white-space: nowrap;
   padding: 8px 9px;
-  background: rgb(7 24 47 / 94%);
-  color: var(--ice);
   font: 400 11px/1 var(--display);
   text-transform: uppercase;
 }
@@ -464,8 +468,6 @@
   justify-content: space-between;
   min-height: 44px;
   padding: 12px 16px;
-  background: var(--sky);
-  color: var(--navy);
   font: 400 clamp(13px, 1.15vw, 20px)/1 var(--display);
   text-transform: uppercase;
   width: max-content;
@@ -543,4 +545,10 @@
 
 .s-disciplines span {
   flex: none;
+}
+.s-disciplines span:nth-child(3n + 2) {
+  color: var(--seafoam);
+}
+.s-disciplines span:nth-child(3n) {
+  color: var(--apricot);
 }

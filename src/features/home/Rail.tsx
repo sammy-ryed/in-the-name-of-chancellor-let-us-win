@@ -102,8 +102,8 @@ export function Rail() {
             </Link>
           ))}
           <div>
-            <a href={tourUrl}>Virtual tour ↗</a>
-            <a href={srm + "/contact-us/"}>Contact SRM ↗</a>
+            <a className="yellow-action" href={tourUrl}>Virtual tour ↗</a>
+            <a className="yellow-action" href={srm + "/contact-us/"}>Contact SRM ↗</a>
           </div>
         </nav>
       </dialog>
