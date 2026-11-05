@@ -70,8 +70,11 @@ export const navigation: NavItem[] = [
       { href: "/campus#support", label: "Student support" },
     ],
   },
-  { ...routes.placements, children: [routes.recruiters, routes.outcomes,
-    { href: "/career-centre#support", label: "Training & contacts" }] },
+  { ...routes.placements, children: [
+    { href: "/career-centre#outcomes", label: "Placement figures & CTC" },
+    { href: "/career-centre#recruiters", label: "Recruiters & offers" },
+    { href: "/career-centre#support", label: "Training & contacts" },
+  ] },
   { ...routes.students, children: [
     { href: "/students#portals", label: "Academic portals" },
     { href: "/students#wifi", label: "Wi-Fi & IT" }, routes.score] },

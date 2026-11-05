@@ -1,0 +1,6 @@
+/* Utilities only: no Tailwind preflight, reset, theme or global selectors.
+   The cc: prefix is reserved for this route. Output is committed. */
+@layer utilities;
+@import "./theme.css" prefix(cc);
+@import "tailwindcss/utilities.css" layer(utilities) source(none) prefix(cc);
+@source "../components";
