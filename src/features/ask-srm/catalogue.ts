@@ -28,6 +28,8 @@ const sectionNotes: Record<string, string> = {
     "Find reunion events, photo albums and award-winning SRM graduates. Alumni Day 2026 is on 19 December at Dr. T. P. Ganesan Auditorium; register in advance.",
   Placements:
     "Compare published placement outcomes by batch and find training and placement contacts.",
+  Research:
+    "Explore SRMIST research centres, funded projects, facilities and doctoral opportunities.",
   Events:
     "Use the campus calendar to see upcoming events, filter by date or find an organiser’s registration page.",
   Parents:
