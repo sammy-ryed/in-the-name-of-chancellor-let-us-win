@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Rail } from "@/features/home/Rail";
 import { ClubDirectory } from "@/features/campus/ClubDirectory";
 import { clubs } from "@/features/campus/clubs";
 import { campusLinks } from "@/features/campus/links";
 import hostels from "@/features/explore/hostels.json";
 import events from "@/features/explore/events.json";
-import { tourUrl } from "@/features/home/content";
+import { tourUrl } from "@/lib/navigation";
 import { finderData } from "@/features/programmes/finder/data";
 import "./campus.css";
 
@@ -38,8 +37,7 @@ function Arrow() {
 
 export default function Page() {
   return (
-    <div className="cl-page s-chrome">
-      <Rail current="Campus life" scrollHref="#life" />
+    <div className="cl-page">
 
       {/* 1 — Hero */}
       <header className="cl-hero">

@@ -1,16 +1,26 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { navigation, services } from "@/lib/navigation";
-import { srm, tourUrl } from "./content";
-export function Rail({
-  scrollHref = "#explore",
-  current,
-}: {
-  scrollHref?: string;
-  current?: string;
-}) {
+import { usePathname } from "next/navigation";
+import { HomeLogo } from "./HomeLogo";
+import { navigation, services, srm, tourUrl } from "@/lib/navigation";
+
+// Preserve each page’s existing “Scroll for more” destination.
+const scrollTargets: Record<string, string> = {
+  "/": "#explore",
+  "/students": "#explore",
+  "/programmes": "#pf-results-title",
+  "/campus": "#life",
+  "/campus/accommodation": "#booking",
+};
+
+export function SiteNavigation() {
+  const pathname = usePathname();
+  return <NavigationMenu key={pathname} pathname={pathname} />;
+}
+
+function NavigationMenu({ pathname }: { pathname: string }) {
+  const scrollHref = scrollTargets[pathname] ?? "#guide-content";
   const panel = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -40,26 +50,11 @@ export function Rail({
       document.documentElement.style.overflow = before;
     };
   }, [open]);
-  const logo = (
-    <Image
-      src="/home/srm-white.svg"
-      width={600}
-      height={203}
-      alt="SRM Institute of Science and Technology"
-      unoptimized
-    />
-  );
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
   return (
     <>
       <aside className="s-rail" aria-label="Site controls">
-        <Link href="/" aria-label="SRM home">
-          {logo}
-        </Link>
-        {current && (
-          <span className="guide-spine" aria-hidden="true">
-            {current}
-          </span>
-        )}
+        <HomeLogo />
         <button
           ref={trigger}
           aria-label="Open menu"
@@ -118,7 +113,7 @@ export function Rail({
                     <Link
                       className="s-menu-item"
                       href={item.href}
-                      aria-current={item.label === current ? "page" : undefined}
+                      aria-current={item.href === pathname ? "page" : undefined}
                       onFocus={(e) => item.children && e.currentTarget.matches(":focus-visible") && show(item.label)}
                       onClick={(e) => {
                         if (item.children && !isOpen && !canHover()) {
@@ -138,7 +133,7 @@ export function Rail({
                           <ul>
                             {item.children.map((child) => (
                               <li key={child.href}>
-                                <Link href={child.href} onClick={close}>
+                                <Link href={child.href} aria-current={child.href === pathname ? "page" : undefined} onClick={close}>
                                   {child.label}
                                 </Link>
                               </li>
@@ -163,7 +158,7 @@ export function Rail({
                 <Link
                   key={a.href}
                   href={a.href}
-                  aria-current={a.label === current ? "page" : undefined}
+                  aria-current={a.href === pathname ? "page" : undefined}
                   onClick={close}
                 >
                   {a.label}

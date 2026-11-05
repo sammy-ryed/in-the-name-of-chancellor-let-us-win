@@ -91,19 +91,27 @@
   transform: scaleY(0);
   pointer-events: none;
 }
-/* Current-page label on the rail (Rail's `current`); guide.css refines it on guide pages. */
-.guide-spine {
-  position: absolute;
-  top: clamp(130px, 17vh, 195px);
-  writing-mode: vertical-rl;
-  font:
-    700 1.05rem/1 var(--font-primary);
-  color: var(--muted, var(--light-muted));
+@keyframes rail-progress {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
 }
-@media (max-width: 760px) {
-  .guide-spine {
-    display: none;
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-quiet-motion], [data-large-text]) .s-progress {
+      animation: rail-progress 1s linear both;
+      animation-timeline: scroll(root);
+    }
   }
+}
+:is(.s-rail, .s-menu) :focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+:is(.s-rail, .s-menu) :is(button, a) {
+  -webkit-tap-highlight-color: transparent;
+}
+@media (max-height: 530px) and (orientation: landscape) {
+  .s-rail-caption { font-size: 9px; }
 }
 .s-menu {
   position: fixed;

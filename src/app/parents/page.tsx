@@ -1,5 +1,5 @@
 import { Guide, Section, Resources } from "@/components/Guide";
-const s = "https://www.srmist.edu.in";
+import { srm } from "@/lib/navigation";
 export const metadata = { title: "Parents" };
 export default function Page() {
   return (
@@ -39,12 +39,12 @@ export default function Page() {
             },
             {
               title: "Visit Kattankulathur",
-              href: s + "/visitors/",
+              href: srm + "/visitors/",
               note: "Directions, campus maps and arrival information.",
             },
             {
               title: "Scholarships and aid",
-              href: s + "/policies/scholarship-policy/",
+              href: srm + "/policies/scholarship-policy/",
               note: "Read eligibility, conditions and renewal guidance.",
             },
           ]}
@@ -56,22 +56,22 @@ export default function Page() {
             {
               title: "Anti-ragging support",
               note: "Reach the university’s dedicated anti-ragging committee.",
-              href: s + "/life-at-srm/anti-ragging/",
+              href: srm + "/life-at-srm/anti-ragging/",
             },
             {
               title: "Anti-discrimination",
               note: "Find the separate discrimination reporting channel.",
-              href: s + "/life-at-srm/anti-discrimination/",
+              href: srm + "/life-at-srm/anti-discrimination/",
             },
             {
               title: "Student counselling",
               note: "Wellbeing resources and contact details.",
-              href: s + "/life-at-srm/student-counselling-services/",
+              href: srm + "/life-at-srm/student-counselling-services/",
             },
             {
               title: "Contact SRM",
               note: "University and admissions contacts.",
-              href: s + "/contact-us/",
+              href: srm + "/contact-us/",
             },
           ]}
         />

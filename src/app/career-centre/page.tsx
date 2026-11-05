@@ -1,5 +1,5 @@
 import { Guide, Section, Resources } from "@/components/Guide";
-const s = "https://www.srmist.edu.in";
+import { srm } from "@/lib/navigation";
 export const metadata = { title: "Placements & career support" };
 export default function Page() {
   return (
@@ -49,7 +49,7 @@ export default function Page() {
             university brochure, p. 25
           </a>
           . 2025 figures:{" "}
-          <a href={s + "/career-centre/"}>Career Centre, as of 12 June 2026</a>.
+          <a href={srm + "/career-centre/"}>Career Centre, as of 12 June 2026</a>.
           CTC means cost to company. The sources do not specify the same
           threshold for high-paying offers or a campus breakdown.
         </p>
@@ -59,12 +59,12 @@ export default function Page() {
           items={[
             {
               title: "Placement preparation",
-              href: s + "/placements/activities/",
+              href: srm + "/placements/activities/",
               note: "Training, pre-placement activities and career development.",
             },
             {
               title: "Contact the placement team",
-              href: s + "/placements/leadership-contact/",
+              href: srm + "/placements/leadership-contact/",
               note: "Student placement queries and recruiter enquiries.",
             },
             {

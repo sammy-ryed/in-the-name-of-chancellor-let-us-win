@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { navigation, services } from "@/lib/navigation";
-import { Rail } from "@/features/home/Rail";
+import { ServiceFooter } from "./SiteFooter";
+import { Breadcrumbs } from "./Breadcrumbs";
 import "./guide.css";
+const homeCrumb = { href: "/", label: "Home" };
+
 export function Action({
   href,
   children,
@@ -73,49 +75,18 @@ export function Guide({
     }[destination] ??
     "Programme details";
   return (
-    <div className="guide-shell s-chrome">
-      <Rail current={destination} scrollHref="#guide-content" />
+    <div className="guide-shell">
       <div className="guide">
-        <header className="guide-mast">
-          <Link href="/" aria-label="Explore SRM home">
-            <Image
-              width={135}
-              height={46}
-              src="/home/srm-white.svg"
-              alt="SRM Institute of Science and Technology"
-              unoptimized
-            />
-          </Link>
-          <nav aria-label="University sections">
-            {navigation.map((item) => (
-              <Link
-                href={item.href}
-                key={item.href}
-                aria-current={destination === item.label ? "page" : undefined}
-              >
-                {item.label} <span aria-hidden="true">›</span>
-              </Link>
-            ))}
-          </nav>
-        </header>
         <header
           className="guide-cover"
           data-editorial={editorial || undefined}
           data-detail={detail || undefined}
         >
-          <nav className="guide-crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <i aria-hidden="true">/</i>
-            {detail && (
-              <>
-                <Link href="/programmes">Programmes</Link>
-                <i aria-hidden="true">/</i>
-              </>
-            )}
-            <span aria-current="page">
-              {detail ? "Programme details" : title}
-            </span>
-          </nav>
+          <Breadcrumbs
+            className="guide-crumbs"
+            parents={detail ? [homeCrumb, { href: "/programmes", label: "Programmes" }] : [homeCrumb]}
+            current={detail ? "Programme details" : title}
+          />
           {!editorial && <h1>{title}</h1>}
           <div className="guide-lede">
             {editorial ? <h1>{intro}</h1> : <p>{intro}</p>}
@@ -154,16 +125,7 @@ export function Guide({
           )}
           <div className="guide-body">{children}</div>
         </div>
-        <footer className="guide-footer">
-          <Link href="/">SRMIST / Home</Link>
-          <nav aria-label="More services">
-            {services.map((a) => (
-              <Link key={a.href} href={a.href}>
-                {a.label}
-              </Link>
-            ))}
-          </nav>
-        </footer>
+        <ServiceFooter className="guide-footer" />
       </div>
     </div>
   );

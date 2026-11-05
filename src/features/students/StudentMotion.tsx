@@ -27,7 +27,6 @@ export function StudentMotion() {
           gsap.fromTo(image, { yPercent: -5, scale: 1.12 }, { yPercent: 5, scale: 1.04, ease: "none", scrollTrigger: { trigger: image.parentElement, start: "top bottom", end: "bottom top", scrub: 0.6 } });
         });
         gsap.fromTo(q(".st-score-word"), { xPercent: -6 }, { xPercent: 3, ease: "none", scrollTrigger: { trigger: q(".st-score-art")[0], start: "top bottom", end: "bottom top", scrub: 0.7 } });
-        gsap.to(q(".s-progress"), { scaleY: 1, ease: "none", scrollTrigger: { trigger: root, start: "top top", end: "bottom bottom", scrub: true } });
       }, root);
       media.add("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
         const cleanups = Array.from(root.querySelectorAll<HTMLElement>(".st-network-card")).map(card => {
