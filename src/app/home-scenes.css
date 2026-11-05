@@ -96,10 +96,52 @@
   padding: 4svh 5.8vw 4svh var(--start);
 }
 .s-people-title {
-  font-size: min(11.7vw, 18.6svh);
-  line-height: 0.99;
-  letter-spacing: -0.04em;
-  margin-left: 8vw !important;
+  /* Two big left-aligned lines: GREAT IDEAS / NEED GREAT TEAMS. */
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.2em;
+  font-size: min(11vw, 16.5svh);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin-left: 0 !important;
+  padding-top: 7svh; /* clears the floating Ask SRM bar */
+  white-space: nowrap;
+}
+.s-people-break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+/* A row of photos from each team fills the space under the list. */
+.s-people-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vw, 22px);
+  margin-top: 2rem;
+}
+.s-moving .s-people-strip {
+  position: absolute;
+  left: var(--start);
+  right: 5.7vw;
+  bottom: 13svh;
+  margin: 0;
+}
+.s-people-strip figure {
+  margin: 0;
+  transform: rotate(calc((var(--i) - 2) * 1.2deg));
+}
+.s-people-strip img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  box-shadow: 0 14px 30px -18px rgb(7 24 47 / 60%);
+}
+.s-people-strip figcaption {
+  margin-top: 8px;
+  font: 400 clamp(13px, 1vw, 16px) / 1.2 var(--font-primary);
+  color: var(--steel);
 }
 .s-people-title span,
 .s-people-title b {
@@ -119,7 +161,7 @@
 }
 .s-moving .s-roster {
   position: absolute;
-  top: 45%;
+  top: 43%;
   left: var(--start);
   right: 5.7vw;
   margin: 0;
@@ -147,13 +189,14 @@
 .s-roster a > img {
   opacity: 0;
   position: absolute;
-  left: 22%;
+  /* Sits right of centre, in the gap between the name and the place. */
+  left: 66%;
   top: 50%;
   width: clamp(100px, 15vw, 240px);
   height: auto;
   aspect-ratio: 1.5;
   object-fit: cover;
-  transform: translateY(-45%) rotate(-5deg) scale(0.88);
+  transform: translate(-50%, -45%) rotate(-5deg) scale(0.88);
   transition:
     opacity 0.18s,
     transform 0.24s;
@@ -163,13 +206,12 @@
 .s-roster a:hover,
 .s-roster a:focus-visible {
   color: var(--brand-blue);
-  background: var(--ice);
   z-index: 3;
 }
 .s-roster a:hover > img,
 .s-roster a:focus-visible > img {
   opacity: 1;
-  transform: translateY(-50%) rotate(-3deg) scale(1);
+  transform: translate(-50%, -50%) rotate(-3deg) scale(1);
 }
 .s-people-cta {
   position: relative;
@@ -199,10 +241,18 @@
   gap: 13vw;
 }
 .s-news-title i {
-  font: normal 0.86em/1 var(--font-editorial);
-  transform: scaleX(1.45);
-  margin-left: 0.25em;
-  color: var(--cobalt);
+  /* A true circle: a ring with a solid centre, drawn in CSS rather than a stretched glyph. */
+  display: inline-block;
+  flex: none;
+  width: 0.62em;
+  height: 0.62em;
+  margin-left: 0.12em;
+  border: 0.05em solid var(--cobalt);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--cobalt) 0 56%, transparent 57%);
+  font-size: 1em;
+  color: transparent;
+  overflow: hidden;
 }
 .s-news-grid {
   display: grid;
@@ -307,6 +357,10 @@
 .s-actions > a:nth-child(3) {
   background: var(--seafoam);
   color: var(--navy);
+}
+.s-actions > a:nth-child(4) {
+  background: var(--color-primary); /* #123F78, sets it apart from the footer navy below */
+  color: var(--color-gold-light); /* #F7D987, about 7:1 contrast */
 }
 .s-action-mark {
   display: grid;
@@ -473,8 +527,9 @@
     padding: 10px 12px;
   }
   .s-people-title {
-    font-size: min(18vw, 16svh);
+    font-size: min(13vw, 12svh);
     margin-left: 0 !important;
+    padding-top: 0;
   }
   .s-moving .s-people {
     height: 190svh;
@@ -499,6 +554,13 @@
     left: auto;
     right: 0;
     max-width: 90px;
+  }
+  .s-roster a > img {
+    transform: translateY(-45%) rotate(-5deg) scale(0.88);
+  }
+  .s-roster a:hover > img,
+  .s-roster a:focus-visible > img {
+    transform: translateY(-50%) rotate(-3deg) scale(1);
   }
   .s-moving .s-people-cta {
     left: var(--start);
