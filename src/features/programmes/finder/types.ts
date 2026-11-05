@@ -15,6 +15,11 @@ export interface Programme {
   certification: string;
   url: string;
   duration?: string;
+  fee?: string;
+  feeUrl?: string;
+  feePeriod?: string;
+  photo?: string;
+  applyUrl?: string;
   level: string[];
   mode: string[];
   type: string[];
@@ -54,9 +59,10 @@ export const emptyFilters: Filters = {
   query: "",
 };
 
-export type SortKey = "relevance" | "name-asc" | "name-desc" | "level" | "duration";
+export type SortKey = "applications" | "relevance" | "name-asc" | "name-desc" | "level" | "duration";
 
 export const sortOptions: { value: SortKey; label: string }[] = [
+  { value: "applications", label: "Most applied to" },
   { value: "relevance", label: "Best match" },
   { value: "name-asc", label: "Name A–Z" },
   { value: "name-desc", label: "Name Z–A" },

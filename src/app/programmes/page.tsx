@@ -1,52 +1,25 @@
 import { Suspense } from "react";
-import Link from "next/link";
-import { routes } from "@/lib/navigation";
-import { Inter } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
+import { applicantSource } from "@/features/programmes/finder/applicants";
 import { finderData } from "@/features/programmes/finder/data";
 import { ProgrammeFinder } from "@/features/programmes/finder/ProgrammeFinder";
 import { FinderFromURL } from "@/features/programmes/finder/FinderFromURL";
 import "./programmes.css";
 
-// Finder type: Manrope for headings (--font-nav), Inter for body, labels and metadata.
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 export const metadata = {
   title: "Programmes",
-  description:
-    "Search every SRMIST programme by level, campus, faculty, department and mode of delivery.",
+  description: "Explore SRMIST programmes by subject, school and campus. Compare fees and duration, then apply.",
 };
 
 export default function Page() {
   return (
     <>
-      <div className={`pf-page ${inter.variable}`}>
-        <div className="pf-main" id="programmes">
-          <header className="pf-hero">
-            <p className="pf-eyebrow">Programmes</p>
-            <h1>Find your programme</h1>
-            <p className="pf-lede">
-              Explore {finderData.programmes.length} undergraduate, postgraduate
-              and doctoral programmes across SRM Institute of Science and
-              Technology. Search by subject, then narrow by level, campus or
-              faculty.
-            </p>
-            <p><Link href={routes.finder.href}>No idea? Pick what course is right for you</Link></p>
-          </header>
-          {/* Static HTML carries the full list; the URL (e.g. ?college=) applies on the client. */}
-          <Suspense fallback={<ProgrammeFinder data={finderData} />}>
-            <FinderFromURL data={finderData} />
-          </Suspense>
-        </div>
+      <div className="pf-page" id="programmes">
+        <Suspense fallback={<ProgrammeFinder data={finderData} />}>
+          <FinderFromURL data={finderData} />
+        </Suspense>
         <p className="pf-source">
-          Programme data from the{" "}
-          <a href={finderData.source}>SRMIST Program Finder</a>, retrieved{" "}
-          {finderData.fetched}. Each programme links to its official page for
-          fees, eligibility and admission details.
+          Catalogue from the <a href={finderData.source}>SRMIST Program Finder</a>. “Most applied to” uses <a href={applicantSource}>2024–25 Kattankulathur application counts</a>. Programmes without a matched count follow in alphabetical order. Check the official programme page for intake-specific fees and eligibility.
         </p>
       </div>
       <SiteFooter />

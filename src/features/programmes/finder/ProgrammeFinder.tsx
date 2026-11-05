@@ -1,22 +1,24 @@
 "use client";
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
-import { ActiveChips, ChoiceList, Icon, LevelPills, SearchBox, SelectField, SortSelect, type ActiveChip } from "./controls";
+import Link from "next/link";
+import { routes } from "@/lib/navigation";
+import { ActiveChips, ChoiceList, Icon, SearchBox, SelectField, SortSelect, type ActiveChip } from "./controls";
 import { activeCount, buildIndex, campusIndex, facetCounts, filterProgrammes, sortProgrammes } from "./filter";
 import { ProgrammeRow, type RowLabels } from "./ProgrammeRow";
 import { emptyFilters, sortOptions, type FinderData, type Filters, type SortKey } from "./types";
 
-const PAGE = 30;
+const PAGE = 12;
 const fmt = (n: number) => n.toLocaleString("en-IN");
 
 export function ProgrammeFinder({ data, initial }: { data: FinderData; initial?: Partial<Filters> }) {
   const [filters, setFilters] = useState<Filters>({ ...emptyFilters, ...initial });
-  const [sort, setSort] = useState<SortKey>("relevance");
+  const [selectedSort, setSort] = useState<SortKey>();
   const [limit, setLimit] = useState(PAGE);
   const [sheetOpen, setSheetOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const sheet = useRef<HTMLDialogElement>(null);
   const sheetClose = useRef<HTMLButtonElement>(null);
-  const resultsTop = useRef<HTMLDivElement>(null);
 
   // Every filter change starts the list from the top again.
   const change = (fn: (f: Filters) => Filters) => {
@@ -27,6 +29,7 @@ export function ProgrammeFinder({ data, initial }: { data: FinderData; initial?:
   const clearAll = () => change(() => emptyFilters);
 
   const deferred = useDeferredValue(filters);
+  const sort = selectedSort ?? (deferred.query.trim() ? "relevance" : "applications");
   const busy = deferred !== filters;
   const ix = useMemo(() => ({ text: buildIndex(data), campuses: campusIndex(data) }), [data]);
   const results = useMemo(
@@ -36,10 +39,9 @@ export function ProgrammeFinder({ data, initial }: { data: FinderData; initial?:
   const counts = useMemo(() => facetCounts(data, ix, deferred), [data, ix, deferred]);
   const labels: RowLabels = useMemo(
     () => ({
-      level: new Map(data.levels.map((o) => [o.value, o.label])),
-      type: new Map(data.types.map((o) => [o.value, o.label])),
+      department: new Map(data.departments.map(o => [o.value, o.label])),
+      college: new Map(data.colleges.map((o) => [o.value, o.label])),
       campus: new Map(data.campuses.map((o) => [o.value, o.label])),
-      department: new Map(data.departments.map((o) => [o.value, o.label])),
       campusesOf: ix.campuses,
     }),
     [data, ix],
@@ -77,13 +79,13 @@ export function ProgrammeFinder({ data, initial }: { data: FinderData; initial?:
     ...filters.types.map((v) => ({ key: "t" + v, label: label(data.types, v), remove: () => set("types", filters.types.filter((x) => x !== v)) })),
   ];
   const active = activeCount(filters);
-  const refineActive = active - filters.levels.length - (filters.query.trim() ? 1 : 0);
+  const refineActive = active - (filters.query.trim() ? 1 : 0);
 
   // "/" focuses the search from anywhere on the page (unless already typing).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
-      if (e.key !== "/" || e.metaKey || e.ctrlKey || t.closest("input, textarea, select, [contenteditable]")) return;
+      if (sheet.current?.open || e.key !== "/" || e.metaKey || e.ctrlKey || t.closest("input, textarea, select, [contenteditable]")) return;
       e.preventDefault();
       searchRef.current?.focus();
     };
@@ -97,107 +99,120 @@ export function ProgrammeFinder({ data, initial }: { data: FinderData; initial?:
     const html = document.documentElement;
     const before = html.style.overflow;
     html.style.overflow = "hidden";
+    const dialog = sheet.current;
+    dialog?.showModal();
     sheetClose.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSheetOpen(false);
-    document.addEventListener("keydown", onKey);
+    const desktop = window.matchMedia("(min-width: 961px)");
+    const onResize = () => { if (desktop.matches) setSheetOpen(false); };
+    desktop.addEventListener("change", onResize);
     return () => {
+      dialog?.close();
       html.style.overflow = before;
-      document.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", onResize);
     };
   }, [sheetOpen]);
-  const closeSheet = () => {
-    setSheetOpen(false);
-    resultsTop.current?.scrollIntoView({ block: "start" });
-  };
+  const closeSheet = () => setSheetOpen(false);
 
   const shown = results.slice(0, limit);
   const total = data.programmes.length;
 
+  const filterControls = (
+    <>
+      <div className="pf-refine-head">
+        <h2>Filters</h2>
+        {refineActive > 0 && (
+          <button type="button" className="pf-clear" onClick={() => change(f => ({ ...emptyFilters, query: f.query }))}>
+            Clear all
+          </button>
+        )}
+        <button ref={sheetClose} type="button" className="pf-sheet-close" onClick={closeSheet} aria-label="Close filters">
+          <Icon name="close" />
+        </button>
+      </div>
+      <div className="pf-refine-body">
+        <ChoiceList legend="Study level" name="pf-level" type="checkbox" options={data.levels.slice(0, 3)}
+          selected={filters.levels} counts={counts.levels} onChange={(v) => set("levels", v)} />
+        <details className="pf-extra" open={filters.levels.some(v => data.levels.slice(3).some(o => o.value === v)) || undefined}>
+          <summary>More study levels</summary>
+          <ChoiceList legend="Other study levels" name="pf-level-other" type="checkbox" options={data.levels.slice(3)}
+            selected={filters.levels} counts={counts.levels} onChange={(v) => set("levels", v)} />
+        </details>
+        <ChoiceList
+          legend="Campus"
+          name="pf-campus"
+          type="radio"
+          allLabel="All campuses"
+          options={data.campuses.map((c) => ({ value: c.value, label: c.label.split(" - ")[0] }))}
+          selected={filters.campus ? [filters.campus] : []}
+          counts={counts.campus}
+          onChange={(v) => chooseCampus(v[0] ?? "")}
+        />
+        <SelectField
+          id="pf-college"
+          label="School or faculty"
+          allLabel="All schools and faculties"
+          options={colleges}
+          counts={counts.college}
+          value={filters.college}
+          onChange={chooseCollege}
+        />
+        <SelectField
+          id="pf-dept"
+          label="Department"
+          allLabel="All departments"
+          options={departments}
+          counts={counts.department}
+          value={filters.department}
+          onChange={(v) => set("department", v)}
+        />
+        <details className="pf-extra"><summary>Study mode and pattern</summary>
+        <ChoiceList
+          legend="Mode of delivery"
+          name="pf-mode"
+          type="checkbox"
+          options={data.modes}
+          selected={filters.modes}
+          counts={counts.modes}
+          onChange={(v) => set("modes", v)}
+        />
+        <ChoiceList
+          legend="Study pattern"
+          name="pf-type"
+          type="checkbox"
+          options={data.types}
+          selected={filters.types}
+          counts={counts.types}
+          onChange={(v) => set("types", v)}
+        />
+        </details>
+      </div>
+      <div className="pf-sheet-foot">
+        <button type="button" className="pf-btn pf-btn-primary" onClick={closeSheet}>
+          Show {fmt(results.length)} {results.length === 1 ? "programme" : "programmes"}
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <div className="pf">
-      {/* 1 — Search and level: the primary way in */}
-      <div className="pf-lead">
-        <SearchBox value={filters.query} onChange={(v) => set("query", v)} total={total} inputRef={searchRef} />
-        <LevelPills options={data.levels} selected={filters.levels} counts={counts.levels} onChange={(v) => set("levels", v)} />
-      </div>
-
-      <div className="pf-body">
-        {/* 2 — Refine: secondary filters (a full-screen sheet on phones) */}
-        <aside
-          id="pf-refine"
-          className="pf-refine"
-          data-open={sheetOpen ? "" : undefined}
-          aria-label="Refine programmes"
-          {...(sheetOpen ? { role: "dialog", "aria-modal": true } : {})}
-        >
-          <div className="pf-refine-head">
-            <h2>Refine</h2>
-            {refineActive > 0 && (
-              <button type="button" className="pf-clear" onClick={clearAll}>
-                Clear all
-              </button>
-            )}
-            <button ref={sheetClose} type="button" className="pf-sheet-close" onClick={closeSheet} aria-label="Close filters">
-              <Icon name="close" />
-            </button>
-          </div>
-          <div className="pf-refine-body">
-            <ChoiceList
-              legend="Campus"
-              name="pf-campus"
-              type="radio"
-              allLabel="All campuses"
-              options={data.campuses.map((c) => ({ value: c.value, label: c.label.split(" - ")[0] }))}
-              selected={filters.campus ? [filters.campus] : []}
-              counts={counts.campus}
-              onChange={(v) => chooseCampus(v[0] ?? "")}
-            />
-            <SelectField
-              id="pf-college"
-              label="Faculty"
-              allLabel="All faculties"
-              options={colleges}
-              counts={counts.college}
-              value={filters.college}
-              onChange={chooseCollege}
-            />
-            <SelectField
-              id="pf-dept"
-              label="Department"
-              allLabel="All departments"
-              options={departments}
-              counts={counts.department}
-              value={filters.department}
-              onChange={(v) => set("department", v)}
-            />
-            <ChoiceList
-              legend="Mode of delivery"
-              name="pf-mode"
-              type="checkbox"
-              options={data.modes}
-              selected={filters.modes}
-              counts={counts.modes}
-              onChange={(v) => set("modes", v)}
-            />
-            <ChoiceList
-              legend="Study pattern"
-              name="pf-type"
-              type="checkbox"
-              options={data.types}
-              selected={filters.types}
-              counts={counts.types}
-              onChange={(v) => set("types", v)}
-            />
-          </div>
-          <div className="pf-sheet-foot">
-            <button type="button" className="pf-btn pf-btn-primary" onClick={closeSheet}>
-              Show {fmt(results.length)} {results.length === 1 ? "programme" : "programmes"}
-            </button>
-          </div>
-        </aside>
+      <header className="pf-hero">
+        <div className="pf-hero-inner">
+          <h1>Find your <span>programme</span></h1>
+          <SearchBox value={filters.query} onChange={(v) => set("query", v)} inputRef={searchRef} />
+          <Link className="pf-quiz" href={routes.finder.href}>No idea? Pick what course is right for you <Icon name="arrow" /></Link>
+        </div>
+      </header>
+      <div className="pf-main pf-body">
+        {sheetOpen ? (
+          <dialog className="pf-refine" id="pf-refine" ref={sheet} aria-label="Programme filters"
+            onCancel={() => setSheetOpen(false)}>{filterControls}</dialog>
+        ) : (
+          <aside className="pf-refine" id="pf-refine" aria-label="Programme filters">{filterControls}</aside>
+        )}
 
         {/* 3 — Results */}
-        <section className="pf-results" aria-labelledby="pf-results-title" ref={resultsTop}>
+        <section className="pf-results" aria-labelledby="pf-results-title">
           <div className="pf-toolbar">
             <h2 id="pf-results-title" className="pf-result-count" aria-live="polite">
               <strong>{fmt(results.length)}</strong> {results.length === 1 ? "programme" : "programmes"}
@@ -215,7 +230,7 @@ export function ProgrammeFinder({ data, initial }: { data: FinderData; initial?:
                 Filters
                 {refineActive > 0 && <span className="pf-badge">{refineActive}</span>}
               </button>
-              <SortSelect value={sort} options={sortOptions} onChange={setSort} />
+              <SortSelect<SortKey> value={sort} options={sortOptions} onChange={setSort} />
             </div>
           </div>
 
@@ -227,7 +242,7 @@ export function ProgrammeFinder({ data, initial }: { data: FinderData; initial?:
               <>
                 <ol className="pf-list">
                   {shown.map((p) => (
-                    <ProgrammeRow key={p.id} programme={p} labels={labels} query={deferred.query} />
+                    <ProgrammeRow key={p.id} programme={p} labels={labels} />
                   ))}
                 </ol>
                 {results.length > limit && (

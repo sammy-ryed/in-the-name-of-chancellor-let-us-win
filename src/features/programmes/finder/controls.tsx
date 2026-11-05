@@ -31,12 +31,10 @@ export { Icon };
 export function SearchBox({
   value,
   onChange,
-  total,
   inputRef,
 }: {
   value: string;
   onChange: (v: string) => void;
-  total: number;
   inputRef?: Ref<HTMLInputElement>;
 }) {
   return (
@@ -52,7 +50,7 @@ export function SearchBox({
         value={value}
         autoComplete="off"
         spellCheck={false}
-        placeholder={`Search ${fmt(total)} programmes by subject, degree or department`}
+        placeholder="Search by subject, degree or campus"
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Escape" && value && onChange("")}
       />
@@ -66,47 +64,6 @@ export function SearchBox({
         </kbd>
       )}
     </div>
-  );
-}
-
-/** Programme level: the main way to narrow down, so it sits directly under the search. */
-export function LevelPills({
-  options,
-  selected,
-  counts,
-  onChange,
-}: {
-  options: Option[];
-  selected: string[];
-  counts: Map<string, number>;
-  onChange: (next: string[]) => void;
-}) {
-  const toggle = (v: string) => onChange(selected.includes(v) ? selected.filter((s) => s !== v) : [...selected, v]);
-  return (
-    <fieldset className="pf-levels">
-      <legend className="pf-sr">Programme level</legend>
-      <button type="button" className="pf-level" aria-pressed={selected.length === 0} onClick={() => onChange([])}>
-        All levels
-      </button>
-      {options.map((o) => {
-        const n = counts.get(o.value) ?? 0;
-        const on = selected.includes(o.value);
-        return (
-          <button
-            key={o.value}
-            type="button"
-            className="pf-level"
-            aria-pressed={on}
-            disabled={!on && n === 0}
-            onClick={() => toggle(o.value)}
-          >
-            {on && <Icon name="check" />}
-            {o.label}
-            <span className="pf-count">{fmt(n)}</span>
-          </button>
-        );
-      })}
-    </fieldset>
   );
 }
 
