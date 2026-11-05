@@ -1,0 +1,82 @@
+.admission-cover {
+  position: relative;
+  isolation: isolate;
+  color: white;
+  background: var(--navy);
+  overflow: hidden;
+  border-bottom: 4px solid var(--action-yellow);
+}
+.admission-cover > img {
+  object-fit: cover;
+  object-position: 66% 38%;
+  width: 62% !important;
+  left: auto !important;
+}
+.admission-cover::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: var(--navy);
+  clip-path: polygon(0 0, 57% 0, 46% 100%, 0 100%);
+}
+.admission-cover-copy {
+  position: relative;
+  z-index: 2;
+  width: 49%;
+  padding: clamp(4.5rem, 6vw, 7rem) 0 clamp(2.25rem, 3.75vw, 4rem) var(--pad);
+}
+.admission-crumb { display: flex; gap: .7rem; align-items: center; font: 600 .83rem/1.3 var(--font-nav); }
+.admission-crumb a { color: var(--color-blue-pale); }
+.admission-crumb span[aria-hidden] { color: var(--action-yellow); }
+.admissions-edit .admission-cover h1 {
+  margin: clamp(1.6rem, 2.9vw, 3rem) 0 .5rem;
+  color: var(--color-gold-light);
+  font: 400 clamp(3.9rem, 8.8vw, 9rem)/.96 var(--display);
+  text-transform: uppercase;
+  letter-spacing: -.025em;
+}
+.admission-cover-copy > p { font: 400 clamp(1.35rem, 2vw, 2.2rem)/1.2 var(--font-editorial); }
+.admission-routes { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.5rem 0 .45rem; }
+.admission-routes a, .admission-quiz-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  min-height: 44px;
+  font: 650 .94rem/1.32 var(--font-nav);
+}
+.admission-routes a {
+  text-decoration: none;
+  padding: .65rem .85rem;
+  color: var(--navy);
+  background: var(--surface-primary);
+  border: 1px solid currentColor;
+}
+.admission-routes a:nth-child(2) { background: var(--color-gold-light); }
+.admission-routes a:is(:hover,:focus-visible) { background: var(--action-yellow); }
+.admission-quiz-link { color: white; text-underline-offset: .24em; }
+.admission-cover a:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+.admissions-edit #international {
+  padding: clamp(1.2rem, 2.5vw, 2.4rem);
+  background: var(--surface-blue);
+  border-left: 4px solid var(--color-secondary);
+}
+.admissions-edit #international > h2, .admissions-edit #international > h2 span { padding: 0; border: 0; }
+.admissions-edit #international .source-note { overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-quiet-motion]) .admission-routes span { transition: transform .18s ease-out; }
+  .admission-routes a:is(:hover,:focus-visible) span { transform: translateY(2px); }
+}
+@media (max-width: 800px) {
+  .admission-cover { display: flex; flex-direction: column; }
+  .admission-cover-copy { width: 100%; padding: 2rem var(--pad) 1.25rem; }
+  .admission-cover::before { display: none; }
+  .admission-cover > img {
+    order: 1;
+    position: relative !important;
+    width: 100% !important;
+    height: clamp(8rem, 36vw, 16rem) !important;
+    object-position: 50% 36%;
+    clip-path: polygon(0 13%,100% 0,100% 100%,0 100%);
+  }
+}

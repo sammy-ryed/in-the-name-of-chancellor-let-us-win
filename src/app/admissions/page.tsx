@@ -2,44 +2,32 @@ import { start } from "@/features/admissions/programme-quiz/guided/flow";
 import { ProgrammeQuiz } from "@/features/admissions/programme-quiz/ProgrammeQuiz";
 import { Disclosure } from "@/components/Disclosure";
 import Link from "next/link";
-import { Guide, Action, Section, Resources } from "@/components/Guide";
+import { Action, Section, Resources } from "@/components/Guide";
 import {
   courses,
   applyBtech,
   application,
   university,
 } from "@/features/explore/academic";
+import { AdmissionsLayout, internationalAdmissions, internationalApplication } from "./AdmissionsLayout";
 import Enquiry from "@/features/explore/Enquiry";
 import "@/components/light-guide.css";
 export const metadata = { title: "Admissions" };
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ course?: string }>;
+  searchParams: Promise<{ course?: string; view?: string }>;
 }) {
-  const { course } = await searchParams;
+  const { course, view } = await searchParams;
   const selected = courses.find((c) => c.id === course);
   return (
-    <div className="admissions-experience light-guide">
-    <Guide
-      title="Admissions"
-      section="Admissions"
-      image="convocation"
-      intro="Find your course, check the requirements and apply through SRM’s official portal."
-      links={[
-        ["Take the programme quiz", "programme-finder"],
-        ["How to apply", "apply"],
-        ["SRMJEEE dates", "exam"],
-        ["FAQs", "faq"],
-        ["Ask admissions", "enquiry"],
-      ]}
-    >
+    <AdmissionsLayout classic={view === "classic"}>
       <Section id="programme-finder" title="Which SRM programme fits your interests?">
         <ProgrammeQuiz initial={start()} />
       </Section>
       <Section
         id="apply"
-        title={selected ? "Your selected programme" : "Choose your route"}
+        title={selected ? "Domestic application for your programme" : "Domestic applications"}
       >
         {selected && (
           <p>
@@ -64,6 +52,16 @@ export default async function Page({
             All domestic application forms ↗
           </a>
         </div>
+      </Section>
+      <Section id="international" title="International applications">
+        <p>Applying as a foreign national, NRI or NRI-sponsored student? Start with SRM’s international admissions portal. Check the applicant category and programme requirements before you register.</p>
+        <div className="action-row">
+          <Action href={internationalApplication}>Start the 2027 international application</Action>
+          <a href={internationalAdmissions}>Eligibility, programmes and fees ↗</a>
+        </div>
+        <p className="source-note">For help choosing your category, email International Relations at{" "}
+          <a href="mailto:admissions.ir@srmist.edu.in">admissions.ir@srmist.edu.in</a>.
+        </p>
       </Section>
       <Section id="exam" title="SRMJEEE 2027">
         <p>
@@ -120,13 +118,14 @@ export default async function Page({
               Scholarships and aid
             </a>{" "}
             ·{" "}
-            <a href={university + "/admission-international/"}>
+            <a href="#international">
               International applicants
             </a>
           </p>
         </Disclosure>
       </Section>
       <Section id="enquiry" title="Ask admissions">
+        <p>For an international application, <a href="mailto:admissions.ir@srmist.edu.in">email International Relations</a>. For a domestic enquiry, prepare your email below.</p>
         <Enquiry
           context={
             selected
@@ -149,7 +148,6 @@ export default async function Page({
           },
         ]}
       />
-    </Guide>
-    </div>
+    </AdmissionsLayout>
   );
 }
