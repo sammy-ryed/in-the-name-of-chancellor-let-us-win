@@ -332,6 +332,13 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
   color: var(--color-gold);
 }
 
+/* Keep the destination list and its open submenu independently reachable on short screens. */
+@media (min-width: 761px) {
+  .s-menu-nav { min-height: 0; overflow: visible; }
+  .s-menu-main { height: 100%; overflow-y: auto; align-content: start; gap: clamp(6px, 1.5vh, 16px); }
+  .s-menu-item { font-size: clamp(32px, min(4.2vw, 5.6vh), 64px); }
+  .s-menu-sub { bottom: var(--space-4); overflow-y: auto; left: max(44%, 16rem); }
+}
 @media (max-width: 760px) {
   :root {
     --rail: 0px;

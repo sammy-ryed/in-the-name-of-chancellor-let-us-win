@@ -7,12 +7,51 @@ export interface NavItem extends NavLink {
   children?: NavLink[];
 }
 
+export const srm = "https://www.srmist.edu.in";
+export const tourUrl = "https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm";
+
+export const routes = {
+  home: { href: "/", label: "Home" },
+  admissions: { href: "/admissions", label: "Admissions" },
+  programmes: { href: "/programmes", label: "Programmes" },
+  campus: { href: "/campus", label: "Campus life" },
+  placements: { href: "/career-centre", label: "Placements" },
+  students: { href: "/students", label: "Students" },
+  parents: { href: "/parents", label: "Parents" },
+  alumni: { href: "/alumni", label: "Alumni" },
+  news: { href: "/news", label: "News" },
+  events: { href: "/events", label: "Events" },
+  finder: { href: "/admissions#programme-finder", label: "Course finder" },
+  fees: { href: "/programmes/fees", label: "Fees & eligibility" },
+  india: { href: "/admissions#apply", label: "Admissions in India" },
+  international: { href: srm + "/admission-international/", label: "International admissions" },
+  exam: { href: "/admissions#exam", label: "SRMJEEE dates & deadlines" },
+  apply: { href: "https://applications.srmist.edu.in/btech", label: "Apply for SRMJEEE" },
+  clubs: { href: "/campus#clubs", label: "Student clubs" },
+  festivals: { href: "/campus#festivals", label: "Aaruush & Milan" },
+  housing: { href: "/campus/accommodation", label: "Accommodation & dining" },
+  recruiters: { href: "/career-centre#recruiters", label: "Recruiters & Super Dream offers" },
+  outcomes: { href: "/career-centre#outcomes", label: "Placement figures & average CTC" },
+  portals: { href: "/parents#parent-portals", label: "Parent portals" },
+  score: { href: "/students#score", label: "About SCORE" },
+  photos: { href: "https://alumni.srmist.edu.in/albums.dz", label: "Alumni photo albums" },
+  reunions: { href: "https://alumni.srmist.edu.in/events.dz", label: "Alumni events" },
+  graduates: { href: "/alumni#notable", label: "Notable alumni" },
+} satisfies Record<string, NavLink>;
+
 export const navigation: NavItem[] = [
+  routes.home,
   {
-    href: "/programmes",
-    label: "Programmes",
+    ...routes.admissions,
+    children: [routes.india, routes.international, routes.finder, routes.fees, routes.exam, routes.apply,
+      { href: "/admissions#faq", label: "Admissions FAQs" },
+      { href: "/admissions#enquiry", label: "Ask admissions" }],
+  },
+  {
+    ...routes.programmes,
     // Faculties with programmes in the SRMIST Program Finder; ids are its college filter values.
     children: [
+      routes.finder, routes.fees,
       { href: "/programmes?college=9812", label: "Engineering & Technology" },
       { href: "/programmes?college=24139", label: "Medicine & Health Sciences" },
       { href: "/programmes?college=23702", label: "Liberal Arts & Business Studies" },
@@ -23,50 +62,28 @@ export const navigation: NavItem[] = [
     ],
   },
   {
-    href: "/campus",
-    label: "Campus life",
+    ...routes.campus,
     children: [
-      { href: "/campus#life", label: "More than a campus" },
-      { href: "/campus#clubs", label: "Find your people" },
-      { href: "/campus#whats-on", label: "What’s happening" },
-      { href: "/campus/accommodation", label: "Accommodation & dining" },
+      { href: "/campus#life", label: "Life at SRM" }, routes.festivals, routes.clubs,
+      { href: "/campus#whats-on", label: "What’s happening" }, routes.housing,
       { href: "/campus#explore", label: "Explore Kattankulathur" },
       { href: "/campus#support", label: "Student support" },
     ],
   },
-  {
-    href: "/students",
-    label: "Students",
-    children: [
-      { href: "/students#portals", label: "Academic portals" },
-      { href: "/students#wifi", label: "Wi-Fi & IT" },
-      { href: "/students#score", label: "SCORE" },
-    ],
-  },
-  {
-    href: "/admissions",
-    label: "Admissions",
-    children: [
-      { href: "/admissions#apply", label: "How to apply" },
-      { href: "/admissions#exam", label: "SRMJEEE dates" },
-      { href: "/admissions#faq", label: "FAQs" },
-      { href: "/admissions#enquiry", label: "Ask admissions" },
-    ],
-  },
-  { href: "/news", label: "News" },
-];
-export const services: NavLink[] = [
-  { href: "/career-centre", label: "Career Centre" },
-  { href: "/events", label: "Events" },
-  { href: "/parents", label: "Parents" },
+  { ...routes.placements, children: [routes.recruiters, routes.outcomes,
+    { href: "/career-centre#support", label: "Training & contacts" }] },
+  { ...routes.students, children: [
+    { href: "/students#portals", label: "Academic portals" },
+    { href: "/students#wifi", label: "Wi-Fi & IT" }, routes.score] },
+  { ...routes.parents, children: [routes.portals, routes.score, routes.fees, routes.housing] },
+  { ...routes.alumni, children: [routes.photos, routes.reunions, routes.graduates] },
 ];
 
-export const srm = "https://www.srmist.edu.in";
-export const tourUrl =
-  "https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm";
+export const services: NavLink[] = [routes.news, routes.events];
 
 export const actions = [
   { label: "Programmes", detail: "Find your programme", href: "/programmes" },
   { label: "Campus life", detail: "Find your people", href: "/campus" },
-  { label: "Students", detail: "Open student services", href: "/students" },
+  { ...routes.students, detail: "Open student services" },
+  { ...routes.parents, detail: "Parent portals & contacts" },
 ];

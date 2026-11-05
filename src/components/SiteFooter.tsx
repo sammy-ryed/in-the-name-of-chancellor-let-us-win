@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { srm } from "@/lib/navigation";
+import { routes, srm } from "@/lib/navigation";
 import { HomeLogo } from "./HomeLogo";
 import { AccessibilityButton, FooterColumns, type FooterGroup } from "./FooterColumns";
 import "./footer.css";
@@ -50,51 +50,23 @@ const social = [
   },
 ];
 
-export function SiteFooter({ admissionsHref = "/admissions" }: { admissionsHref?: string }) {
-  const groups: FooterGroup[] = [
-    {
-      title: "Explore",
-      links: [
-        { label: "Academics", href: srm + "/about-us/academic-heads/" },
-        { label: "Programmes", href: "/programmes" },
-        { label: "Admissions", href: admissionsHref },
-        { label: "Research", href: srm + "/research/" },
-        { label: "Campus Life", href: "/campus" },
-        { label: "News & Events", href: "/news" },
-      ],
-    },
-    {
-      title: "Our Community",
-      links: [
-        { label: "Prospective Students", href: admissionsHref },
-        { label: "Current Students", href: "/students" },
-        { label: "Parents", href: "/parents" },
-        { label: "Alumni", href: "https://alumni.srmist.edu.in/" },
-        { label: "Recruiters", href: "/career-centre" },
-        { label: "Faculty", href: srm + "/faculty-gateway/" },
-      ],
-    },
-    {
-      title: "Quick Access",
-      links: [
-        { label: "Student Portal", href: studentPortal },
-        { label: "Faculty Directory", href: srm + "/faculty-gateway/" },
-        { label: "Placements", href: srm + "/placements/" },
-        { label: "Library", href: srm + "/library/" },
-        { label: "Careers", href: "https://careers.srmist.edu.in/" },
-      ],
-    },
-    {
-      title: "Get in Touch",
-      links: [
-        { label: "Contact Us", href: srm + "/contact-us/" },
-        { label: "Admissions Enquiry", href: "/admissions#enquiry" },
-        { label: "Campus Location", href: srm + "/visitors/" },
-        { label: "Help & Support", href: "/students" },
-      ],
-    },
-  ];
+const groups: FooterGroup[] = [
+  { title: "Explore SRM", links: [routes.home, routes.programmes, routes.campus, routes.festivals,
+    routes.clubs, routes.housing, routes.news, routes.events,
+    { label: "Academics", href: srm + "/about-us/academic-heads/" }, { label: "Research", href: srm + "/research/" }] },
+  { title: "Study & apply", links: [routes.admissions, routes.india, routes.international,
+    routes.finder, routes.fees, routes.exam, routes.apply,
+    { label: "Admissions enquiry", href: "/admissions#enquiry" }] },
+  { title: "Our community", links: [routes.students, routes.parents, routes.portals, routes.score,
+    routes.alumni, routes.photos, routes.reunions, routes.graduates, { label: "Student portal", href: studentPortal }] },
+  { title: "Careers & contacts", links: [routes.placements, routes.outcomes, routes.recruiters,
+    { label: "University careers", href: "https://careers.srmist.edu.in/" },
+    { label: "Faculty directory", href: srm + "/faculty-gateway/" }, { label: "Library", href: srm + "/library/" },
+    { label: "Campus location", href: srm + "/visitors/" }, { label: "Contact SRM", href: srm + "/contact-us/" },
+    { label: "Student support", href: "/campus#support" }] },
+];
 
+export function SiteFooter() {
   return (
     <footer className="ft">
       <div className="ft-inner">

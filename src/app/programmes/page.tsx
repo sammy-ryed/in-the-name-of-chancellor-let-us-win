@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import Link from "next/link";
+import { routes } from "@/lib/navigation";
 import { Inter } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { finderData } from "@/features/programmes/finder/data";
@@ -33,6 +35,7 @@ export default function Page() {
               Technology. Search by subject, then narrow by level, campus or
               faculty.
             </p>
+            <p><Link href={routes.finder.href}>No idea? Pick what course is right for you</Link></p>
           </header>
           {/* Static HTML carries the full list; the URL (e.g. ?college=) applies on the client. */}
           <Suspense fallback={<ProgrammeFinder data={finderData} />}>
