@@ -7,6 +7,8 @@ import {
   university,
 } from "@/features/explore/academic";
 import Enquiry from "@/features/explore/Enquiry";
+import "@/components/inset-guide.css";
+import "@/components/light-guide.css";
 export const metadata = { title: "Admissions" };
 export default async function Page({
   searchParams,
@@ -16,6 +18,7 @@ export default async function Page({
   const { course } = await searchParams;
   const selected = courses.find((c) => c.id === course);
   return (
+    <div className="admissions-experience inset-guide light-guide">
     <Guide
       title="Admissions"
       section="Admissions"
@@ -147,5 +150,6 @@ export default async function Page({
         ]}
       />
     </Guide>
+    </div>
   );
 }
