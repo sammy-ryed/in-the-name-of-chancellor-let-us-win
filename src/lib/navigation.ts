@@ -26,13 +26,12 @@ export const navigation: NavItem[] = [
     href: "/campus",
     label: "Campus life",
     children: [
-      { href: "/campus#people", label: "Find your people" },
-      { href: "/campus#housing", label: "Housing & dining" },
-      { href: "/campus#after-class", label: "After class" },
+      { href: "/campus#life", label: "More than a campus" },
+      { href: "/campus#clubs", label: "Find your people" },
+      { href: "/campus#whats-on", label: "What’s happening" },
+      { href: "/campus/accommodation", label: "Accommodation & dining" },
       { href: "/campus#explore", label: "Explore Kattankulathur" },
-      { href: "/campus#clubs", label: "Clubs & organisations" },
-      { href: "/campus#whats-on", label: "What’s on" },
-      { href: "/campus#safety", label: "Safety & support" },
+      { href: "/campus#support", label: "Student support" },
     ],
   },
   {
