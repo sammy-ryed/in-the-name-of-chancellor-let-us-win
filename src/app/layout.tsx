@@ -3,6 +3,7 @@ import { DM_Sans, Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import "@/components/chrome.css";
 import AskSRM from "@/features/ask-srm/AskSRM";
+import { RouteContent } from "@/components/RouteContent";
 import { SiteNavigation } from "@/components/SiteNavigation";
 import Accessibility from "@/components/Accessibility";
 import "@/components/access.css";
@@ -25,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           Skip to content
         </a>
         <SiteNavigation />
-        <main id="main">{children}</main>
+        <RouteContent>{children}</RouteContent>
         <Accessibility />
         <AskSRM />
       </body>

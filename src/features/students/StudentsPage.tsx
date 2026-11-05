@@ -15,14 +15,14 @@ function Label({ number, children }: { number: string; children: React.ReactNode
   </div>;
 }
 function Resource({ item, index }: { item: StudentService; index: number }) {
-  return <a className="st-resource" href={item.href} data-reveal>
+  return <Link className="st-resource" href={item.href} data-reveal>
     <span className="st-resource-index">{String(index + 1).padStart(2, "0")}</span>
     <span>
       <strong>{item.label}</strong>
       <small>{item.detail}</small>
     </span>
     <Arrow />
-  </a>;
+  </Link>;
 }
 export function StudentsPage() {
   const [academics, wifi, campus, score] = studentServices;

@@ -181,9 +181,9 @@ export default function Page() {
               from SRM.
             </p>
             <p>Meet the students, teams and ideas making news on campus.</p>
-            <a className="yellow-action s-button" href="/news">
+            <Link className="yellow-action s-button" href="/news">
               All news <Arrow />
-            </a>
+            </Link>
           </div>
           <NewsReel />
         </div>
