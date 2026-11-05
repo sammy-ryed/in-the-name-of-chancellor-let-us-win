@@ -5,19 +5,12 @@
   font-display: swap;
 }
 .s-home {
-  --wine: #790603;
-  --orange: #fa5d32;
-  --red: #cb231c;
-  --cream: #efe4d1;
-  --coal: #110e0c;
-  --blue: #3d7587;
-  --gold: #f8a652;
   --edge: clamp(8px, 1.05vw, 20px);
   --rail: clamp(54px, 4.5vw, 82px);
   --start: calc(var(--edge) * 3 + var(--rail));
   --display: "SRM Display", Impact, "Arial Narrow", sans-serif;
-  color: var(--coal);
-  background: var(--coal);
+  color: var(--ink);
+  background: var(--ink);
   font:
     400 16px/1.16 Arial,
     Helvetica,
@@ -63,7 +56,7 @@
   letter-spacing: -0.052em;
 }
 .s-lines {
-  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='700' viewBox='0 0 400 700' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='l' width='38' height='700' patternUnits='userSpaceOnUse'%3E%3Cpath d='M-70 -40 L15 288 -15 490 30 742 M-32 -40 L53 288 23 490 68 742 M6 -40 L91 288 61 490 106 742' fill='none' stroke='%23000' stroke-opacity='.22' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath fill='url(%23l)' d='M0 0h400v700H0z'/%3E%3C/svg%3E");
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='700' viewBox='0 0 400 700' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cpattern id='l' width='38' height='700' patternUnits='userSpaceOnUse'%3E%3Cpath d='M-70 -40 L15 288 -15 490 30 742 M-32 -40 L53 288 23 490 68 742 M6 -40 L91 288 61 490 106 742' fill='none' stroke='%23034da1' stroke-opacity='.34' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath fill='url(%23l)' d='M0 0h400v700H0z'/%3E%3C/svg%3E");
   background-image: var(--pattern);
   background-size: auto 100%;
 }
@@ -75,13 +68,13 @@
   left: var(--edge);
   width: var(--rail);
   z-index: 20;
-  background: var(--red);
+  background: var(--brand-blue);
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
   padding: 12px 4px;
-  color: var(--cream);
+  color: var(--ice);
 }
 .s-rail > *:not(.s-progress),
 .s-menu-rail > * {
@@ -110,7 +103,7 @@
   display: grid;
   place-content: center;
   gap: 4px;
-  color: var(--cream);
+  color: var(--ice);
 }
 .s-rail button i {
   width: 25px;
@@ -138,7 +131,7 @@
 .s-progress {
   position: absolute;
   inset: 0;
-  background: #71090755;
+  background: rgb(7 24 47 / 36%);
   transform-origin: top;
   transform: scaleY(0);
   pointer-events: none;
@@ -154,8 +147,7 @@
   font:
     500 clamp(11px, 1.05vw, 19px)/0.96 Georgia,
     serif;
-  color: white;
-  mix-blend-mode: difference;
+  color: var(--ice);
 }
 .s-menu {
   position: fixed;
@@ -168,10 +160,10 @@
   border: 0;
   background: transparent;
   padding: 0;
-  color: var(--cream);
+  color: var(--ice);
 }
 .s-menu::backdrop {
-  background: rgba(9, 5, 4, 0.91);
+  background: rgb(7 24 47 / 94%);
 }
 .s-menu[open] {
   display: block;
@@ -190,7 +182,8 @@
   inset: var(--edge) auto var(--edge) calc(var(--edge) * 2 + var(--rail));
   width: min(46vw, 780px);
   padding: clamp(22px, 4vw, 70px);
-  background-color: var(--orange);
+  background-color: var(--cobalt);
+  color: var(--ice);
   overflow: auto;
   animation: s-menu-in 0.42s cubic-bezier(0.22, 0.65, 0.15, 1) both;
 }
@@ -209,7 +202,9 @@
 }
 .s-menu-sheet > a:hover,
 .s-menu-sheet > a:focus-visible {
-  color: var(--coal);
+  color: var(--cyan);
+  text-decoration: underline;
+  text-decoration-thickness: 0.055em;
 }
 .s-menu-sheet > div {
   margin-top: auto;
@@ -234,7 +229,7 @@
   --rb: 82%;
   --entry: 135%;
   position: relative;
-  background: var(--wine);
+  background: var(--navy);
 }
 .s-hero,
 .s-academics,
@@ -257,7 +252,7 @@
 }
 .s-hero {
   height: 100svh;
-  background-color: var(--orange);
+  background-color: var(--sky);
 }
 .s-headline {
   position: absolute;
@@ -271,21 +266,21 @@
   z-index: 3;
   max-width: none;
 }
-.s-wine-pane,
+.s-intro-pane,
 .s-film-pane {
   position: absolute;
   inset: 0;
   overflow: hidden;
 }
-.s-wine-pane {
+.s-intro-pane {
   z-index: 1;
-  background: var(--wine);
-  color: var(--orange);
+  background: var(--navy);
+  color: var(--sky);
   clip-path: polygon(0 0, var(--lt) 0, var(--lk) 32%, var(--lb) 100%, 0 100%);
 }
 .s-film-pane {
   z-index: 2;
-  color: var(--cream);
+  color: var(--ice);
   clip-path: polygon(
     var(--lt) 0,
     var(--rt) 0,
@@ -293,6 +288,9 @@
     var(--lb) 100%,
     var(--lk) 32%
   );
+}
+.s-film-pane .s-headline {
+  text-shadow: 0 1px 7px rgb(7 24 47 / 38%);
 }
 .s-hero > .s-headline {
   z-index: 0;
@@ -354,7 +352,7 @@
   height: 100%;
 }
 .s-film {
-  background: #291d17;
+  background: var(--ink);
 }
 .s-film-poster {
   object-fit: cover;
@@ -403,14 +401,14 @@
   display: grid;
   justify-items: center;
   pointer-events: none;
-  color: var(--cream);
+  color: var(--ice);
 }
 .s-cursor b {
   width: clamp(46px, 5.3vw, 78px);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--gold);
-  color: var(--coal);
+  background: var(--cyan);
+  color: var(--ink);
   display: grid;
   place-items: center;
   font: 700 16px/1 Arial;
@@ -419,7 +417,7 @@
   position: absolute;
   top: calc(100% + 6px);
   font: 400 13px/1 var(--display);
-  text-shadow: 0 1px 3px #000;
+  text-shadow: 0 1px 3px var(--ink);
   text-transform: uppercase;
 }
 @media (hover: hover) and (pointer: fine) {
@@ -444,15 +442,15 @@
   display: flex;
   gap: 5px;
   justify-content: center;
-  color: var(--cream);
+  color: var(--ice);
 }
 .s-film-tools button,
 .s-film-tools a {
   border: 0;
   white-space: nowrap;
   padding: 8px 9px;
-  background: #110e0cdb;
-  color: var(--cream);
+  background: rgb(7 24 47 / 94%);
+  color: var(--ice);
   font: 400 11px/1 var(--display);
   text-transform: uppercase;
 }
@@ -466,8 +464,8 @@
   justify-content: space-between;
   min-height: 44px;
   padding: 12px 16px;
-  background: var(--orange);
-  color: var(--wine);
+  background: var(--sky);
+  color: var(--navy);
   font: 400 clamp(13px, 1.15vw, 20px)/1 var(--display);
   text-transform: uppercase;
   width: max-content;
@@ -479,8 +477,8 @@
   transform: translateX(4px);
 }
 .s-academics {
-  background: var(--wine);
-  color: var(--orange);
+  background: var(--navy);
+  color: var(--sky);
 }
 .s-moving .s-academics {
   position: absolute;

@@ -1,13 +1,13 @@
 .s-place {
-  color: var(--cream);
-  background: #292424;
+  color: var(--ice);
+  background: var(--ink);
 }
 .s-moving .s-place {
   height: 175svh;
 }
 .s-place-frame {
   height: 100svh;
-  background: #392c27;
+  background: var(--navy);
 }
 .s-place-frame:after {
   content: "";
@@ -15,13 +15,12 @@
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(100deg, #140c166b, #190e1754 42%, #1a0e1655),
-    linear-gradient(0deg, #190e1799, transparent 70%);
+    linear-gradient(100deg, rgb(5 22 48 / 70%), rgb(5 22 48 / 59%) 42%, rgb(5 22 48 / 56%)),
+    linear-gradient(0deg, rgb(5 22 48 / 74%), transparent 70%);
 }
 .s-panorama {
   object-fit: cover;
   object-position: 54% center;
-  filter: sepia(0.25) saturate(0.82);
 }
 .s-place-grid {
   position: relative;
@@ -36,7 +35,7 @@
   grid-row: 1/3;
   display: grid;
   place-items: center;
-  border-right: 1px solid #efe4d18a;
+  border-right: 1px solid rgb(237 246 255 / 56%);
   overflow: hidden;
 }
 .s-vertical h2 {
@@ -47,7 +46,7 @@
   line-height: 0.99;
 }
 .s-place-intro {
-  border-bottom: 1px solid #efe4d18a;
+  border-bottom: 1px solid rgb(237 246 255 / 56%);
   display: flex;
   align-items: flex-end;
   padding: 2.5vw;
@@ -66,8 +65,8 @@
   max-width: 24vw;
 }
 .s-place-details .s-button {
-  background: var(--cream);
-  color: var(--coal);
+  background: var(--ice);
+  color: var(--ink);
 }
 .s-compass {
   font: 400 clamp(60px, 9vw, 150px)/1 Georgia;
@@ -75,17 +74,17 @@
   margin-bottom: 1.2vw;
 }
 .s-people {
-  background: var(--wine);
-  color: var(--coal);
+  background: var(--mist);
+  color: var(--steel);
 }
 .s-moving .s-people {
   height: 240svh;
-  background: var(--coal);
+  background: var(--ink);
 }
 .s-people-frame {
   position: relative;
   min-height: 100svh;
-  background: var(--wine);
+  background: var(--mist);
   padding: 4svh 5.8vw 4svh var(--start);
 }
 .s-people-title {
@@ -108,7 +107,7 @@
   position: relative;
   z-index: 2;
   margin-block: 2rem;
-  color: var(--cream);
+  color: var(--ink);
 }
 .s-moving .s-roster {
   position: absolute;
@@ -155,7 +154,8 @@
 }
 .s-roster a:hover,
 .s-roster a:focus-visible {
-  color: var(--gold);
+  color: var(--brand-blue);
+  background: var(--ice);
   z-index: 3;
 }
 .s-roster a:hover > img,
@@ -166,8 +166,8 @@
 .s-people-cta {
   position: relative;
   z-index: 4;
-  background: var(--coal);
-  color: var(--cream);
+  background: var(--ink);
+  color: var(--ice);
 }
 .s-moving .s-people-cta {
   position: absolute;
@@ -177,8 +177,8 @@
 .s-news {
   position: relative;
   overflow: hidden;
-  background: var(--cream);
-  color: var(--coal);
+  background: var(--ice);
+  color: var(--ink);
   padding: 5svh 2vw 0 var(--start);
 }
 .s-news-title {
@@ -196,12 +196,12 @@
   font: normal 0.86em/1 Georgia;
   transform: scaleX(1.45);
   margin-left: 0.25em;
-  color: var(--blue);
+  color: var(--cobalt);
 }
 .s-news-grid {
   display: grid;
   grid-template-columns: 30% minmax(0, 1fr);
-  border-top: 1px solid #386577;
+  border-top: 1px solid var(--rule);
 }
 .s-news-aside {
   padding: 4svh 3vw 4svh 0;
@@ -212,11 +212,11 @@
 }
 .s-news-aside .s-button {
   margin-top: auto;
-  background: var(--blue);
-  color: var(--cream);
+  background: var(--cobalt);
+  color: var(--ice);
 }
 .s-stories {
-  border-left: 1px solid #386577;
+  border-left: 1px solid var(--rule);
   min-width: 0;
   padding: 4svh 1vw 2svh 2.5vw;
 }
@@ -228,7 +228,7 @@
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
-  scrollbar-color: var(--blue) transparent;
+  scrollbar-color: var(--cobalt) transparent;
   gap: 2.6vw;
   padding: 3px 3px 14px;
 }
@@ -291,16 +291,16 @@
   overflow: hidden;
 }
 .s-actions > a:nth-child(1) {
-  background: var(--wine);
-  color: var(--orange);
+  background: var(--navy);
+  color: var(--sky);
 }
 .s-actions > a:nth-child(2) {
-  background: var(--blue);
-  color: var(--cream);
+  background: var(--cobalt);
+  color: var(--ice);
 }
 .s-actions > a:nth-child(3) {
-  background: var(--gold);
-  color: #6c330b;
+  background: var(--cyan);
+  color: var(--navy);
 }
 .s-action-face,
 .s-action-reveal,
@@ -333,8 +333,8 @@
   outline-offset: -6px;
 }
 .s-footer {
-  background-color: #100f0e;
-  color: var(--cream);
+  background-color: var(--ink);
+  color: var(--ice);
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   gap: 5vw;
@@ -345,7 +345,7 @@
   background-image: repeating-linear-gradient(
     74deg,
     transparent 0 33px,
-    #ffffff15 34px,
+    rgb(128 186 255 / 15%) 34px,
     transparent 35px
   );
 }
@@ -356,7 +356,7 @@
 }
 .s-footer p {
   font: 400 15px/1.2 Arial;
-  color: #baa995;
+  color: var(--light-muted);
   margin-bottom: 12px;
 }
 .s-footer div > a,
@@ -528,7 +528,7 @@
     max-width: 100%;
     gap: 2px 4px;
     font-size: 16px;
-    background: #790603cc;
+    background: var(--mist);
   }
   .s-roster em {
     grid-column: 2;
@@ -645,7 +645,7 @@
     opacity: 1;
   }
   .s-people-title {
-    color: var(--orange);
+    color: var(--navy);
   }
   .s-hero .s-film-hit {
     cursor: pointer;
@@ -660,11 +660,11 @@
 }
 .s-edge {
   mix-blend-mode: normal;
-  color: var(--cream);
-  text-shadow: 0 1px 2px #110e0c66;
+  color: var(--ice);
+  text-shadow: 0 1px 2px rgb(7 24 47 / 68%);
 }
 .s-home[data-edge="dark"] .s-edge {
-  color: var(--coal);
+  color: var(--ink);
   text-shadow: none;
 }
 .s-headline span {
@@ -723,7 +723,7 @@
     display: none;
   }
   .s-menu {
-    background-color: var(--orange);
+    background-color: var(--cobalt);
   }
   .s-menu-sheet {
     inset: 0;
@@ -754,10 +754,10 @@
     left: 82%;
     font-size: min(11.5vw, 12svh);
   }
-  .s-wine-pane {
+  .s-intro-pane {
     clip-path: polygon(0 66%, 100% 65%, 100% 100%, 0 100%);
   }
-  .s-wine-pane .s-headline,
+  .s-intro-pane .s-headline,
   .s-film-pane .s-headline {
     display: none;
   }
@@ -864,8 +864,8 @@
     place-content: center;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    background: var(--gold);
-    color: var(--coal);
+    background: var(--cyan);
+    color: var(--ink);
     border-radius: 50%;
     width: 42px;
     height: 42px;

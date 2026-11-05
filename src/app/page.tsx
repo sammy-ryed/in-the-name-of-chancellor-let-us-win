@@ -32,7 +32,7 @@ export default function Page() {
             <div className="s-hero-arrow">
               <Arrow />
             </div>
-            <div className="s-wine-pane">
+            <div className="s-intro-pane">
               <Headline />
               <div className="s-opening-note">
                 <p>Where a classroom idea can become a race car.</p>

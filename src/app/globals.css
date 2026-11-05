@@ -2,37 +2,55 @@
   box-sizing: border-box;
 }
 :root {
-  --ink: #102c47;
-  --paper: #faf8f1;
-  --line: #becad1;
-  --accent: #d5a328;
+  /* The SRM crest blue anchors navigation; films use navy and reading surfaces use frost. */
+  --brand-blue: #034da1;
+  --cobalt: #1959c7;
+  --navy: #0b2857;
+  --ink: #07182f;
+  --sky: #80baff;
+  --cyan: #92e5ff;
+  --ice: #edf6ff;
+  --mist: #e1efff;
+  --steel: #5788b6;
+  --body-muted: #45607d;
+  --light-muted: #b8d3f2;
+  --rule: #9bb9d6;
+}
+::selection {
+  color: var(--ice);
+  background: var(--brand-blue);
 }
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--ice);
   color: var(--ink);
   font:
     1rem/1.55 system-ui,
     sans-serif;
 }
 .directory-shell {
-  padding-inline: max(5vw, calc((100vw - 70rem) / 2));
+  --directory-gutter: max(5vw, calc((100% - 70rem) / 2));
+}
+.directory-shell > * {
+  padding-inline: var(--directory-gutter);
 }
 .directory-shell header {
+  color: var(--ice);
+  background: var(--brand-blue);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
   padding-block: 1rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--sky);
 }
 a {
   color: inherit;
   text-underline-offset: 0.25em;
 }
 a:focus-visible {
-  outline: 3px solid #965100;
+  outline: 3px solid var(--brand-blue);
   outline-offset: 4px;
 }
 .brand {
@@ -49,16 +67,24 @@ a:focus-visible {
 .skip {
   z-index: 100;
   position: fixed;
-  color: black;
+  color: var(--ice);
   left: 1rem;
   top: -5rem;
-  background: white;
+  background: var(--navy);
   padding: 0.5rem;
 }
 .skip:focus {
   top: 1rem;
 }
+.directory-shell header a:focus-visible {
+  outline-color: var(--cyan);
+}
+.directory-shell header a:hover {
+  color: var(--cyan);
+}
 .intro {
+  color: var(--ice);
+  background: var(--navy);
   padding-block: clamp(2rem, 7vw, 6rem) 2rem;
 }
 .intro h1 {
@@ -69,11 +95,12 @@ a:focus-visible {
   max-width: 13ch;
 }
 .intro p {
+  color: var(--light-muted);
   font-size: 1.2rem;
   max-width: 50ch;
 }
 .directory {
-  padding: 0;
+  padding: 2rem var(--directory-gutter) 0;
   margin: 0 0 5rem;
   list-style: none;
   display: grid;
@@ -84,10 +111,14 @@ a:focus-visible {
   display: block;
   height: 100%;
   padding: 1.4rem 0;
-  border-top: 3px solid var(--accent);
+  border-top: 3px solid var(--cobalt);
   text-decoration: none;
 }
+.directory a p {
+  color: var(--body-muted);
+}
 .directory span {
+  color: var(--brand-blue);
   font:
     1.55rem Georgia,
     serif;
@@ -96,6 +127,8 @@ a:focus-visible {
   text-decoration: underline;
 }
 .directory-shell footer {
-  border-top: 1px solid var(--line);
+  background: var(--mist);
+  color: var(--body-muted);
+  border-top: 1px solid var(--rule);
   padding-block: 1.5rem;
 }
