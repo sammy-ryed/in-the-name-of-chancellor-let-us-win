@@ -5,8 +5,8 @@ Run `npm ci` and `npm run dev`, then open [localhost:3000](http://localhost:3000
 | Scene | Scroll and interaction | Team editing point |
 | --- | --- | --- |
 | Opening | The headline and motto sit in the left panel. The film aperture expands as you scroll, then gives way to academics. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
-| Campus film | The muted local HD excerpt plays in view. Watch film opens the original reel with native YouTube controls. | `src/features/home/Film.tsx` |
-| Find your way | A five-second pan across the official tour’s lake panorama plays once. Visitors can replay it, enter the full tour or open the illustrated map. | `src/features/home/journeys.css` |
+| Campus film | The muted local HD excerpt plays in view. The play cursor opens the full reel on desktop. Touch and keyboard users have a dedicated play button. | `src/features/home/Film.tsx` |
+| Find your way | An 18-second film visits the campus lake, Arch Gate, Central Library and T.P. Ganesan Auditorium. It plays once when it comes into view. Visitors can replay it, enter the full tour or open the illustrated map. | `src/features/home/journeys.css` |
 | Community | On desktop the names roll past the center and select a portrait. Phones and tablets get swipeable cards. Reduced motion presents all five links in a directory. | `src/features/home/TeamRoll.tsx`, `src/features/home/content.ts` |
 | News and destinations | Swipe or drag the news strip, use its arrow buttons, or tab through the stories. The three closing bands lead into the other teammates’ routes. | `src/features/home/NewsReel.tsx`, `src/features/home/content.ts` |
 
@@ -15,7 +15,8 @@ The [Monument homepage](https://monument.tv/) is the motion and layout reference
 ## Media sources
 
 - **Opening preview**: a locally encoded 1080p excerpt from the [official SRMIST campus film](https://www.youtube.com/watch?v=4c7Ob4pDYMQ), also featured on [SRM’s B.Tech admissions page](https://applications.srmist.edu.in/btech). Watch film opens the full video on demand.
-- **Tour preview**: five-second camera pan rendered from the opening SRMIST lake panorama in the [official virtual tour](https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm). Only the local poster and preview are used on the homepage.
+- **Subject previews**: five photos are from [SRM’s faculty cards](https://www.srmist.edu.in/). Humanities uses the [English department’s theatre workshop](https://www.srmist.edu.in/department/department-of-english/), and Sciences uses a microscopy frame from the campus film. Each local WebP loads when a subject receives hover or keyboard focus.
+- **Tour preview**: four camera pans rendered from the Kattankulathur panoramas in the [official virtual tour](https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm). Only the local poster and preview are used on the homepage.
 - **Motto**: “Learn. Leap. Lead.” follows the [official university homepage](https://www.srmist.edu.in/).
 - **Logo**: the [white SRM homepage SVG](https://www.srmist.edu.in/wp-content/uploads/2022/01/srm-logo-white.svg), stored unchanged.
 - **Campus**: [SRM Kattankulathur panorama](https://www.srmist.edu.in/wp-content/uploads/2022/01/Panroma_pic3_100_0106_20211022192347_Croped.jpg).

@@ -7,13 +7,14 @@ import { MotionPreview } from "./MotionPreview";
 export function Film() {
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
+
   return (
     <div className="s-film">
       <MotionPreview label="campus film preview" poster="/home/campus-preview.webp"
         webm="/home/campus-preview.webm" mp4="/home/campus-preview.mp4" loop priority suspended={open} />
-      <button type="button" className="s-film-open" aria-haspopup="dialog"
+      <button type="button" className="s-film-open" aria-label="Play full campus film" aria-haspopup="dialog"
         onClick={() => { dialog.current?.showModal(); setOpen(true); }}>
-        <span><b aria-hidden="true">▶</b> Watch film</span>
+        <span className="s-film-mark" aria-hidden="true" />
       </button>
       <dialog ref={dialog} className="s-film-dialog" aria-label="SRM campus film"
         onClose={() => setOpen(false)} onClick={event => { if (event.target === dialog.current) dialog.current.close(); }}>

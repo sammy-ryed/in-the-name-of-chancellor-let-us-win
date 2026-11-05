@@ -83,8 +83,10 @@ export function MotionPreview({ label, poster, mp4, webm, loop, suspended = fals
         {webm && <source src={webm} type="video/webm" />}
         <source src={mp4} type="video/mp4" />
       </video>
-      {!failed && <button type="button" className="s-preview-toggle" aria-label={action + " " + label} onClick={toggle}>
-        <span aria-hidden="true">{playing ? "Ⅱ" : "▷"}</span> {action} preview
+      {!failed && <button type="button" className="s-preview-toggle" data-playing={playing || undefined}
+        aria-label={action + " " + label} title={action + " " + label} onClick={toggle}>
+        <span className="s-preview-symbol" aria-hidden="true" />{" "}
+        <span className="s-preview-label">{action} preview</span>
       </button>}
     </>
   );

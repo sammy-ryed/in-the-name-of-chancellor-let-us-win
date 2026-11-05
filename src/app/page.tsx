@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Film } from "@/features/home/Film";
 import { Choreography } from "@/features/home/Choreography";
+import { SubjectLinks } from "@/features/home/SubjectLinks";
 import { NewsReel } from "@/features/home/NewsReel";
 import { TeamRoll } from "@/features/home/TeamRoll";
 import { actions, tourUrl } from "@/lib/navigation";
@@ -12,12 +13,6 @@ import "./home-scenes.css";
 import "@/features/home/journeys.css";
 
 export const metadata = { title: "Life at SRM" };
-const disciplines = [
-  { label: "Engineering", area: "engineering" }, { label: "Medicine", area: "health" },
-  { label: "Architecture", area: "design" }, { label: "Sciences", area: "sciences" },
-  { label: "Humanities", area: "humanities" }, { label: "Law", area: "law" },
-  { label: "Agriculture", area: "agriculture" },
-] as const;
 function Arrow() {
   return <span className="s-arrow" aria-hidden="true" />;
 }
@@ -58,33 +53,19 @@ export default function Page() {
                   Find a programme <Arrow />
                 </Link>
               </div>
-              <div className="s-subject-links">
-                <div className="s-subject-track">
-                  {[false, true].map((repeat) => (
-                    <ul key={String(repeat)} className="s-subjects" aria-label={repeat ? undefined : "Fields of study"} aria-hidden={repeat || undefined}>
-                      {disciplines.map(({ label, area }) => (
-                        <li key={area}>
-                          <Link href={`/programmes?area=${area}`} tabIndex={repeat ? -1 : undefined}>
-                            {label} <span aria-hidden="true">↗</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  ))}
-                </div>
-              </div>
+              <SubjectLinks />
             </div>
           </section>
         </div>
       </div>
       <section id="explore" className="s-tour-section" aria-labelledby="place-title">
         <figure className="s-tour-view">
-          <MotionPreview label="virtual tour preview" mp4="/home/tour-lake.mp4" poster="/home/tour-lake.webp" />
-          <figcaption>360° / Campus lake</figcaption>
+          <MotionPreview label="virtual tour preview" mp4="/home/campus-tour-preview.mp4" poster="/home/campus-tour-preview.webp" />
+          <figcaption>360° / Kattankulathur campus</figcaption>
         </figure>
         <div className="s-tour-copy">
           <h2 id="place-title">Find your way</h2>
-          <p className="s-serif">Across the lake. Around the corner. Get to know Kattankulathur.</p>
+          <p className="s-serif">Start at the lake, pass through Arch Gate and step inside T.P. Ganesan Auditorium.</p>
           <div className="s-tour-links">
             <a className="yellow-action s-button" href={tourUrl}>Enter the 360° tour <Arrow /></a>
             <a href="/home/campus-map.webp">View campus map ↗</a>
