@@ -1,11 +1,13 @@
 .pq-panel {
-  max-width: 48rem;
+  width: 100%;
+  max-width: 58rem;
   padding: clamp(1rem, 3vw, 2rem);
   background: var(--surface-primary);
   color: var(--text-primary);
   border: 1px solid var(--border-strong);
+  border-top: 4px solid var(--color-primary);
 }
-.guide .pq-panel h3 { margin: 0 0 1rem; font-size: clamp(1.25rem, 2.4vw, 1.8rem); line-height: 1.25; scroll-margin-top: calc(var(--header-height, 6rem) + 1.5rem); }
+.guide .pq-panel h3 { margin: 0 0 1rem; max-width: 34ch; font: 400 clamp(1.65rem, 2.7vw, 2.65rem)/1.12 var(--font-editorial); scroll-margin-top: calc(var(--header-height, 6rem) + 1.5rem); }
 .pq-options { display: grid; gap: .65rem; }
 .pq-panel button, .pq-panel input { font: inherit; }
 .pq-panel .pq-choice { display: flex; align-items: center; gap: .8rem; width: 100%; text-align: left; padding: .85rem 1rem; min-height: 48px; border: 1px solid var(--border-strong); border-radius: .4rem; background: var(--surface-secondary); color: var(--text-primary); cursor: pointer; }
@@ -14,7 +16,17 @@
 .pq-choice input { width: 1.1rem; height: 1.1rem; flex: none; accent-color: var(--color-primary); }
 .pq-actions { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
 .pq-actions button { border: 1px solid var(--border-strong); background: transparent; color: inherit; padding: .55rem .85rem; min-height: 44px; border-radius: .4rem; cursor: pointer; }
-.pq-actions .pq-next { background: var(--color-primary); color: white; }
+.pq-panel .pq-choice:is(:focus-visible,:hover):not(:disabled), .pq-panel .pq-choice:has(:checked) {
+  background: var(--surface-blue); border-color: var(--color-primary);
+}
+.pq-actions .pq-next { background: var(--action-yellow); color: var(--ink); border-color: var(--ink); }
+.pq-course h4 a { color: var(--color-primary); }
+.pq-course > * + *, .pq-panel > details, .pq-panel > p { margin-block-start: .8rem; }
+.pq-course li + li { margin-top: .4rem; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-quiet-motion]) .pq-options { animation: quiz-arrive .23s var(--ease-standard); }
+}
+@keyframes quiz-arrive { from { transform: translateY(5px); } to { transform: translateY(0); } }
 .pq-panel button:disabled { opacity: .6; cursor: default; }
 .pq-amount { display: grid; gap: .35rem; max-width: 22rem; }
 .pq-amount input { border: 1px solid var(--border-strong); background: var(--surface-secondary); color: inherit; border-radius: .4rem; padding: .8rem; width: 100%; }

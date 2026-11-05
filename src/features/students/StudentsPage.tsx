@@ -39,6 +39,11 @@ export function StudentsPage() {
         </h1>
         <p className="s-serif" data-reveal>Less searching.<br />More getting somewhere.</p>
         <p className="st-copy" data-reveal>Attendance, marks, fees and what comes next. Choose the portal for your programme and cohort.</p>
+        <nav className="section-shortcuts" aria-label="Student shortcuts">
+          <a href="#campus">Campus life ↓</a>
+          <a href="#wifi">Wi-Fi and support ↓</a>
+          <a href="#score">SCORE ↓</a>
+        </nav>
         <div className="st-academic-image" data-image-reveal>
           <Image src="/home/campus.webp" alt="SRM campus buildings surrounded by landscaped grounds" fill sizes="(max-width: 850px) 85vw, 35vw" unoptimized />
           <span>YOUR DAY STARTS HERE ↗</span>

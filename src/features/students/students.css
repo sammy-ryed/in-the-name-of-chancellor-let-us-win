@@ -343,7 +343,7 @@
 .st-score-word > span {
   display:block;
   text-align:right;
-  font-family:Arial,sans-serif;
+  font-family:var(--font-primary);
   font-size:.75em;
   line-height:.9;
 }
