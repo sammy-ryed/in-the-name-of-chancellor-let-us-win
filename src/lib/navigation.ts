@@ -60,3 +60,13 @@ export const services: NavLink[] = [
   { href: "/events", label: "Events" },
   { href: "/parents", label: "Parents" },
 ];
+
+export const srm = "https://www.srmist.edu.in";
+export const tourUrl =
+  "https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm";
+
+export const actions = [
+  { label: "Programmes", detail: "Find your programme", href: "/programmes" },
+  { label: "Campus life", detail: "Find your people", href: "/campus" },
+  { label: "Students", detail: "Open student services", href: "/students" },
+];

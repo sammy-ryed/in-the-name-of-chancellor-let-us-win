@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Guide, Action } from "@/components/Guide";
-import { stories, srm } from "@/features/home/content";
+import { stories } from "@/features/home/content";
+import { srm } from "@/lib/navigation";
 import headlines from "@/features/explore/headlines.json";
 import newsImages from "@/features/news/images.json";
 import DriftWall from "@/features/news/DriftWall";
 import "@/features/news/news.css";
-import "@/components/inset-guide.css";
 import "@/components/light-guide.css";
 
 export const metadata = { title: "Campus news" };
@@ -25,7 +25,7 @@ const featuredStories = [
   ...stories.slice(1).map(article => ({ ...article, image: `/home/${article.image}.webp` })),
 ];
 export default function Page() {
-  return <div className="news-experience inset-guide light-guide">
+  return <div className="news-experience light-guide">
     <Guide title="Campus news" section="News" image="developer" intro="Student work, university news and achievements from across SRM.">
       <section className="newsroom-layout" aria-labelledby="newsroom-title">
         <div className="newsroom-editorial">

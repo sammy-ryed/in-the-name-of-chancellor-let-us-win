@@ -1,3 +1,4 @@
+import { Disclosure } from "@/components/Disclosure";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Guide, Section, Action } from "@/components/Guide";
@@ -39,8 +40,7 @@ export default async function Page({
         ))}
       </div>
       <Section title="Fees & eligibility">
-        <details open>
-          <summary>What does this fee cover?</summary>
+        <Disclosure summary="What does this fee cover?" open>
           <p>
             {c.period}: {price(c.fee)}.{" "}
             {c.notes ||
@@ -51,12 +51,11 @@ export default async function Page({
             and amounts before payment.
           </p>
           <a href={source(c)}>Official fee schedule ↗</a>
-        </details>
-        <details open>
-          <summary>Am I eligible to apply?</summary>
+        </Disclosure>
+        <Disclosure summary="Am I eligible to apply?" open>
           <p>{criteria(c)}</p>
           <a href={source(c)}>Full eligibility and selection rules ↗</a>
-        </details>
+        </Disclosure>
         <div className="action-row">
           <Action href={application(c)}>
             {application(c) === source(c)

@@ -7,7 +7,8 @@ import { courses, price, criteria } from "@/features/explore/academic";
 import hostels from "@/features/explore/hostels.json";
 import headlines from "@/features/explore/headlines.json";
 import events from "@/features/explore/events.json";
-import { tourUrl, stories } from "@/features/home/content";
+import { stories } from "@/features/home/content";
+import { tourUrl } from "@/lib/navigation";
 import type { Source } from "./types";
 
 export type Entry = Source & { keywords?: string };

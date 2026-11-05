@@ -1,8 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { Inter } from "next/font/google";
-import { services } from "@/lib/navigation";
-import { Rail } from "@/features/home/Rail";
+import { ServiceLinks } from "@/components/SiteFooter";
 import { finderData } from "@/features/programmes/finder/data";
 import { ProgrammeFinder } from "@/features/programmes/finder/ProgrammeFinder";
 import { FinderFromURL } from "@/features/programmes/finder/FinderFromURL";
@@ -18,8 +17,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <div className={`pf-page s-chrome ${inter.variable}`}>
-      <Rail current="Programmes" scrollHref="#pf-results-title" />
+    <div className={`pf-page ${inter.variable}`}>
       <div className="pf-main" id="programmes">
         <header className="pf-hero">
           <p className="pf-eyebrow">Programmes</p>
@@ -41,11 +39,7 @@ export default function Page() {
         </p>
         <nav aria-label="More services">
           <Link href="/">SRMIST / Home</Link>
-          {services.map((a) => (
-            <Link key={a.href} href={a.href}>
-              {a.label}
-            </Link>
-          ))}
+          <ServiceLinks />
         </nav>
       </footer>
     </div>

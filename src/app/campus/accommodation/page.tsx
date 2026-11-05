@@ -1,7 +1,7 @@
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import Image from "next/image";
 import Link from "next/link";
-import { Rail } from "@/features/home/Rail";
-import { CampusFooter } from "@/features/campus/CampusFooter";
+import { ServiceFooter } from "@/components/SiteFooter";
 import { campusLinks, hostelGroupPage } from "@/features/campus/links";
 import hostels from "@/features/explore/hostels.json";
 import "../campus.css";
@@ -22,16 +22,15 @@ const groupLabel: Record<string, string> = {
 
 export default function Page() {
   return (
-    <div className="cl-page s-chrome">
-      <Rail current="Campus life" scrollHref="#booking" />
+    <div className="cl-page">
 
       <header className="ac-hero">
         <div className="cl-wrap">
-          <nav aria-label="Breadcrumb" className="ac-crumb">
-            <Link href="/campus">Campus life</Link>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">Accommodation &amp; dining</span>
-          </nav>
+          <Breadcrumbs
+            className="ac-crumb"
+            parents={[{ href: "/campus", label: "Campus life" }]}
+            current="Accommodation & dining"
+          />
           <h1>Accommodation &amp; dining</h1>
           <p className="cl-lede">
             {blocks} hostel blocks at Kattankulathur for men, women and international students, with mess halls and
@@ -150,7 +149,7 @@ export default function Page() {
         </ul>
       </section>
 
-      <CampusFooter />
+      <ServiceFooter className="cl-foot" />
     </div>
   );
 }

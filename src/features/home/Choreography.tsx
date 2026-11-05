@@ -159,20 +159,6 @@ export function Choreography() {
               scrub: 0.5,
             },
           });
-          gsap.fromTo(
-            q(".s-progress"),
-            { scaleY: 0 },
-            {
-              scaleY: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: home,
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true,
-              },
-            },
-          );
           return () => {
             home.classList.remove("s-moving");
             hero.inert = false;

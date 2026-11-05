@@ -1,4 +1,4 @@
-import { srm } from "@/features/home/content";
+import { srm } from "@/lib/navigation";
 
 /** Official SRMIST pages the campus pages link to. */
 export const campusLinks = {

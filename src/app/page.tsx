@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Rail } from "@/features/home/Rail";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Film } from "@/features/home/Film";
 import { Choreography } from "@/features/home/Choreography";
 import { NewsReel } from "@/features/home/NewsReel";
-import { actions, community, srm, tourUrl } from "@/features/home/content";
+import { community } from "@/features/home/content";
+import { actions, tourUrl } from "@/lib/navigation";
 import "./home.css";
 import "./home-scenes.css";
 
@@ -30,8 +31,7 @@ function Arrow() {
 }
 export default function Page() {
   return (
-    <div className="s-home s-chrome">
-      <Rail />
+    <div className="s-home">
       <Choreography />
       <div className="s-opening">
         <div className="s-stage">
@@ -201,48 +201,7 @@ export default function Page() {
           </Link>
         ))}
       </section>
-      <footer className="s-footer s-lines">
-        <Link href="/" aria-label="SRM home">
-          <Image
-            src="/home/srm-white.svg"
-            width={600}
-            height={203}
-            alt="SRM Institute of Science and Technology"
-            unoptimized
-          />
-        </Link>
-        <div>
-          <p>Address</p>
-          <a href={srm + "/visitors/"}>
-            Kattankulathur, Chengalpattu
-            <br />
-            Tamil Nadu, India
-          </a>
-          <div className="s-foot-cols">
-            <div>
-              <p>Explore</p>
-              {actions.map((a) => (
-                <Link key={a.href} href={a.href}>
-                  {a.label}
-                </Link>
-              ))}
-            </div>
-            <div>
-              <p>Connect</p>
-              <a href={srm + "/contact-us/"}>Contact SRM</a>
-              <a href="/admissions">Admissions</a>
-              <a href={tourUrl}>Visit campus</a>
-              <Link href="/career-centre">Career Centre</Link>
-              <Link href="/events">Events</Link>
-              <Link href="/parents">Parents</Link>
-            </div>
-          </div>
-        </div>
-        <small>SRMIST · Student redesign prototype</small>
-        <a className="s-foot-top yellow-action" href="#main">
-          Back to top ↑
-        </a>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
