@@ -1,0 +1,29 @@
+/* Reading surfaces shared by News and Admissions, matching Students. */
+.light-guide .guide-shell {
+  --paper: var(--surface-secondary);
+  --panel: var(--surface-blue);
+  --copy: var(--text-primary);
+  --muted: var(--text-secondary);
+  --line: var(--border-strong);
+  --sky: var(--color-secondary);
+  --steel: var(--border-strong);
+}
+.light-guide .guide-footer { color: var(--text-primary); }
+.light-guide .guide .news-bento :is(a, h3) { color: var(--text-primary); }
+.light-guide .guide :is(.guide-crumbs, .source-note, .news-bento small) { color: var(--text-secondary); }
+.light-guide .guide :is(.resources a:hover, .guide-jump a:hover, summary:hover) { color: var(--color-primary); }
+.light-guide .guide :is(.resources a b, .phase-grid b) { color: var(--color-primary); }
+.light-guide .newsroom-list b { color: var(--color-primary); }
+.light-guide .newsroom-list a:is(:hover, :focus-visible) { color: var(--color-primary); }
+.light-guide .newsroom-list a { border-color: var(--border-strong); }
+.light-guide .drift-controls { color: var(--text-secondary); }
+.light-guide .drift-controls button { color: var(--color-primary); border-color: var(--color-primary); }
+.light-guide .drift-controls button:hover { background: var(--color-primary); color: var(--surface-primary); }
+.light-guide .drift-static a > span { color: var(--text-primary); }
+html[data-high-contrast] .light-guide .guide-shell {
+  --paper: #fff;
+  --panel: #edf4fb;
+  --copy: #020915;
+  --muted: #263d55;
+  --line: #49617e;
+}
