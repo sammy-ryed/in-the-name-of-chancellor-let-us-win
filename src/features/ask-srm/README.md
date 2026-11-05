@@ -1,12 +1,12 @@
 # Ask SRM
 
-Ask SRM stays at the top beside the desktop rail. On phones, the bottom-right Ask SRM tab shows its label for three seconds, then tucks away to the SRM crest. Tap the crest to open search. Ctrl/Cmd + K opens search on either layout.
+The shared launcher opens university search from any route. On phones the launcher retracts to the SRM crest. Ctrl/Cmd + K opens the search field. The panel loads on first use.
 
-Typing searches published SRM pages, programmes, campus-specific fees, student services, clubs, housing, news and events. Enter asks a question. Results and sources appear in the same panel. “Ask a follow-up” carries the previous question into the next search. Closing the panel clears the conversation.
+Typing looks up matching pages in the local index. Submit a search for an AI overview alongside those pages. Editing and submitting the field starts an independent search. “Ask a follow-up” refines the current result using up to four previous exchanges. Search context stays in memory across the site's links. Clear search or refresh to start over.
 
 ## Connect Groq
 
-In the project root, add the following to the ignored `.env.local` file and restart Next.js:
+Set the following server variables in the ignored `.env.local`, then restart Next.js:
 
 ```dotenv
 GROQ_API_KEY=your-groq-api-key
@@ -14,10 +14,16 @@ GROQ_API_KEY=your-groq-api-key
 GROQ_MODEL=openai/gpt-oss-20b
 ```
 
-For a Vercel branch preview, set the same server-side variables in the Preview environment and redeploy the branch. Only the API route reads the key. Typing uses the local index. Submitted questions use [Groq chat completions](https://console.groq.com/docs/api-reference). When a query has no direct matches, the server supplies a short university overview and section directory. The server asks for a short answer and validates its source numbers before returning links from the catalogue. Without a key, during a provider failure, or when capacity is reached, the guide excerpts and links still work.
+On a deployed site, set those variables for the intended environment and redeploy. Do not prefix either variable with `NEXT_PUBLIC_`. The server posts submitted questions, recent context and numbered public excerpts to [Groq chat completions](https://console.groq.com/docs/text-chat). It accepts only citations that map to entries in the site index. An additional lookup can retrieve missing evidence, translate a search into English or find both sides of a comparison.
 
-The route limits paid calls per running server instance (15 per minute, 3 at a time). Multiple Vercel instances have separate limits.
+Common greetings, private-record requests and obvious credentials have local responses. The server omits recognised credentials from recent turns and masks email addresses and mobile numbers in the text sent to Groq. Visitors should use their official portals for private records. When a detail is unverified, the assistant says so. During provider outages or rate limits it can still show local guide excerpts.
 
-## Team integration
+## API and maintenance
 
-The feature lives in this directory and `src/app/api/ask-srm/route.ts`. The only existing file edited to enable it is `src/app/layout.tsx`. Catalogue adapters read the other features’ exports. When dated admissions or placement facts change, update their summary in `catalogue.ts` along with the source guide.
+`POST /api/ask-srm` accepts `{ mode: "search" | "ask", query, history? }`. History entries have a `user` or `assistant` role and a plain-text `content` field. The legacy `previous` question is also supported. Responses include `kind`, `sources` and an optional plain-text `answer`.
+
+Each running instance admits up to three simultaneous Groq requests and 15 per minute, including second lookups. Multiple instances have independent limits. The directory remains available during bursts.
+
+The server builds its index from the site's data under `catalogue.ts` and `site-guides.ts`. Update the underlying guide and its source together when dated information changes.
+
+To check request validation, local guardrails and follow-up retrieval against a running preview, set `SRM_TEST_URL` and run `node --test scripts/ask-srm/route.test.mjs`. These regression tests do not call Groq.
