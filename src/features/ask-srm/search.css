@@ -15,29 +15,50 @@
   place-items: center;
   padding-inline: 14px;
 }
-html[data-high-contrast] .ask-launch { background: var(--navy); }
 .ask-launch {
+  --launch-text: var(--color-primary-dark);
+  --launch-accent: var(--color-primary);
+  --launch-line: color-mix(in srgb, var(--launch-text) 42%, transparent);
   width: min(100%, 580px);
   display: flex;
   align-items: center;
   gap: 12px;
   min-height: 38px;
   padding: 0 12px;
-  border: 1px solid rgb(168 200 230 / 48%);
+  border: 1px solid var(--launch-line);
   border-radius: 6px;
-  background: rgb(11 45 82 / 83%);
-  backdrop-filter: blur(14px);
-  color: white;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  color: var(--launch-text);
+  transition: transform 320ms var(--ease-standard), border-color 180ms ease;
   cursor: pointer;
   font: 600 .9rem/1.2 var(--font-nav);
   text-align: left;
 }
-.ask-launch:hover { background: rgb(11 45 82 / 94%); border-color: var(--ask-gold); }
+.ask-launch[data-surface="dark"] {
+  --launch-text: var(--surface-primary);
+  --launch-accent: var(--color-blue-pale);
+}
+.ask-launch[data-surface="media"] {
+  --launch-text: var(--surface-primary);
+  --launch-accent: var(--color-gold-light);
+  text-shadow: 0 0 2px var(--navy), 0 1px 3px var(--navy);
+}
+.ask-launch[data-surface="media"] > .ask-icon { filter: drop-shadow(0 1px 1px var(--navy)); }
+.ask-launch:is(:hover, :focus-visible) { border-color: var(--launch-accent); }
+.ask-launch:focus-visible { outline: 2px solid var(--launch-accent); outline-offset: -4px; }
+html[data-high-contrast] .ask-launch {
+  --launch-text: white;
+  --launch-accent: var(--color-gold-light);
+  background-color: var(--navy);
+  text-shadow: none;
+  border-color: currentColor;
+}
 .ask-launch > .site-crest { display: none; }
-.ask-launch > .ask-icon { color: var(--ask-gold); }
+.ask-launch > .ask-icon { color: var(--launch-accent); }
 .ask-launch strong { flex: none; }
-.ask-prompt { padding-left: 12px; border-left: 1px solid #7290ac; font-weight: 400; color: #d6e5f3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ask-launch kbd { flex: none; margin-left: auto; font: 500 .7rem/1 var(--font-nav); color: #d6e5f3; border: 1px solid #65809c; border-radius: 3px; padding: 4px 5px; }
+.ask-prompt { padding-left: 12px; border-left: 1px solid var(--launch-line); font-weight: 400; color: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ask-launch kbd { flex: none; margin-left: auto; font: 500 .7rem/1 var(--font-nav); color: inherit; border: 1px solid var(--launch-line); border-radius: 3px; padding: 4px 5px; }
 /* The dock clips the label as it slides away, leaving a full tap target for the crest. */
 @media (max-width: 760px) {
   .ask-dock {
@@ -56,12 +77,10 @@ html[data-high-contrast] .ask-launch { background: var(--navy); }
     min-height: var(--tab-exposed);
     padding: 0 15px 0 8px;
     gap: 10px;
-    border: 1px solid var(--ask-gold);
+    border-color: var(--launch-accent);
     border-right: 0;
     border-radius: var(--radius-full) 0 0 var(--radius-full);
-    background: var(--navy);
     box-shadow: 0 2px 4px rgb(7 24 47 / 22%);
-    transition: transform 320ms var(--ease-standard);
   }
   .ask-launch > .site-crest { display: block; width: 32px; }
   .ask-launch strong {
@@ -75,7 +94,7 @@ html[data-high-contrast] .ask-launch { background: var(--navy); }
 @media (max-width: 760px) and (hover: hover) and (pointer: fine) {
   .ask-launch[data-docked]:hover:not(:focus-visible) { transform: none; }
 }
-@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .ask-launch { transition: none; }
 }
 .ask-icon { width: 19px; height: 19px; display: block; flex: none; }

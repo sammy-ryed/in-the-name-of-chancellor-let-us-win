@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="68" viewBox="0 0 64 68">
-  <path d="M20 4 36 2 49 7 56 19 55 34 45 45 29 48 15 42 8 29 9 15Z" fill="#f7d987" stroke="#0b2d52" stroke-width="1.5"/>
-  <path d="m27 16 15 9-15 9Z" fill="#0b2d52"/>
-  <text x="32" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="10" letter-spacing=".8" fill="white" stroke="#0b2d52" stroke-width="2.4" stroke-linejoin="round" paint-order="stroke">PLAY FILM</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="120" viewBox="0 0 100 120">
+  <title>Play</title>
+  <circle cx="50" cy="49" r="48" fill="#f0b83d" stroke="#202b38" stroke-width="1"/>
+  <path d="M43 40.5 58 49l-15 8.5z" fill="#202b38"/>
+  <!-- PLAY in the site's bundled Bebas Neue, outlined for native cursor rendering. -->
+  <path transform="translate(37.8 117) scale(.016 -.016)" fill="white" stroke="#202b38" stroke-width="58" stroke-linejoin="round" paint-order="stroke"
+    d="M41 700H203Q285 700 326 656Q367 612 367 527V458Q367 373 326 329Q285 285 203 285H151V0H41ZM203 385Q230 385 243.5 400Q257 415 257 451V534Q257 570 243.5 585Q230 600 203 600H151V385ZM427 700H537V100H718V0H427ZM856 700H1005L1119 0H1009L989 139V137H864L844 0H742ZM976 232 927 578H925L877 232ZM1273 298 1140 700H1257L1332 443H1334L1409 700H1516L1383 298V0H1273Z"/>
 </svg>

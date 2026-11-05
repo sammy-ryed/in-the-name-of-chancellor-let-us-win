@@ -76,6 +76,7 @@
    as a native cursor, so the mark follows the pointer beyond the slanted cut. */
 .s-film {
   --film-mark: url("/home/play-film.svg");
+  --film-mark-width: clamp(60px, 16vw, 74px);
   --film-control-bottom: clamp(12px, 2.4svh, 24px);
   --film-control-left: 49%;
 }
@@ -85,14 +86,16 @@
 }
 .s-film-mark {
   position: absolute; bottom: var(--film-control-bottom); left: var(--film-control-left);
-  width: 52px; height: 55px; background: var(--film-mark) center / contain no-repeat;
+  width: var(--film-mark-width); aspect-ratio: 5 / 6;
+  background: var(--film-mark) center / contain no-repeat;
 }
 .s-home .s-film-open:focus-visible { outline: 0; }
 .s-film-open:focus-visible .s-film-mark {
   outline: 2px solid white; outline-offset: 3px; box-shadow: 0 0 0 6px var(--navy);
 }
 .s-home .s-film .s-preview-toggle {
-  bottom: calc(var(--film-control-bottom) + 9px); left: calc(var(--film-control-left) + 56px);
+  bottom: calc(var(--film-control-bottom) + var(--film-mark-width) * .71 - 22px);
+  left: calc(var(--film-control-left) + var(--film-mark-width) + 6px);
   display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
   border: 0; border-radius: 50%; background: transparent;
 }
@@ -106,9 +109,9 @@
   position: absolute; z-index: 3; bottom: var(--film-control-bottom); left: var(--film-control-left);
 }
 @media (hover: hover) and (pointer: fine) {
-  .s-film-open { cursor: var(--film-mark) 32 25, pointer; }
+  .s-film-open { cursor: var(--film-mark) 50 49, pointer; }
   .s-film-open:not(:focus-visible) .s-film-mark { visibility: hidden; }
-  .s-film-open:focus-visible .s-film-mark { left: 50%; bottom: 50%; transform: translate(-50%, 50%); }
+  .s-film-open:focus-visible .s-film-mark { width: 100px; left: 50%; bottom: 50%; transform: translate(-50%, 50%); }
   .s-home .s-film .s-preview-toggle { left: auto; right: 8%; }
   .s-film:not(:hover):not(:focus-within) .s-preview-toggle { opacity: 0; }
 }
@@ -132,7 +135,7 @@
   .s-film-pane { clip-path: polygon(0 var(--mt),100% var(--mr),100% var(--mb),16% var(--mk),0 var(--ml)); }
   .s-film { inset: max(0%, min(var(--mr), var(--mt))) 0 0; }
   .s-film { --film-control-left: 14px; }
-  .s-home .s-film .s-preview-toggle { right: auto; left: calc(var(--film-control-left) + 56px); }
+  .s-home .s-film .s-preview-toggle { right: auto; left: calc(var(--film-control-left) + var(--film-mark-width) + 6px); }
 }
 
 .s-subject-links { grid-column: 1 / -1; align-self: end; min-width: 0; }

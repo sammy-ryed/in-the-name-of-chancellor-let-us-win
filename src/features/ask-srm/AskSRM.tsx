@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SrmCrest } from "@/components/HomeLogo";
 import { Icon } from "./Icons";
 import { SearchPanel } from "./SearchPanel";
+import { useLauncherSurface } from "./useLauncherSurface";
 import "./search.css";
 
 export default function AskSRM() {
@@ -13,6 +14,8 @@ export default function AskSRM() {
   const [docked, setDocked] = useState(false);
   const [shortcut, setShortcut] = useState("Ctrl K");
   const trigger = useRef<HTMLButtonElement>(null);
+
+  useLauncherSurface(trigger, path);
 
   const launch = useCallback(() => setOpen(true), []);
 
