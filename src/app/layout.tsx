@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import "@/components/chrome.css";
+import AskSRM from "@/features/ask-srm/AskSRM";
 import Accessibility from "@/components/Accessibility";
 import "@/components/access.css";
 // Design-system fonts: --font-primary (DM Sans) and --font-editorial (Newsreader) in globals.css.
@@ -24,6 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </a>
         <main id="main">{children}</main>
         <Accessibility />
+        <AskSRM />
       </body>
     </html>
   );
