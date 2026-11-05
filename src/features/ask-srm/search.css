@@ -16,9 +16,8 @@
   padding-inline: 14px;
 }
 .ask-launch {
-  --launch-fill: var(--color-primary);
-  --launch-text: white;
-  --launch-accent: var(--color-gold-light);
+  --launch-text: var(--color-primary-dark);
+  --launch-accent: var(--color-primary);
   --launch-line: color-mix(in srgb, var(--launch-text) 42%, transparent);
   width: min(100%, 580px);
   display: flex;
@@ -28,31 +27,31 @@
   padding: 0 12px;
   border: 1px solid var(--launch-line);
   border-radius: 6px;
-  background-color: color-mix(in srgb, var(--launch-fill) 94%, transparent);
-  backdrop-filter: blur(14px);
+  background-color: transparent;
+  backdrop-filter: blur(5px);
   color: var(--launch-text);
-  transition: transform 320ms var(--ease-standard), background-color 180ms ease, border-color 180ms ease;
+  transition: transform 320ms var(--ease-standard), border-color 180ms ease;
   cursor: pointer;
   font: 600 .9rem/1.2 var(--font-nav);
   text-align: left;
 }
 .ask-launch[data-surface="dark"] {
-  --launch-fill: var(--color-blue-pale);
-  --launch-text: var(--color-primary-dark);
-  --launch-accent: var(--color-primary);
+  --launch-text: var(--surface-primary);
+  --launch-accent: var(--color-blue-pale);
 }
 .ask-launch[data-surface="media"] {
-  --launch-fill: var(--color-gold-light);
-  --launch-text: var(--color-primary-dark);
-  --launch-accent: var(--color-primary-dark);
+  --launch-text: var(--surface-primary);
+  --launch-accent: var(--color-gold-light);
+  text-shadow: 0 0 2px var(--navy), 0 1px 3px var(--navy);
 }
-.ask-launch:is(:hover, :focus-visible) { background-color: var(--launch-fill); border-color: var(--launch-accent); }
+.ask-launch[data-surface="media"] > .ask-icon { filter: drop-shadow(0 1px 1px var(--navy)); }
+.ask-launch:is(:hover, :focus-visible) { border-color: var(--launch-accent); }
 .ask-launch:focus-visible { outline: 2px solid var(--launch-accent); outline-offset: -4px; }
 html[data-high-contrast] .ask-launch {
-  --launch-fill: var(--navy);
   --launch-text: white;
   --launch-accent: var(--color-gold-light);
-  background-color: var(--launch-fill);
+  background-color: var(--navy);
+  text-shadow: none;
   border-color: currentColor;
 }
 .ask-launch > .site-crest { display: none; }
