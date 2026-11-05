@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { navigation, services } from "@/lib/navigation";
-import { Menu } from "./GuideMenu";
+import { Rail } from "@/features/home/Rail";
 import "./guide.css";
 export function Action({
   href,
@@ -49,69 +49,85 @@ export function Guide({
   children: React.ReactNode;
   links?: [string, string][];
 }) {
+  const destination = section ?? title;
+  const index =
+    [...navigation, ...services].findIndex(
+      (item) => item.label === destination,
+    ) + 1;
+  const detail = section === "Programmes" && title !== section;
+  const firstLink = links[0];
+  const entry =
+    firstLink?.[0] ??
+    {
+      Events: "Campus calendar",
+      News: "Read the news",
+      Parents: "Parent services",
+    }[destination] ??
+    "Programme details";
   return (
-    <div className="guide">
-      <header className="guide-header">
-        <Link href="/" aria-label="SRM home">
-          <Image
-            width={132}
-            height={45}
-            src="/home/srm-white.svg"
-            alt="SRM Institute of Science and Technology"
-            unoptimized
-          />
-        </Link>
-        <nav aria-label="Primary">
-          {navigation.map((a) => (
-            <Link
-              key={a.href}
-              href={a.href}
-              aria-current={a.label === section ? "page" : undefined}
+    <div className="guide-shell s-chrome">
+      <Rail current={destination} scrollHref="#guide-content" />
+      <div className="guide">
+        <header
+          className="guide-hero s-lines"
+          data-detail={detail || undefined}
+        >
+          <div className="guide-photo" aria-hidden="true">
+            <Image
+              fill
+              sizes="(max-width: 760px) 100vw, 50vw"
+              src={"/home/" + image + ".webp"}
+              alt=""
+              unoptimized
+            />
+          </div>
+          <div className="guide-hero-copy">
+            <div className="guide-kicker">
+              <Link href="/">SRMIST</Link>
+              <span aria-hidden="true">/</span>
+              {detail ? (
+                <Link href="/programmes">Programmes</Link>
+              ) : (
+                <span>University guide</span>
+              )}
+            </div>
+            <h1>{title}</h1>
+            <p>{intro}</p>
+            <a
+              className="guide-entry yellow-action"
+              href={"#" + (firstLink?.[1] ?? "guide-content")}
             >
-              {a.label}
-            </Link>
-          ))}
-        </nav>
-        <Menu />
-      </header>
-      <div className="guide-hero">
-        <div>
-          <Link href="/" className="guide-home">
-            SRMIST / Home
-          </Link>
-          <h1>{title}</h1>
-          <p>{intro}</p>
-        </div>
-        <div className="guide-photo">
-          <Image
-            fill
-            sizes="(max-width:650px) 100vw, 40vw"
-            src={"/home/" + image + ".webp"}
-            alt=""
-            unoptimized
-          />
-        </div>
-      </div>
-      {links.length > 0 && (
-        <nav className="guide-jump" aria-label="On this page">
-          {links.map(([label, id]) => (
-            <a href={"#" + id} key={id}>
-              {label} ↓
+              {entry}
+              <span aria-hidden="true">↓</span>
             </a>
-          ))}
-        </nav>
-      )}
-      <div className="guide-body">{children}</div>
-      <footer className="guide-footer">
-        <Link href="/">SRMIST / Home</Link>
-        <nav aria-label="More services">
-          {services.map((a) => (
-            <Link key={a.href} href={a.href}>
-              {a.label}
-            </Link>
-          ))}
-        </nav>
-      </footer>
+          </div>
+          <div className="guide-folio" aria-hidden="true">
+            <span>{String(index).padStart(2, "0")}</span> / 08
+          </div>
+        </header>
+        <div id="guide-content" tabIndex={-1}>
+          {links.length > 0 && (
+            <nav className="guide-jump" aria-label="On this page">
+              {links.map(([label, id]) => (
+                <a href={"#" + id} key={id}>
+                  {label} ↓
+                </a>
+              ))}
+            </nav>
+          )}
+          <div className="guide-body">{children}</div>
+        </div>
+        <footer className="guide-footer">
+          <Link href="/">SRMIST / Home</Link>
+          <nav aria-label="More services">
+            {services.map((a) => (
+              <Link key={a.href} href={a.href}>
+                {a.label}
+              </Link>
+            ))}
+          </nav>
+        </footer>
+      </div>
     </div>
   );
 }
@@ -126,7 +142,9 @@ export function Section({
 }) {
   return (
     <section className="guide-section" id={id}>
-      <h2>{title}</h2>
+      <h2>
+        <span>{title}</span>
+      </h2>
       {children}
     </section>
   );

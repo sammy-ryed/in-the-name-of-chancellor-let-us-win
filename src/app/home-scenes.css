@@ -400,30 +400,6 @@
   font-size: 13px;
 }
 @media (max-width: 760px) {
-  .s-home {
-    --edge: 7px;
-    --rail: 44px;
-    --start: 65px;
-  }
-  .s-rail,
-  .s-menu-rail {
-    padding: 9px 2px;
-  }
-  .s-rail button i {
-    width: 20px;
-    height: 3px;
-  }
-  .s-edge {
-    right: 4px;
-    font-size: 10px;
-  }
-  .s-menu-sheet {
-    width: calc(100% - var(--rail) - 3 * var(--edge));
-    padding: 26px 16px;
-  }
-  .s-menu-sheet > a {
-    font-size: clamp(32px, 8vw, 58px);
-  }
   .s-stage {
     --lt: 44%;
     --lk: 38%;
@@ -708,51 +684,6 @@
   }
 }
 @media (max-width: 760px) {
-  .s-home {
-    --edge: 8px;
-    --start: 16px;
-    --bar-h: 46px;
-  }
-  .s-rail,
-  .s-menu-rail {
-    left: var(--edge);
-    right: var(--edge);
-    top: var(--edge);
-    bottom: auto;
-    width: auto;
-    height: var(--bar-h);
-    padding: 5px 12px;
-    flex-direction: row;
-  }
-  .s-rail > a:first-child,
-  .s-menu-rail > img {
-    width: 79px;
-  }
-  .s-rail button,
-  .s-menu-rail button {
-    top: 0;
-    right: 0;
-    left: auto;
-    height: 100%;
-    width: 48px;
-    transform: none;
-  }
-  .s-rail-caption,
-  .s-edge,
-  .s-progress {
-    display: none;
-  }
-  .s-menu {
-    background-color: var(--cobalt);
-  }
-  .s-menu-sheet {
-    inset: 0;
-    width: 100%;
-    padding: calc(var(--bar-h) + 42px) 18px 20px;
-  }
-  .s-menu-sheet > a {
-    font-size: clamp(45px, 10vw, 75px);
-  }
   .s-stage {
     --mt: 35%;
     --mr: 39%;

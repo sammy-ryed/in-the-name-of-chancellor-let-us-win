@@ -1,12 +1,5 @@
-@font-face {
-  font-family: Guide Display;
-  src: url("/home/Anton.ttf") format("truetype");
-  font-weight: 400;
-  font-display: swap;
-}
 .guide {
   --pad: max(5vw, calc((100% - 78rem) / 2));
-  --display: "Guide Display", Impact, sans-serif;
   color: var(--ink);
   background: var(--ice);
   min-height: 100svh;
@@ -34,7 +27,6 @@
 .guide button {
   cursor: pointer;
 }
-.guide-header,
 .guide-footer {
   display: flex;
   align-items: center;
@@ -44,100 +36,17 @@
   color: var(--ice);
   padding: 14px var(--pad);
 }
-.guide-header img {
-  width: 116px;
-  height: auto;
-  display: block;
-}
-.guide-header nav,
-.guide-footer nav,
-.guide-utility {
+.guide-footer nav {
   display: flex;
   gap: clamp(12px, 2.2vw, 36px);
   flex-wrap: wrap;
 }
-.guide-header nav a,
 .guide-footer a {
   text-decoration: none;
 }
-.guide-header nav a[aria-current],
-.guide-header a:hover,
 .guide-footer a:hover {
   color: var(--action-yellow);
   text-decoration: underline;
-  text-underline-offset: 5px;
-}
-.guide-menubtn,
-.guide-close {
-  background: var(--action-yellow);
-  color: var(--ink);
-  border: 0;
-  padding: 9px 13px;
-  font-weight: bold !important;
-}
-.guide-dialog {
-  color: var(--ice);
-  background: var(--navy);
-  padding: clamp(1rem, 4vw, 3rem);
-  width: min(510px, 90%);
-  border: 2px solid var(--sky);
-}
-.guide-dialog::backdrop {
-  background: #07182fbd;
-}
-.guide-dialog nav {
-  display: grid;
-  margin: 20px 0;
-  gap: 6px;
-}
-.guide-dialog nav a {
-  font: 2.25rem/1.05 var(--display);
-  text-decoration: none;
-  text-transform: uppercase;
-}
-.guide-utility {
-  border-top: 1px solid var(--sky);
-  padding-top: 18px;
-}
-.guide-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  min-height: clamp(260px, 24vw, 410px);
-  color: var(--ice);
-  background: var(--brand-blue);
-  overflow: hidden;
-}
-.guide-hero > div:first-child {
-  padding: clamp(22px, 4vw, 54px) 3.5vw clamp(22px, 4vw, 54px)
-    max(5vw, calc((100vw - 78rem) / 2));
-  align-self: center;
-}
-.guide-home {
-  font-size: 0.83rem;
-  color: var(--light-muted) !important;
-  text-decoration: none;
-}
-.guide h1 {
-  font: 400 clamp(2.8rem, 6.5vw, 6.7rem)/1 var(--display);
-  text-transform: uppercase;
-  letter-spacing: -0.035em;
-  overflow-wrap: anywhere;
-  margin: 13px 0 15px;
-}
-.guide-hero p {
-  font:
-    clamp(1.05rem, 1.7vw, 1.55rem)/1.25 Georgia,
-    serif;
-  color: var(--ice);
-  max-width: 44ch;
-}
-.guide-photo {
-  position: relative;
-  clip-path: polygon(9% 0, 100% 0, 100% 100%, 0 100%);
-  background: var(--navy);
-}
-.guide-photo img {
-  object-fit: cover;
 }
 .guide-jump,
 .guide-body {
@@ -495,38 +404,13 @@
 .guide-footer {
   padding-block: 26px 60px;
 }
-.guide:has(.guide-dialog[open]) {
-  isolation: auto;
-}
 @media (max-width: 800px) {
-  .guide-header > nav {
-    display: none;
-  }
   .filter-bar,
   .course-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 600px) {
-  .guide-hero {
-    grid-template-columns: 1fr;
-  }
-  .guide-photo {
-    height: 110px;
-    clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 100%);
-  }
-  .guide-hero > div:first-child {
-    padding: 20px 5vw;
-  }
-  .guide h1 {
-    font-size: clamp(2.8rem, 11vw, 4rem);
-  }
-  .guide-header img {
-    width: 92px;
-  }
-  .guide-header {
-    padding-block: 10px;
-  }
   .course-grid,
   .clubs,
   .news-bento {
@@ -566,5 +450,268 @@
   }
   .guide details summary {
     min-height: 44px;
+  }
+}
+
+/* Leave a continuous navy frame for the same fixed controls as the opening film. */
+.guide-shell {
+  background: var(--ink);
+  padding: var(--edge) max(32px, calc(var(--edge) * 2.6)) var(--edge)
+    calc(var(--rail) + 2 * var(--edge));
+}
+.guide-shell .s-edge {
+  color: var(--ice);
+}
+.guide {
+  --pad: clamp(1.25rem, 4vw, 5rem);
+}
+.guide-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+  min-height: clamp(27rem, 66svh, 48rem);
+  background-color: var(--navy);
+  color: var(--ice);
+  border-bottom: 5px solid var(--action-yellow);
+  view-timeline-name: --guide-cover;
+}
+.guide-photo {
+  position: absolute;
+  inset: 0 0 0 50%;
+  background: var(--sky);
+  clip-path: polygon(24% 0, 100% 0, 100% 100%, 0 100%, 10% 43%);
+}
+.guide-photo img {
+  object-fit: cover;
+  transform: scale(1.02);
+}
+.guide-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(11 40 87 / 60%), transparent 62%),
+    linear-gradient(0deg, rgb(7 24 47 / 50%), transparent 35%);
+}
+.guide-hero-copy {
+  position: relative;
+  padding: clamp(1.6rem, 4.5vw, 6rem) var(--pad);
+  width: 72%;
+}
+.guide-kicker,
+.guide-folio {
+  font:
+    700 0.75rem/1.25 Arial,
+    sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.guide-kicker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  color: var(--ice);
+}
+.guide-kicker::before {
+  content: "";
+  width: 1.5rem;
+  height: 3px;
+  background: var(--action-yellow);
+}
+.guide-kicker a {
+  text-decoration: none;
+}
+.guide-kicker a:hover {
+  text-decoration: underline;
+}
+.guide h1 {
+  color: var(--ice);
+  font: 400 clamp(3.5rem, 9.4vw, 11rem)/1.02 var(--display);
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
+  margin: clamp(1rem, 2.4vw, 2.5rem) 0 1.1rem;
+}
+.guide-hero[data-detail] h1 {
+  font-size: clamp(2.8rem, 5.6vw, 7rem);
+}
+.guide-hero p {
+  font:
+    clamp(1.15rem, 1.75vw, 2.05rem)/1.24 Georgia,
+    serif;
+  max-width: min(36ch, 80%);
+  text-wrap: pretty;
+}
+.guide .guide-entry {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 0.55rem 1rem;
+  color: var(--ink);
+  font:
+    700 0.95rem/1.15 Arial,
+    sans-serif;
+  text-decoration: none;
+}
+.guide-entry span {
+  font-size: 1.45rem;
+  line-height: 1;
+}
+.guide-folio {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  background: var(--ink);
+  padding: 0.4rem 0.65rem;
+  color: var(--ice);
+  font-size: 0.65rem;
+}
+.guide-folio span {
+  font: 400 1.6rem/1 var(--display);
+  color: var(--action-yellow);
+}
+.guide-jump {
+  gap: 0 1.5rem;
+  padding-block: 0.3rem;
+  background: var(--sky);
+  border-color: var(--navy);
+}
+.guide-jump a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.guide-jump a:hover {
+  text-decoration: underline;
+}
+.guide-body {
+  padding-block: clamp(2rem, 4.5vw, 5rem) 2rem;
+}
+.guide-section {
+  view-timeline-name: --guide-section;
+}
+.guide-section > h2 {
+  border-top: 1px solid var(--steel);
+  padding-block: 0.25em 0.08em;
+  font: 400 clamp(2.3rem, 4.8vw, 6rem)/1.05 var(--display);
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+}
+.guide-section > h2 span {
+  display: block;
+}
+@keyframes guide-aperture {
+  to {
+    clip-path: polygon(5% 0, 100% 0, 100% 100%, 0 100%, 0 43%);
+  }
+}
+@keyframes guide-pan {
+  to {
+    transform: translateY(4%) scale(1.13);
+  }
+}
+@keyframes guide-title-drift {
+  to {
+    transform: translateY(-0.18em);
+  }
+}
+@keyframes guide-heading-rise {
+  from {
+    transform: translateY(0.72em);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes guide-progress {
+  to {
+    transform: scaleY(1);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-quiet-motion], [data-large-text])
+      .guide-hero
+      :is(.guide-photo, .guide-photo img, h1) {
+      animation: guide-aperture 1s linear both;
+      animation-timeline: --guide-cover;
+      animation-range: exit 0% exit 100%;
+    }
+    html:not([data-quiet-motion], [data-large-text])
+      .guide-hero
+      .guide-photo
+      img {
+      animation-name: guide-pan;
+    }
+    html:not([data-quiet-motion], [data-large-text]) .guide-hero h1 {
+      animation-name: guide-title-drift;
+    }
+    html:not([data-quiet-motion], [data-large-text]) .guide-section > h2 span {
+      animation: guide-heading-rise 1s ease-out both;
+      animation-timeline: --guide-section;
+      animation-range: entry 0% entry 18%;
+    }
+    .guide-shell .s-progress {
+      animation: guide-progress 1s linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@media (max-width: 760px) {
+  .guide-shell {
+    padding: calc(var(--edge) * 2 + var(--bar-h)) var(--edge) var(--edge);
+  }
+  .guide-hero {
+    align-items: start;
+    min-height: 0;
+  }
+  .guide-hero-copy {
+    padding: 1.4rem var(--pad) 1rem;
+    width: 100%;
+    grid-row: 1;
+  }
+  .guide h1 {
+    font-size: clamp(2.85rem, 12.8vw, 6rem);
+    margin: 0.8rem 0;
+  }
+  .guide-hero[data-detail] h1 {
+    font-size: clamp(2.35rem, 8.4vw, 4.5rem);
+  }
+  .guide-hero p {
+    max-width: 42ch;
+  }
+  .guide .guide-entry {
+    margin-top: 1rem;
+  }
+  .guide-photo {
+    position: relative;
+    inset: auto;
+    height: clamp(7.5rem, 22svh, 14rem);
+    grid-row: 2;
+    clip-path: polygon(0 18%, 58% 9%, 100% 0, 100% 100%, 0 100%);
+  }
+  html .guide-hero .guide-photo {
+    animation-name: none !important;
+  }
+  .guide-folio {
+    right: 0.7rem;
+    bottom: 0.7rem;
+  }
+  .guide-section,
+  #guide-content {
+    scroll-margin-top: calc(var(--bar-h) + 3 * var(--edge));
+  }
+  .guide-section > h2 {
+    font-size: clamp(2.25rem, 8vw, 4rem);
   }
 }

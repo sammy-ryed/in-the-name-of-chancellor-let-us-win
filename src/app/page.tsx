@@ -22,7 +22,7 @@ function Arrow() {
 }
 export default function Page() {
   return (
-    <div className="s-home">
+    <div className="s-home s-chrome">
       <Rail />
       <Choreography />
       <div className="s-opening">

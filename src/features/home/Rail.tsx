@@ -4,7 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { navigation, services } from "@/lib/navigation";
 import { srm, tourUrl } from "./content";
-export function Rail() {
+export function Rail({
+  scrollHref = "#explore",
+  current,
+}: {
+  scrollHref?: string;
+  current?: string;
+}) {
   const panel = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -57,7 +63,7 @@ export function Rail() {
           <i />
           <i />
         </button>
-        <a className="s-rail-caption" href="#explore">
+        <a className="s-rail-caption" href={scrollHref}>
           Scroll for more
         </a>
         <span className="s-progress" aria-hidden="true" />
@@ -93,6 +99,7 @@ export function Rail() {
             <Link
               key={a.href}
               href={a.href}
+              aria-current={a.label === current ? "page" : undefined}
               onClick={() => panel.current?.close()}
             >
               {a.label}
@@ -107,6 +114,7 @@ export function Rail() {
                 className="yellow-action"
                 key={a.href}
                 href={a.href}
+                aria-current={a.label === current ? "page" : undefined}
                 onClick={() => panel.current?.close()}
               >
                 {a.label}

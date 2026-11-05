@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/components/chrome.css";
 import Accessibility from "@/components/Accessibility";
 import "@/components/access.css";
 export const metadata: Metadata = {
