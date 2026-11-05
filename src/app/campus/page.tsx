@@ -51,8 +51,13 @@ export default function Page() {
           unoptimized
         />
         <div className="cl-hero-text">
-          <h1>Campus life</h1>
+          <h1>Campus <span>life</span></h1>
           <p>Clubs, fests, late-night builds and a campus that never quite switches off.</p>
+          <nav className="section-shortcuts" aria-label="Campus shortcuts">
+            <a href="#people">Clubs and societies ↓</a>
+            <a href="#whats-on">Events ↓</a>
+            <Link href="/campus/accommodation">Accommodation ↗</Link>
+          </nav>
         </div>
       </header>
 

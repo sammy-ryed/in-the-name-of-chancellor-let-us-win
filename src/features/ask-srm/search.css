@@ -33,35 +33,50 @@ html[data-high-contrast] .ask-launch { background: var(--navy); }
   text-align: left;
 }
 .ask-launch:hover { background: rgb(11 45 82 / 94%); border-color: var(--ask-gold); }
+.ask-launch > .site-crest { display: none; }
 .ask-launch > .ask-icon { color: var(--ask-gold); }
 .ask-launch strong { flex: none; }
 .ask-prompt { padding-left: 12px; border-left: 1px solid #7290ac; font-weight: 400; color: #d6e5f3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ask-launch kbd { flex: none; margin-left: auto; font: 500 .7rem/1 var(--font-nav); color: #d6e5f3; border: 1px solid #65809c; border-radius: 3px; padding: 4px 5px; }
-/* Phones use the same search control as a thumb-reachable launcher. */
+/* The dock clips the label as it slides away, leaving a full tap target for the crest. */
 @media (max-width: 760px) {
   .ask-dock {
+    --tab-exposed: 48px;
     position: fixed;
-    right: calc(var(--space-4) + env(safe-area-inset-right));
+    right: env(safe-area-inset-right, 0px);
     bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+    display: block;
     height: auto;
-    padding: 0;
+    padding: 4px 0 4px 6px;
+    overflow: clip;
+    pointer-events: none;
   }
   .ask-launch {
-    width: auto;
-    min-height: 46px;
-    padding: 0 15px;
-    gap: 8px;
-    border-color: var(--ask-gold);
-    border-radius: var(--radius-full);
-    background: var(--ask-ink);
-    box-shadow: 0 3px 12px rgb(7 24 47 / 24%);
+    width: max-content;
+    min-height: var(--tab-exposed);
+    padding: 0 15px 0 8px;
+    gap: 10px;
+    border: 1px solid var(--ask-gold);
+    border-right: 0;
+    border-radius: var(--radius-full) 0 0 var(--radius-full);
+    background: var(--navy);
+    box-shadow: 0 2px 4px rgb(7 24 47 / 22%);
+    transition: transform 320ms var(--ease-standard);
   }
+  .ask-launch > .site-crest { display: block; width: 32px; }
   .ask-launch strong {
     font: 400 1.35rem/1 var(--ask-display);
     letter-spacing: .025em;
     text-transform: uppercase;
   }
-  .ask-launch :is(.ask-prompt, kbd) { display: none; }
+  .ask-launch :is(.ask-icon, .ask-prompt, kbd) { display: none; }
+  .ask-launch[data-docked]:not(:focus-visible) { transform: translateX(calc(100% - var(--tab-exposed))); }
+}
+@media (max-width: 760px) and (hover: hover) and (pointer: fine) {
+  .ask-launch[data-docked]:hover:not(:focus-visible) { transform: none; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  .ask-launch { transition: none; }
 }
 .ask-icon { width: 19px; height: 19px; display: block; flex: none; }
 .ask-panel button, .ask-panel input { font: inherit; }

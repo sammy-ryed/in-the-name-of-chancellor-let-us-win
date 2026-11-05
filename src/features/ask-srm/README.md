@@ -1,6 +1,6 @@
 # Ask SRM
 
-Ask SRM stays at the top beside the desktop rail. On phones, tap the bottom-right Ask SRM button. Ctrl/Cmd + K opens search on either layout.
+Ask SRM stays at the top beside the desktop rail. On phones, the bottom-right Ask SRM tab shows its label for three seconds, then tucks away to the SRM crest. Tap the crest to open search. Ctrl/Cmd + K opens search on either layout.
 
 Typing searches published SRM pages, programmes, campus-specific fees, student services, clubs, housing, news and events. Enter asks a question. Results and sources appear in the same panel. “Ask a follow-up” carries the previous question into the next search. Closing the panel clears the conversation.
 

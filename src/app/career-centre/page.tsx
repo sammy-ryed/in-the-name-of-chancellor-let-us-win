@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <Guide
       title="Career Centre"
-      image="convocation"
+      image="developer"
       intro="Prepare for placement, read the published outcomes and reach the placement team."
       links={[
         ["Placement figures", "outcomes"],
