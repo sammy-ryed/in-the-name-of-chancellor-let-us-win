@@ -50,11 +50,19 @@ export function Guide({
   links?: [string, string][];
 }) {
   const destination = section ?? title;
-  const index =
-    [...navigation, ...services].findIndex(
-      (item) => item.label === destination,
-    ) + 1;
   const detail = section === "Programmes" && title !== section;
+  const editorial =
+    !detail && ["Programmes", "Campus life", "Students"].includes(destination);
+  const companion: Record<string, string> = {
+    Programmes: "developer",
+    "Campus life": "athletics",
+    Students: "research",
+    Admissions: "campus",
+    Parents: "students",
+    News: "racing",
+    Events: "students",
+    "Career Centre": "developer",
+  };
   const firstLink = links[0];
   const entry =
     firstLink?.[0] ??
@@ -68,42 +76,71 @@ export function Guide({
     <div className="guide-shell s-chrome">
       <Rail current={destination} scrollHref="#guide-content" />
       <div className="guide">
-        <header
-          className="guide-hero s-lines"
-          data-detail={detail || undefined}
-        >
-          <div className="guide-photo" aria-hidden="true">
+        <header className="guide-mast">
+          <Link href="/" aria-label="Explore SRM home">
             <Image
-              fill
-              sizes="(max-width: 760px) 100vw, 50vw"
-              src={"/home/" + image + ".webp"}
-              alt=""
+              width={135}
+              height={46}
+              src="/home/srm-white.svg"
+              alt="SRM Institute of Science and Technology"
               unoptimized
             />
-          </div>
-          <div className="guide-hero-copy">
-            <div className="guide-kicker">
-              <Link href="/">SRMIST</Link>
-              <span aria-hidden="true">/</span>
-              {detail ? (
+          </Link>
+          <nav aria-label="University sections">
+            {navigation.map((item) => (
+              <Link
+                href={item.href}
+                key={item.href}
+                aria-current={destination === item.label ? "page" : undefined}
+              >
+                {item.label} <span aria-hidden="true">›</span>
+              </Link>
+            ))}
+          </nav>
+        </header>
+        <header
+          className="guide-cover"
+          data-editorial={editorial || undefined}
+          data-detail={detail || undefined}
+        >
+          <nav className="guide-crumbs" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <i aria-hidden="true">/</i>
+            {detail && (
+              <>
                 <Link href="/programmes">Programmes</Link>
-              ) : (
-                <span>University guide</span>
-              )}
-            </div>
-            <h1>{title}</h1>
-            <p>{intro}</p>
+                <i aria-hidden="true">/</i>
+              </>
+            )}
+            <span aria-current="page">
+              {detail ? "Programme details" : title}
+            </span>
+          </nav>
+          {!editorial && <h1>{title}</h1>}
+          <div className="guide-lede">
+            {editorial ? <h1>{intro}</h1> : <p>{intro}</p>}
             <a
               className="guide-entry yellow-action"
               href={"#" + (firstLink?.[1] ?? "guide-content")}
             >
-              {entry}
-              <span aria-hidden="true">↓</span>
+              {entry} <span aria-hidden="true">↓</span>
             </a>
           </div>
-          <div className="guide-folio" aria-hidden="true">
-            <span>{String(index).padStart(2, "0")}</span> / 08
-          </div>
+          {!detail && (
+            <div className="guide-diptych" aria-hidden="true">
+              {[image, companion[destination] ?? "campus"].map((src, i) => (
+                <div key={i}>
+                  <Image
+                    fill
+                    sizes="(max-width: 760px) 50vw, 46vw"
+                    src={"/home/" + src + ".webp"}
+                    alt=""
+                    unoptimized
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </header>
         <div id="guide-content" tabIndex={-1}>
           {links.length > 0 && (

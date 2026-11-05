@@ -50,6 +50,11 @@ export function Rail({
         <Link href="/" aria-label="SRM home">
           {logo}
         </Link>
+        {current && (
+          <span className="guide-spine" aria-hidden="true">
+            {current}
+          </span>
+        )}
         <button
           ref={trigger}
           aria-label="Open menu"

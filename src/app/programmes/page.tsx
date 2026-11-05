@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Guide, Resources, Section } from "@/components/Guide";
 import {
   courses,
@@ -7,7 +8,19 @@ import {
 } from "@/features/explore/academic";
 import Finder from "@/features/explore/Finder";
 export const metadata = { title: "Programmes" };
-export default function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ faculty?: string }>;
+}) {
+  const requested = (await searchParams).faculty;
+  const activeFaculty =
+    typeof requested === "string" && Object.hasOwn(faculties, requested)
+      ? requested
+      : "";
+  const totals = new Map<string, number>();
+  for (const course of courses)
+    totals.set(course.faculty, (totals.get(course.faculty) ?? 0) + 1);
   return (
     <Guide
       title="Programmes"
@@ -16,11 +29,34 @@ export default function Page() {
       intro="Choose a field, compare campuses and see what it costs to study there."
       links={[
         ["Course finder", "finder"],
+        ["Faculties", "faculties"],
         ["More study routes", "study-routes"],
       ]}
     >
+      <Section id="faculties" title="Faculties & fields of study">
+        <p className="faculty-intro">
+          Start with a subject. Each faculty lists its degrees, campuses and
+          published fees.
+        </p>
+        <div className="faculty-directory">
+          {Object.entries(faculties).map(([key, name]) => (
+            <Link
+              key={key}
+              href={
+                "/programmes?faculty=" + encodeURIComponent(key) + "#finder"
+              }
+            >
+              <strong>{name}</strong>
+              <small>{totals.get(key) ?? 0} listings</small>
+              <span aria-hidden="true">↗</span>
+            </Link>
+          ))}
+        </div>
+      </Section>
       <Section id="finder" title="Find your programme">
         <Finder
+          key={activeFaculty}
+          initialFaculty={activeFaculty}
           faculties={faculties}
           records={courses.map((c) => ({
             id: c.id,

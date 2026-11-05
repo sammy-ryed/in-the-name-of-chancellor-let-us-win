@@ -13,14 +13,16 @@ type Item = {
   period: string;
 };
 export default function Finder({
+  initialFaculty,
   records,
   faculties,
 }: {
+  initialFaculty: string;
   records: Item[];
   faculties: Record<string, string>;
 }) {
   const [query, setQuery] = useState(""),
-    [faculty, setFaculty] = useState(""),
+    [faculty, setFaculty] = useState(initialFaculty),
     [campus, setCampus] = useState(""),
     [level, setLevel] = useState(""),
     [limit, setLimit] = useState(12),
