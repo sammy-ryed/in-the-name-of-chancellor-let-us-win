@@ -1,0 +1,77 @@
+/*
+ * Design system of https://srmist-redesign.vercel.app (the deployed build of this repo),
+ * read from the live page's computed styles plus src/app/globals.css and src/app/home.css.
+ * Not imported anywhere — a single reference sheet for the system.
+ */
+
+:root {
+  /* Blues — dark to light */
+  --ink: #07182f;            /* primary text, dark section backgrounds, CTA outline */
+  --navy: #0b2857;           /* dark panels, nav bar */
+  --brand-blue: #034da1;     /* SRM crest blue: headers, focus ring, line pattern stroke */
+  --cobalt: #1959c7;         /* accent rules, secondary blue panels */
+  --steel: #5788b6;          /* muted display headings on dark */
+  --sky: #80baff;            /* display headings + body copy on dark */
+  --cyan: #92e5ff;           /* highlight */
+  --light-muted: #b8d3f2;    /* secondary text on dark */
+  --rule: #9bb9d6;           /* hairline borders */
+  --mist: #e1efff;           /* light section backgrounds */
+  --ice: #edf6ff;            /* page background, text on dark */
+  --body-muted: #45607d;     /* secondary text on light */
+
+  /* Action — sunflower yellow for every call to action */
+  --action-yellow: #ffda35;
+  --action-hover: #ffea83;
+  --action-pressed: #f4bd16;
+
+  /* Supporting accents */
+  --seafoam: #a4e8d1;
+  --apricot: #ffb093;
+
+  /* Type
+   * Display: Anton, self-hosted as "SRM Display" (/home/Anton.ttf), always uppercase, weight 400.
+   * Editorial/lead copy: Georgia. UI and small body: Arial. */
+  --display: "SRM Display", Impact, "Arial Narrow", sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: Arial, Helvetica, sans-serif;
+
+  /* Display scale (viewport-driven; tight leading, negative tracking) */
+  --fs-hero: min(13.6vw, 22.5svh);       /* lh 0.98, ls -0.035em */
+  --fs-section: min(10.2vw, 19svh);
+  --fs-menu: clamp(38px, 5.5vw, 100px);  /* lh 1.03, ls -0.035em */
+  --fs-title: clamp(22px, 3vw, 58px);    /* lh 1, ls -0.025em */
+  --fs-card-title: 20px;                 /* news cards: lh 1.03, ls -0.023em */
+
+  /* Copy scale */
+  --fs-lead: clamp(23px, 2.8vw, 62px);   /* Georgia, lh 0.99, ls -0.052em */
+  --fs-body: clamp(14px, 1.2vw, 21px);   /* Arial, lh 1.18, ls -0.025em */
+  --fs-ui: clamp(13px, 1.16vw, 19px);    /* Arial, lh 1.2 */
+  --fs-caption: clamp(11px, 1.05vw, 19px); /* Georgia 500, lh 0.96 */
+  --fs-button: clamp(13px, 1.15vw, 20px);  /* SRM Display, uppercase, lh 1 */
+
+  /* Layout */
+  --edge: clamp(8px, 1.05vw, 20px);
+  --rail: clamp(54px, 4.5vw, 82px);
+  --start: calc(var(--edge) * 3 + var(--rail));
+  --directory-gutter: max(5vw, calc((100% - 70rem) / 2));
+
+  /* Shape — square corners everywhere; only round controls (play) use 50% */
+  --radius: 0;
+  --radius-round: 50%;
+  /* Borders are drawn as 1px inset shadows rather than borders */
+  --outline-ink: inset 0 0 0 1px var(--ink);
+  --outline-rule: inset 0 0 0 1px var(--rule);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 0.65, 0.15, 1); /* menu entrance, 0.42s */
+  --dur-press: 0.18s;  /* button transform */
+  --dur-hover: 0.2s;
+  --dur-fade: 0.45s;
+
+  /* Primary CTA (computed) */
+  --cta-bg: var(--action-yellow);
+  --cta-color: var(--ink);
+  --cta-font: 400 var(--fs-button) / 1 var(--display);
+  --cta-padding: 10px 12px;
+  --cta-shadow: var(--outline-ink);
+}

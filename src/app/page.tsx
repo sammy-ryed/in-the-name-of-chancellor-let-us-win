@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -139,9 +140,12 @@ export default function Page() {
         <div className="s-people-frame">
           <h2 id="people-title" className="s-people-title">
             {["Great", "ideas", "need", "great", "teams."].map((word, i) => (
-              <span key={i}>
-                <b>{word}</b>
-              </span>
+              <Fragment key={i}>
+                {i === 2 && <i className="s-people-break" aria-hidden="true" />}
+                <span>
+                  <b>{word}</b>
+                </span>
+              </Fragment>
             ))}
           </h2>
           <div className="s-roster">
@@ -158,6 +162,14 @@ export default function Page() {
                   unoptimized
                 />
               </a>
+            ))}
+          </div>
+          <div className="s-people-strip" aria-hidden="true">
+            {community.map((a, i) => (
+              <figure key={a.name} style={{ "--i": i } as React.CSSProperties}>
+                <Image src={"/home/" + a.image + ".webp"} alt="" width={260} height={175} unoptimized />
+                <figcaption>{a.place}</figcaption>
+              </figure>
             ))}
           </div>
           <Link className="yellow-action s-button s-people-cta" href="/campus">

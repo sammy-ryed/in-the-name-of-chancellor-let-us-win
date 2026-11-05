@@ -7,7 +7,7 @@ export const community = [
     name: "Student clubs",
     place: "Find your people",
     href: srm + "/life-at-srm/student-life/clubs/",
-    image: "students",
+    image: "clubs",
   },
   {
     name: "Camber Racing",
@@ -33,7 +33,7 @@ export const community = [
     name: "Innovation hub",
     place: "In the lab",
     href: srm + "/research/innovation-incubation/",
-    image: "research",
+    image: "innovation",
   },
 ];
 export const stories = [
