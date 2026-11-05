@@ -41,6 +41,67 @@ const portalInstructions: Record<string, string> = {
     "Use SRM’s password recovery service to reset your NetID, then sign in to your student portal again.",
 };
 
+// Address records also provide compact evidence for questions with no lexical matches.
+export const universityOverview: Entry[] = [
+  {
+    title: "Main campus address · Kattankulathur",
+    section: "Visit SRM",
+    href: "https://webstor.srmist.edu.in/web_assets/downloads/2025/hand-book-2025-26.pdf",
+    keywords:
+      "address location directions reach visit headquarters Chennai Potheri main campus",
+    summary:
+      "SRMIST’s main campus is in Kattankulathur, near Chennai. Its postal address is SRM Nagar, Kattankulathur, Chengalpattu district, Tamil Nadu 603203.",
+  },
+  {
+    title: "Ramapuram campus address",
+    section: "Visit SRM",
+    href: "https://webstor.srmist.edu.in/web_assets/downloads/2026/ugc-annual-report-2024-25.pdf",
+    keywords: "Chennai campus location directions",
+    summary:
+      "The Ramapuram campus is on Bharathi Salai, Ramapuram, Chennai, Tamil Nadu 600089.",
+  },
+  {
+    title: "Vadapalani campus address",
+    section: "Visit SRM",
+    href: "https://webstor.srmist.edu.in/web_assets/downloads/2026/ugc-annual-report-2024-25.pdf",
+    keywords: "Chennai campus location directions",
+    summary:
+      "The Vadapalani campus is at No. 1, Jawaharlal Nehru Road (100 Feet Road), near Vadapalani Signal, Chennai 600026.",
+  },
+  {
+    title: "Delhi NCR campus address · Modinagar",
+    section: "Visit SRM",
+    href: "https://webstor.srmist.edu.in/web_assets/downloads/2026/ugc-annual-report-2024-25.pdf",
+    keywords: "Ghaziabad Modinagar Delhi NCR location directions",
+    summary:
+      "The Delhi NCR campus is on Delhi–Meerut Road in Modinagar, Ghaziabad, Uttar Pradesh 201204.",
+  },
+  {
+    title: "Tiruchirappalli campus address",
+    section: "Visit SRM",
+    href: "https://webstor.srmist.edu.in/web_assets/downloads/2026/ugc-annual-report-2024-25.pdf",
+    keywords: "Trichy Samayapuram location directions",
+    summary:
+      "The Tiruchirappalli campus is on the Trichy–Chennai Highway near Samayapuram, Tamil Nadu 621105.",
+  },
+  {
+    title: "Baburayanpettai campus address",
+    section: "Visit SRM",
+    href: "https://webstor.srmist.edu.in/web_assets/downloads/2026/ugc-annual-report-2024-25.pdf",
+    keywords: "agricultural sciences location directions",
+    summary:
+      "The Baburayanpettai campus is at Vendhar Nagar, Elapakkam Post, Maduranthagam Taluk, Chengalpattu district, Tamil Nadu 603201.",
+  },
+  {
+    title: "About SRMIST",
+    section: "University",
+    href: "https://www.srmist.edu.in/",
+    keywords: "university introduction about full name stands for",
+    summary:
+      "SRMIST stands for SRM Institute of Science and Technology. Its main campus is in Kattankulathur, Tamil Nadu. The programme finder lists degrees across its faculties and campuses.",
+  },
+];
+
 const guides: Entry[] = [
   {
     title: "Class timetable and personal records",
@@ -126,6 +187,7 @@ const guides: Entry[] = [
 
 export function catalogue(): Entry[] {
   return [
+    ...universityOverview,
     ...guides,
     ...[...navigation, ...services].map((item) => ({
       title: item.label,

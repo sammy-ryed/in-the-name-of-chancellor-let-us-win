@@ -10,18 +10,18 @@ import type { SearchResponse, Source } from "./types";
 function ResultLink({
   source,
   onPick,
+  preview,
 }: {
   source: Source;
+  preview: boolean;
   onPick: () => void;
 }) {
   const content = (
     <>
-      <span className="ask-source-mark">
-        <Icon name="link" />
-      </span>
       <span className="ask-result-text">
         <small>{source.section}</small>
         <strong>{source.title}</strong>
+        {preview && <span className="ask-excerpt">{source.summary}</span>}
       </span>
       <span className="ask-out" aria-hidden="true">
         {source.href.startsWith("/") ? "→" : "↗"}
@@ -184,21 +184,19 @@ export function SearchPanel({
       }}
     >
       <div className="ask-mast">
-        <div className="ask-brand">
-          <span className="ask-sigil" aria-hidden="true">
-            ✳
-          </span>{" "}
-          Ask SRM
-        </div>
-        <button
-          className="ask-close"
-          aria-label="Close search"
-          type="button"
-          onClick={close}
-        >
-          <Icon name="close" />
-        </button>
+        <h2 className="ask-brand">
+          Ask <span>SRM</span>
+        </h2>
       </div>
+      <button
+        className="ask-close"
+        aria-label="Close search"
+        type="button"
+        onClick={close}
+      >
+        <Icon name="close" />
+      </button>
+
       <div className="ask-main">
         {previous && (
           <div className="ask-context">
@@ -233,7 +231,7 @@ export function SearchPanel({
             type="search"
             aria-label="Your SRM question"
             placeholder={
-              previous ? "Ask a follow-up…" : "What do you want to find?"
+              previous ? "Ask a follow-up…" : "Search or ask a question"
             }
             value={query}
             maxLength={300}
@@ -246,13 +244,14 @@ export function SearchPanel({
             aria-label="Get answer"
             disabled={shortQuery || phase === "asking"}
           >
-            <Icon name="send" />
+            <span>Ask</span>
+            <Icon name="arrow" />
           </button>
         </form>
         <div className="ask-content">
           {shortQuery && !previous && (
             <>
-              <h2 className="ask-label">Try asking</h2>
+              <h2 className="ask-label">Suggested searches</h2>
               <div className="ask-rows">
                 {promptsFor(path).map((item) => (
                   <button
@@ -262,9 +261,6 @@ export function SearchPanel({
                     data-ask-row
                     onClick={() => ask(item.question)}
                   >
-                    <span className={"ask-prompt-mark ask-tone-" + item.icon}>
-                      <Icon name={item.icon} />
-                    </span>
                     <span className="ask-result-text">
                       <small>{item.section}</small>
                       <strong>{item.question}</strong>
@@ -303,9 +299,7 @@ export function SearchPanel({
               aria-live="polite"
             >
               <h2 className="ask-label">
-                {result.kind === "grok"
-                  ? "Answer from Grok"
-                  : "From the SRM guide"}
+                {result.kind === "groq" ? "Answer" : "From the SRM guide"}
               </h2>
               <p>{result.answer || guideExcerpt}</p>
               <button type="button" className="ask-follow" onClick={followUp}>
@@ -317,27 +311,38 @@ export function SearchPanel({
             phase !== "error" &&
             !shortQuery &&
             (result.kind === "unanswered" || !sources.length) && (
-              <p className="ask-note" role="status">
-                {sources.length
-                  ? "The guide doesn’t confirm an answer. These pages may help."
-                  : "No matching SRM pages. Try a course, campus, club or student service."}
-              </p>
+              <div className="ask-note" role="status">
+                {answered
+                  ? "The guide doesn’t cover that question yet."
+                  : "No direct page match. Select Ask to check the university guide."}
+                {answered && (
+                  <div className="ask-recovery">
+                    <Link href="/students" onClick={close}>
+                      Student services →
+                    </Link>
+                    <Link href="/admissions#enquiry" onClick={close}>
+                      Ask admissions →
+                    </Link>
+                  </div>
+                )}
+              </div>
             )}
           {!!sources.length && (
             <>
               <h2 className="ask-label">
                 {answered
-                  ? result.kind === "grok"
+                  ? result.kind === "groq"
                     ? "Sources"
                     : "Related pages"
                   : "Matching pages"}
               </h2>
               <div className="ask-rows">
-                {sources.map((source) => (
+                {sources.map((source, index) => (
                   <ResultLink
                     key={source.href}
                     source={source}
                     onPick={close}
+                    preview={!answered && index === 0}
                   />
                 ))}
               </div>
@@ -345,15 +350,6 @@ export function SearchPanel({
           )}
         </div>
       </div>
-      <footer className="ask-foot">
-        <span>
-          <kbd>↑</kbd>
-          <kbd>↓</kbd> Browse links
-        </span>
-        <span>
-          <kbd>Enter</kbd> Ask from the search field
-        </span>
-      </footer>
     </dialog>
   );
 }

@@ -84,11 +84,7 @@ export default function AskSRM() {
         </button>
         {tip && !open && (
           <div className="ask-tip">
-            <p>
-              Looking for something?
-              <br />
-              <strong>Ask about fees, clubs or campus Wi-Fi.</strong>
-            </p>
+            <p>Try “Where is SRM?” or search for a course.</p>
             <button
               type="button"
               onClick={dismissTip}

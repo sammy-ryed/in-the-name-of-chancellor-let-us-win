@@ -36,6 +36,37 @@ function terms(text: string): string[] {
   ];
 }
 
+// Keep the intent of short institutional questions before removing common words.
+// More specific service questions ("where is the hostel Wi-Fi login?") use normal ranking.
+function queryTerms(question: string): string[] {
+  const sentence = question
+    .toLowerCase()
+    .replace(/[’']/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+  const location =
+    /\b(where|address|location|located|situated|directions|reach|city)\b/.test(
+      sentence,
+    );
+  const rest = sentence
+    .replace(
+      /\b(srm|srmist|institute|of|science|and|technology|university|college|the|a|an|s|where|what|which|how|is|are|at|in|to|do|i|can|you|give|tell|me|please|find|get|its|it|your|exact|postal|address|located|situated|location|directions|reach|city|main|campus|chennai|ktr|kattankulathur|ramapuram|vadapalani|trichy|tiruchirappalli|delhi|ncr|modinagar|baburayanpettai)\b/g,
+      "",
+    )
+    .trim();
+  if (location && !rest) {
+    const campus =
+      sentence.match(
+        /\b(ramapuram|vadapalani|ktr|kattankulathur|trichy|tiruchirappalli|delhi|ncr|modinagar|baburayanpettai)\b/,
+      )?.[1] ?? "main campus";
+    return terms(campus + " address");
+  }
+  const words = terms(question);
+  if (!words.length && /\bsrm(?:ist)?\b/.test(sentence))
+    return ["about", "introduction"];
+  return words;
+}
+
 const docs = catalogue().map(({ keywords = "", ...source }) => ({
   source,
   title: terms(source.title),
@@ -49,9 +80,9 @@ for (const d of docs) {
 }
 
 export function findSources(question: string, previous = ""): Source[] {
-  const current = terms(question);
+  const current = queryTerms(question);
   const prior = previous
-    ? terms(previous).filter((w) => !current.includes(w))
+    ? queryTerms(previous).filter((w) => !current.includes(w))
     : [];
   if (!current.length && !prior.length) return [];
   const weights = [...current, ...prior].map((word, i) => ({

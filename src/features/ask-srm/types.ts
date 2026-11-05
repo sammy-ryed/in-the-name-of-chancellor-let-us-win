@@ -8,5 +8,5 @@ export type Source = {
 export type SearchResponse = {
   sources: Source[];
   answer?: string;
-  kind: "matches" | "guide" | "grok" | "unanswered";
+  kind: "matches" | "guide" | "groq" | "unanswered";
 };
