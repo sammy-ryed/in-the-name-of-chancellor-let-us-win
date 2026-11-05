@@ -4,17 +4,19 @@ Run `npm ci` and `npm run dev`, then open [localhost:3000](http://localhost:3000
 
 | Scene | Scroll and interaction | Team editing point |
 | --- | --- | --- |
-| Opening | One headline crosses three colour and film layers. The diagonal aperture opens, then a diagonal wipe brings in academics from the right. On phones the film opens vertically below the compact toolbar. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
-| Campus film | The muted preview plays in the aperture. Click the follow-cursor control to start the reel with sound, then click to pause/resume. Close restores the preview. A poster and direct link cover blocked players. | `src/features/home/Film.tsx` |
-| Find your way | The illustrated campus map settles from a slight zoom and tilt beside the heading, tour link and editorial copy. | `src/app/home-scenes.css` |
-| Community | A cut-out opens, five headline lines rise through masks, and the linked roster moves over the pinned title. Hover or focus a row to preview its photo. | `src/features/home/content.ts` |
+| Opening | The headline and motto sit in the left panel. The film aperture expands as you scroll, then gives way to academics. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
+| Campus film | The muted local HD excerpt plays in view. Watch film opens the original reel with native YouTube controls. | `src/features/home/Film.tsx` |
+| Find your way | A five-second pan across the official tour’s lake panorama plays once. Visitors can replay it, enter the full tour or open the illustrated map. | `src/features/home/journeys.css` |
+| Community | Five linked portraits sit beside the headline on desktop and below it on phones. The photographs stay inside their own rows. | `src/features/home/content.ts` |
 | News and destinations | Swipe or drag the news strip, use its arrow buttons, or tab through the stories. The three closing bands lead into the other teammates’ routes. | `src/features/home/NewsReel.tsx`, `src/features/home/content.ts` |
 
 The [Monument homepage](https://monument.tv/) is the motion and layout reference. The copy, destinations and implementation are written for SRM. Motion follows native page scrolling. Reduced-motion mode presents the scenes in reading order with no pinned choreography or automatic film playback.
 
 ## Media sources
 
-- **Opening film**: [official SRM YouTube video](https://www.youtube.com/watch?v=S_xAJo_siHA), using YouTube’s privacy-enhanced embedded player. The [thumbnail](https://i.ytimg.com/vi/S_xAJo_siHA/maxresdefault.jpg) is stored locally.
+- **Opening preview**: eight-second excerpt from [SRM’s 1920×1080 landing film](https://www.srmist.edu.in/wp-content/uploads/2022/09/srmist-landing-video.webm). The WebM retains the original VP9 stream. A 1080p MP4 provides a fallback. The [full reel](https://www.youtube.com/watch?v=S_xAJo_siHA) loads on request.
+- **Tour preview**: five-second camera pan rendered from the opening SRMIST lake panorama in the [official virtual tour](https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm). Only the local poster and preview are used on the homepage.
+- **Motto**: “Learn. Leap. Lead.” follows the [official university homepage](https://www.srmist.edu.in/).
 - **Logo**: the [white SRM homepage SVG](https://www.srmist.edu.in/wp-content/uploads/2022/01/srm-logo-white.svg), stored unchanged.
 - **Campus**: [SRM Kattankulathur panorama](https://www.srmist.edu.in/wp-content/uploads/2022/01/Panroma_pic3_100_0106_20211022192347_Croped.jpg).
 - **Campus map**: illustrated transit-style map supplied by the team (`public/home/campus-map.webp`); its baked-in checkerboard background was removed to make it transparent. Illustrative, not to scale.

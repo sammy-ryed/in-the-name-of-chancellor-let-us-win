@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import { SrmCrest } from "@/components/HomeLogo";
+import { MotionPreview } from "@/features/home/MotionPreview";
 import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -9,24 +10,15 @@ import { community } from "@/features/home/content";
 import { actions, tourUrl } from "@/lib/navigation";
 import "./home.css";
 import "./home-scenes.css";
+import "@/features/home/journeys.css";
 
 export const metadata = { title: "Life at SRM" };
 const disciplines = [
-  "Engineering",
-  "Medicine",
-  "Architecture",
-  "Science & Humanities",
-  "Law",
-  "Agriculture",
-];
-function Headline({ primary = false }: { primary?: boolean }) {
-  const Tag = primary ? "h1" : "div";
-  return (
-    <Tag className="s-headline" aria-hidden={primary ? undefined : true}>
-      <span>Ready for</span> <span>life at SRMIST?</span>
-    </Tag>
-  );
-}
+  { label: "Engineering", area: "engineering" }, { label: "Medicine", area: "health" },
+  { label: "Architecture", area: "design" }, { label: "Sciences", area: "sciences" },
+  { label: "Humanities", area: "humanities" }, { label: "Law", area: "law" },
+  { label: "Agriculture", area: "agriculture" },
+] as const;
 function Arrow() {
   return <span className="s-arrow" aria-hidden="true" />;
 }
@@ -37,23 +29,14 @@ export default function Page() {
       <div className="s-opening">
         <div className="s-stage">
           <section aria-label="Life at SRM" className="s-hero s-lines">
-            <Headline primary />
-            <div className="s-hero-arrow">
-              <Arrow />
-            </div>
             <div className="s-intro-pane">
-              <Headline />
-              <div className="s-opening-note">
-                <p>Where a classroom idea can become a race car.</p>
-                <small>
-                  Meet the people building, testing and starting over at SRM.
-                </small>
+              <div className="s-hero-copy">
+                <h1 className="s-hero-title"><span>Ready for</span>{" "}<span>life at</span>{" "}<span>SRMIST?</span></h1>
+                <p className="s-motto">Learn. Leap. Lead.</p>
               </div>
             </div>
-            <div className="s-film-pane">
-              <Film />
-              <Headline />
-            </div>
+            <div className="s-hero-brand" aria-hidden="true"><SrmCrest /><Arrow /></div>
+            <div className="s-film-pane"><Film /></div>
           </section>
           <section className="s-academics" aria-labelledby="academics-title">
             <div className="s-acad-interior">
@@ -76,18 +59,16 @@ export default function Page() {
                   Find a programme <Arrow />
                 </Link>
               </div>
-              <div className="s-disciplines">
-                {/* Two identical groups: the track slides one group's width, then repeats seamlessly. */}
-                <div className="s-marquee-track">
-                  {[0, 1].map((copy) => (
-                    <ul
-                      key={copy}
-                      className="s-marquee-group"
-                      aria-label={copy ? undefined : "Fields of study"}
-                      aria-hidden={copy ? true : undefined}
-                    >
-                      {disciplines.map((x) => (
-                        <li key={x}>{x}</li>
+              <div className="s-subject-links">
+                <div className="s-subject-track">
+                  {[false, true].map((repeat) => (
+                    <ul key={String(repeat)} className="s-subjects" aria-label={repeat ? undefined : "Fields of study"} aria-hidden={repeat || undefined}>
+                      {disciplines.map(({ label, area }) => (
+                        <li key={area}>
+                          <Link href={`/programmes?area=${area}`} tabIndex={repeat ? -1 : undefined}>
+                            {label} <span aria-hidden="true">↗</span>
+                          </Link>
+                        </li>
                       ))}
                     </ul>
                   ))}
@@ -97,84 +78,33 @@ export default function Page() {
           </section>
         </div>
       </div>
-      <section id="explore" className="s-place" aria-labelledby="place-title">
-        <div className="s-place-frame">
-          <div className="s-place-grid">
-            <figure className="s-map">
-              <Image
-                className="s-map-img"
-                src="/home/campus-map.webp"
-                width={876}
-                height={1446}
-                sizes="(max-width: 760px) 70vw, 40vw"
-                alt="Illustrated transit-style map of the Kattankulathur campus: coloured routes link the academic blocks, the pond and Potheri railway station."
-                unoptimized
-              />
-            </figure>
-            <div className="s-place-intro">
-              <h2 id="place-title">Find your way</h2>
-              <p className="s-serif">
-                Follow the road through Kattankulathur. The next turn could be
-                your department.
-              </p>
-            </div>
-            <div className="s-place-details">
-              <a className="yellow-action s-button" href={tourUrl}>
-                Take the 360° tour <Arrow />
-              </a>
-              <div>
-                <span className="s-compass" aria-hidden="true">
-                  ✳
-                </span>
-                <p>
-                  Walk between the labs, the library and the grounds. Get a feel
-                  for the campus before your first day.
-                </p>
-                <small className="s-map-note">Illustrated map, not to scale.</small>
-              </div>
-            </div>
+      <section id="explore" className="s-tour-section" aria-labelledby="place-title">
+        <figure className="s-tour-view">
+          <MotionPreview label="virtual tour preview" mp4="/home/tour-lake.mp4" poster="/home/tour-lake.webp" />
+          <figcaption>360° / Campus lake</figcaption>
+        </figure>
+        <div className="s-tour-copy">
+          <h2 id="place-title">Find your way</h2>
+          <p className="s-serif">Across the lake. Around the corner. Get to know Kattankulathur.</p>
+          <div className="s-tour-links">
+            <a className="yellow-action s-button" href={tourUrl}>Enter the 360° tour <Arrow /></a>
+            <a href="/home/campus-map.webp">View campus map ↗</a>
           </div>
         </div>
       </section>
-      <section className="s-people" aria-labelledby="people-title">
-        <div className="s-people-frame">
-          <h2 id="people-title" className="s-people-title">
-            {["Great", "ideas", "need", "great", "teams."].map((word, i) => (
-              <Fragment key={i}>
-                {i === 2 && <i className="s-people-break" aria-hidden="true" />}
-                <span>
-                  <b>{word}</b>
-                </span>
-              </Fragment>
-            ))}
-          </h2>
-          <div className="s-roster">
-            {community.map((a, i) => (
-              <a href={a.href} key={a.name}>
-                <span>0{i + 1}</span>
-                <strong>{a.name}</strong>
-                <em>{a.place}</em>
-                <Image
-                  src={"/home/" + a.image + ".webp"}
-                  alt=""
-                  width={260}
-                  height={175}
-                  unoptimized
-                />
-              </a>
-            ))}
-          </div>
-          <div className="s-people-strip" aria-hidden="true">
-            {community.map((a, i) => (
-              <figure key={a.name} style={{ "--i": i } as React.CSSProperties}>
-                <Image src={"/home/" + a.image + ".webp"} alt="" width={260} height={175} unoptimized />
-                <figcaption>{a.place}</figcaption>
-              </figure>
-            ))}
-          </div>
-          <Link className="yellow-action s-button s-people-cta" href="/campus">
-            Explore campus life <Arrow />
-          </Link>
+      <section className="s-community" aria-labelledby="people-title">
+        <div className="s-community-lead">
+          <h2 id="people-title" className="s-community-title"><span>Great ideas</span>{" "}<span>need great</span>{" "}<span>teams.</span></h2>
+          <Link className="yellow-action s-button" href="/campus">Explore campus life <Arrow /></Link>
+        </div>
+        <div className="s-team">
+          {community.map((item) => (
+            <a href={item.href} key={item.name}>
+              <span className="s-team-photo"><Image src={`/home/${item.image}.webp`} alt="" width={240} height={156} unoptimized /></span>
+              <span className="s-team-copy"><strong>{item.name}</strong><small>{item.place}</small></span>
+              <span className="s-team-arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
         </div>
       </section>
       <section className="s-news" aria-labelledby="news-title">
