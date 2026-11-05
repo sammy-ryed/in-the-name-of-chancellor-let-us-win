@@ -15,7 +15,7 @@ Each route starts with working links. Build track-specific components and fixtur
 
 ## Shared components
 
-The root layout renders the homepage navigation on every route. Edit `src/components/SiteNavigation.tsx` for menu behavior, `src/components/chrome.css` for its appearance and `src/lib/navigation.ts` for destinations. The root layout keeps Ask SRM at the top. The desktop navigation rail becomes a compact toolbar on phones and includes the accessibility settings.
+The root layout renders the homepage navigation on every route. Edit `src/components/SiteNavigation.tsx` for menu behavior, `src/components/chrome.css` for its appearance and `src/lib/navigation.ts` for destinations. Ask SRM uses a top search field on desktop and a bottom-right button on phones. The desktop navigation rail becomes a compact toolbar on phones and includes the accessibility settings.
 
 Reuse `SiteFooter` for the full address and links, `ServiceFooter` for the compact version, and `Breadcrumbs` for parent links. Guide pages share `Section`, `Action` and `Resources`. Use `Disclosure` for expandable questions.
 

@@ -143,8 +143,7 @@ export function SiteNavigation() {
                     {item.children && (
                       <div className="s-menu-sub" id={id} inert={!isOpen}>
                         <div>
-                          <p className="s-menu-sub-title">{item.label}</p>
-                          <ul>
+                          <ul aria-label={item.label}>
                             {item.children.map((child) => (
                               <li key={child.href}>
                                 <MenuLink close={close} href={child.href} aria-current={child.href === pathname ? "page" : undefined}>

@@ -263,7 +263,7 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
 }
 .s-menu-sub ul {
   list-style: none;
-  margin: var(--space-4) 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
   gap: var(--space-1);
@@ -278,13 +278,6 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
 .s-menu-sub a:hover,
 .s-menu-sub a:focus-visible {
   color: var(--color-gold);
-}
-.s-menu-sub .s-menu-sub-title {
-  margin: 0;
-  font: 600 0.8125rem/1.2 var(--font-nav);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-blue-light);
 }
 
 /* Bottom bar: Close (wireframe, bottom-left) + quick links. */
@@ -342,9 +335,8 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
 @media (max-width: 760px) {
   :root {
     --rail: 0px;
-    --search-row: 48px;
     --bar-h: 48px;
-    --header-height: calc(var(--search-row) + var(--bar-h));
+    --header-height: var(--bar-h);
   }
   .s-rail, .s-menu-rail {
     width: 100%;
@@ -409,9 +401,6 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
   .s-menu-sub ul {
     margin-top: 8px;
     padding-bottom: 14px;
-  }
-  .s-menu-sub .s-menu-sub-title {
-    font-size: 0.75rem;
   }
   .s-menu-foot {
     width: 100%;
