@@ -63,16 +63,11 @@ export default function Page() {
         workshop, and get to know the campus before you arrive.
       </p>
 
-      {/* 2 — Find your people: real counts from the site's own data */}
-      <section id="people" className="cl-people" aria-labelledby="people-title">
-        <div>
-          <h2 id="people-title">Find your people</h2>
-          <p>
-            From the Rotaract Club to Astrophilia, student clubs are where most friendships at SRM start. Pick one that
-            matches what you already love, or try something new.
-          </p>
-        </div>
-        <dl className="cl-stats">
+      {/* 2 — Expandable category gallery and the complete club directory */}
+      <section id="people" className="cl-people-showcase" aria-labelledby="people-title">
+        <ClubCards />
+      </section>
+        <dl className="cl-stats cl-people-totals">
           <div>
             <dt>Student clubs</dt>
             <dd>{clubs.length}</dd>
@@ -86,8 +81,6 @@ export default function Page() {
             <dd>{events.length}</dd>
           </div>
         </dl>
-      </section>
-
       {/* 3 — Housing & dining: copy + links beside a photo */}
       <section id="housing" className="cl-split" aria-labelledby="housing-title">
         <div className="cl-split-text">
@@ -206,15 +199,6 @@ export default function Page() {
             </li>
           </ul>
         </div>
-      </section>
-
-      {/* 6 — Clubs as tilted cards */}
-      <section id="clubs" className="cl-club-section" aria-labelledby="clubs-title">
-        <div className="cl-section-head">
-          <h2 id="clubs-title">Clubs &amp; organisations</h2>
-          <p>Make friends, grow a passion or learn something new. Tap any card to see how to join.</p>
-        </div>
-        <ClubCards />
       </section>
 
       {/* 7 — What's on: dated list */}

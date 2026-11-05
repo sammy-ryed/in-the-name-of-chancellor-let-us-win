@@ -1,109 +1,90 @@
 "use client";
 
-import { useState } from "react";
-import TiltedCard, { TiltedCardLayer } from "@/components/TiltedCard";
+import Image from "next/image";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { clubContacts, clubProfiles, clubs, studentAffairs } from "./clubs";
+import categoryImages from "./club-images.json";
+import "./club-expand.css";
 
-const types = [...new Set(clubs.map((c) => c.type))];
+// Independently implemented from the supplied hover-expand visual reference.
+const categories = [{ type: "All interests", image: "/home/film.webp", alt: "SRM students celebrating their robotics project", count: clubs.length }, ...categoryImages.map(category => ({
+  ...category,
+  // A campus photograph makes the opening panel a human introduction to service.
+  image: category.type === "Service" ? "/home/film.webp" : category.image,
+  alt: category.type === "Service" ? "SRM students celebrating together with their robotics project" : category.alt,
+  count: clubs.filter(club => club.type === category.type).length,
+}))];
+type Club = (typeof clubs)[number];
 
 export function ClubCards() {
-  const [q, setQ] = useState("");
-  const [type, setType] = useState("");
-  const query = q.trim().toLowerCase();
-  const found = clubs.filter(
-    (c) => (!type || c.type === type) && (!query || `${c.name} ${c.type}`.toLowerCase().includes(query)),
-  );
-  const clear = () => {
-    setQ("");
-    setType("");
+  const [active, setActive] = useState("All interests");
+  const [selected, setSelected] = useState<Club | null>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLButtonElement | null>(null);
+  const triggers = useRef<(HTMLButtonElement | null)[]>([]);
+  const results = useRef<HTMLDivElement>(null);
+  const found = clubs.filter(club => active === "All interests" || club.type === active);
+  const shown = active;
+  const choose = (type: string) => {
+    setActive(type);
+    if (results.current) results.current.scrollTop = 0;
   };
 
-  return (
-    <div className="cl-clubs">
-      <div className="cl-club-tools">
-        <label className="cl-search">
-          <span>Search by club or interest</span>
-          <input
-            type="search"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="e.g. music, sport or service"
-          />
-        </label>
-        <div className="cl-chips" role="group" aria-label="Filter by interest">
-          {["", ...types].map((t) => (
-            <button key={t || "all"} type="button" aria-pressed={type === t} onClick={() => setType(t)}>
-              {t || "All"}
-            </button>
-          ))}
-        </div>
-        <p role="status" className="cl-count">
-          {found.length} {found.length === 1 ? "club" : "clubs"} · tap a card to see how to join
-        </p>
-      </div>
+  useEffect(() => {
+    if (!selected) return;
+    dialog.current?.showModal();
+    const previous = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => { document.documentElement.style.overflow = previous; };
+  }, [selected]);
 
-      {found.length ? (
-        <ul className="cl-club-grid">
-          {found.map((club, i) => (
-            <li key={club.name}>
-              <TiltedCard
-                altText={club.name}
-                captionText={`${club.name}: how to join`}
-                containerHeight="360px"
-                imageHeight="360px"
-                imageWidth="100%"
-                rotateAmplitude={10}
-                scaleOnHover={1.04}
-                radius={6}
-                glare={0.45}
-                shadow={0.45}
-                introDelay={Math.min(i, 8) * 60}
-                backContent={
-                  <div className="cl-card-back">
-                    <small>{club.type}</small>
-                    <h3>{club.name}</h3>
-                    <p>
-                      Recruitment dates and weekly commitment are unconfirmed. Ask the club coordinator about the next
-                      intake, meeting time and how to apply.
-                    </p>
-                    <a href={clubContacts} onClick={(e) => e.stopPropagation()}>
-                      Coordinator contacts (PDF) ↗
-                    </a>
-                    <a href={studentAffairs} onClick={(e) => e.stopPropagation()}>
-                      Confirm with Student Affairs ↗
-                    </a>
-                    <span className="cl-card-hint" aria-hidden="true">
-                      Tap to flip back
-                    </span>
-                  </div>
-                }
-              >
-                <div className="cl-card-bg s-lines" data-type={club.type} aria-hidden="true" />
-                <TiltedCardLayer depth={30}>
-                  <div className="cl-card-front" data-type={club.type}>
-                    <div className="cl-card-top">
-                      <small>{club.type}</small>
-                      <span aria-hidden="true">{String(clubs.indexOf(club) + 1).padStart(2, "0")}</span>
-                    </div>
-                    <h3>{club.name}</h3>
-                  </div>
-                </TiltedCardLayer>
-              </TiltedCard>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="cl-empty">
-          No club matches.{" "}
-          <button type="button" onClick={clear}>
-            Clear search
+  function onCategoryKey(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    let next = index;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") next = (index + 1) % categories.length;
+    else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = (index - 1 + categories.length) % categories.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = categories.length - 1;
+    else return;
+    event.preventDefault();
+    choose(categories[next].type);
+    triggers.current[next]?.focus();
+  }
+
+  return <div id="clubs" className="ce-experience" data-category={active}>
+    <div className="ce-layout">
+      <div className="ce-gallery" role="group" aria-label="Explore club categories">
+        {categories.map((category, index) => <article key={category.type} data-interest={category.type} className={`ce-panel${shown === category.type ? " is-active" : ""}`}
+          onPointerEnter={event => {
+            if (event.pointerType === "mouse" && !event.currentTarget.parentElement?.querySelector(":focus-visible")) choose(category.type);
+          }}>
+          <div className="ce-photo" aria-hidden="true"><Image src={category.image} alt={category.alt} fill sizes="(max-width: 700px) 85vw, 45vw" unoptimized /><div className="ce-photo-shade" />
+            <div className="ce-photo-caption"><strong>{category.type}</strong><span>{category.count} {category.count === 1 ? "club" : "clubs"} to explore</span></div>
+          </div>
+          <button type="button" className="ce-trigger" ref={element => { triggers.current[index] = element; }}
+            aria-label={`Explore ${category.type} clubs`} aria-pressed={active === category.type} aria-controls="club-category-list"
+            onClick={() => choose(category.type)} onKeyDown={event => onCategoryKey(event, index)}>
+            <span className="ce-vertical">{category.type}</span>
           </button>
-        </p>
-      )}
-
-      <p className="cl-source">
-        <a href={clubProfiles}>Official club profiles ↗</a>
-      </p>
+        </article>)}
+      </div>
+      <div className="ce-editorial">
+        <span className="ce-eyebrow">YOUR PEOPLE ARE HERE / 15 CLUBS</span>
+        <h2 id="people-title">Find your<br /> people<span>.</span></h2>
+        <div id="club-category-list" className="ce-results" ref={results}>
+          <p className="ce-count" role="status">{active} / {found.length} {found.length === 1 ? "club" : "clubs"}</p>
+          {found.map(club => <button type="button" className="ce-club" key={club.name} onClick={event => { opener.current = event.currentTarget; setSelected(club); }}><span><small>{club.type}</small><strong>{club.name}</strong></span><span aria-hidden="true">↗</span></button>)}
+        </div>
+        <p className="ce-footnote">Open a club to find out how to join.</p>
+        <a className="ce-official" href={clubProfiles}>Official club profiles <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
-  );
+    <dialog ref={dialog} className="ce-dialog" aria-labelledby="ce-dialog-title" onClick={event => { if (event.target === dialog.current) dialog.current.close(); }}
+      onClose={() => { setSelected(null); opener.current?.focus({ preventScroll: true }); }}>
+      {selected && <div className="ce-dialog-inner"><button type="button" className="ce-dialog-close" onClick={() => dialog.current?.close()}>Close <span aria-hidden="true">×</span></button><small className="ce-eyebrow">{selected.type}</small><h3 id="ce-dialog-title">{selected.name}</h3>
+        <p className="ce-notice">Recruitment dates and weekly commitment aren’t published yet. The club’s coordinator can tell you about the next intake.</p>
+        <h4>How to join</h4><ol><li><strong>Find the coordinator.</strong> Look up {selected.name} in Student Affairs’ club contact directory.<a href={clubContacts}>Club contact directory (PDF) ↗</a></li><li><strong>Ask about the next intake.</strong> Check meeting times, weekly commitment and how to apply.</li><li><strong>Confirm with Student Affairs.</strong> The Directorate of Student Affairs oversees the clubs.<a href={studentAffairs}>Directorate of Student Affairs ↗</a></li></ol>
+        <h4>More in {selected.type}</h4><div className="ce-related">{clubs.filter(club => club.type === selected.type && club.name !== selected.name).map(club => <button type="button" key={club.name} onClick={() => setSelected(club)}>{club.name}</button>)}{clubs.filter(club => club.type === selected.type).length === 1 && <a href={clubProfiles}>Explore the official club profiles ↗</a>}</div>
+      </div>}
+    </dialog>
+  </div>;
 }

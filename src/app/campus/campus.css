@@ -69,8 +69,8 @@
 /* 1 — Hero */
 .cl-hero {
   position: relative;
-  height: min(78svh, 760px);
-  min-height: 420px;
+  height: calc(100dvh - 2 * var(--edge));
+  min-height: 0;
   margin: var(--edge) var(--edge) 0 0;
   overflow: hidden;
   background: var(--navy);
@@ -619,7 +619,7 @@
   }
   .cl-hero {
     margin: var(--edge) var(--edge) 0;
-    height: 62svh;
+    height: calc(100dvh - var(--bar-h) - 3 * var(--edge));
   }
   .cl-energy,
   .cl-feature,
