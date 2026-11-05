@@ -83,12 +83,15 @@ export function Film() {
     let dead = false,
       watchdog = 0;
     const hero = section.querySelector<HTMLElement>(".s-hero")!;
+    const reduced = () =>
+      reduce.matches ||
+      document.documentElement.hasAttribute("data-quiet-motion");
     const shouldPlay = () =>
       inView.current &&
       !hero.inert &&
       !document.hidden &&
       !stopped.current &&
-      (!reduce.matches || active.current || previewChoice.current === true);
+      (!reduced() || active.current || previewChoice.current === true);
     const sync = () => {
       if (dead || !readyPlayer.current) return;
       if (shouldPlay()) readyPlayer.current.playVideo();
@@ -96,8 +99,8 @@ export function Film() {
     };
     const pref = () => {
       if (!active.current && previewChoice.current === null) {
-        stopped.current = reduce.matches;
-        setPreviewPaused(reduce.matches);
+        stopped.current = reduced();
+        setPreviewPaused(reduced());
       }
       sync();
     };
@@ -118,6 +121,7 @@ export function Film() {
       { threshold: 0.05 },
     );
     obs.observe(element);
+    window.addEventListener("srm-reading-change", pref);
     reduce.addEventListener("change", pref);
     document.addEventListener("visibilitychange", sync);
     youtube()
@@ -180,7 +184,7 @@ export function Film() {
           frame.tabIndex = -1;
         }
         watchdog = window.setTimeout(() => {
-          if (!dead && !tried.current && !reduce.matches) setBlocked(true);
+          if (!dead && !tried.current && !reduced()) setBlocked(true);
         }, 9000);
       })
       .catch(() => {
@@ -191,6 +195,7 @@ export function Film() {
       clearTimeout(watchdog);
       obs.disconnect();
       maskObserver.disconnect();
+      window.removeEventListener("srm-reading-change", pref);
       reduce.removeEventListener("change", pref);
       document.removeEventListener("visibilitychange", sync);
       delete section.dataset.viewing;

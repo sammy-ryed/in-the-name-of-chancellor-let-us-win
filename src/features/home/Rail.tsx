@@ -2,8 +2,15 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { actions, srm, tourUrl } from "./content";
-export function Rail() {
+import { navigation, services } from "@/lib/navigation";
+import { srm, tourUrl } from "./content";
+export function Rail({
+  scrollHref = "#explore",
+  current,
+}: {
+  scrollHref?: string;
+  current?: string;
+}) {
   const panel = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -43,6 +50,11 @@ export function Rail() {
         <Link href="/" aria-label="SRM home">
           {logo}
         </Link>
+        {current && (
+          <span className="guide-spine" aria-hidden="true">
+            {current}
+          </span>
+        )}
         <button
           ref={trigger}
           aria-label="Open menu"
@@ -56,7 +68,7 @@ export function Rail() {
           <i />
           <i />
         </button>
-        <a className="s-rail-caption" href="#explore">
+        <a className="s-rail-caption" href={scrollHref}>
           Scroll for more
         </a>
         <span className="s-progress" aria-hidden="true" />
@@ -88,22 +100,34 @@ export function Rail() {
           </button>
         </div>
         <nav className="s-menu-sheet s-lines">
-          {[
-            ...actions,
-            { label: "News", href: srm + "/news/" },
-            { label: "Admissions", href: srm + "/admissions/" },
-          ].map((a) => (
+          {navigation.map((a) => (
             <Link
               key={a.href}
               href={a.href}
+              aria-current={a.label === current ? "page" : undefined}
               onClick={() => panel.current?.close()}
             >
               {a.label}
             </Link>
           ))}
           <div>
-            <a className="yellow-action" href={tourUrl}>Virtual tour ↗</a>
-            <a className="yellow-action" href={srm + "/contact-us/"}>Contact SRM ↗</a>
+            <a className="yellow-action" href={tourUrl}>
+              Virtual tour ↗
+            </a>
+            {services.map((a) => (
+              <Link
+                className="yellow-action"
+                key={a.href}
+                href={a.href}
+                aria-current={a.label === current ? "page" : undefined}
+                onClick={() => panel.current?.close()}
+              >
+                {a.label}
+              </Link>
+            ))}
+            <a className="yellow-action" href={srm + "/contact-us/"}>
+              Contact SRM ↗
+            </a>
           </div>
         </nav>
       </dialog>

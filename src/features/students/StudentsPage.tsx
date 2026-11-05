@@ -28,7 +28,7 @@ export function StudentsPage() {
   const [academics, wifi, campus, score] = studentServices;
   const career = campus.links.find(link => link.label === "Career Centre")!;
   const academicLinks = [...academics.links.filter(link => link.label !== "Student gateway"), career];
-  return <div className="s-home students-page">
+  return <div className="s-home s-chrome students-page">
     <Rail />
     <StudentMotion />
     <section id="explore" className="st-academics st-section" aria-labelledby="academic-title">
