@@ -51,14 +51,6 @@
 .cl-people-showcase { width: calc(100% - 2 * var(--cl-pad)); max-width: 1600px; margin: clamp(70px, 8vw, 140px) auto; scroll-margin-top: 80px; }
 .cl-people-showcase > .cl-stats { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 25px; max-width: 650px; }
 @keyframes ce-drawer-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
-@media (max-width: 960px) {
-  .ce-layout { grid-template-columns: 1fr; grid-template-areas: none; }
-  .ce-gallery { grid-area: auto; order: -1; position: relative; top: auto; height: 620px; }
-  .ce-editorial { display: contents; }
-  .ce-editorial > .ce-eyebrow { order: -3; }
-  .ce-editorial h2 { order: -2; }
-}
-@media (max-width: 600px) { .ce-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }.ce-editorial { display: contents; }.ce-gallery { width: 100%; flex-direction: column; height: 620px; border-radius: 12px; }.ce-panel { flex-basis: 46px; flex-grow: 0; min-height: 46px; border-right: 0; border-bottom: 1px solid rgb(168 200 230 / 32%); }.ce-panel.is-active { flex-grow: 1; }.ce-photo { inset: 46px 0 0; transform: translateY(15px); }.ce-trigger, .ce-panel.is-active .ce-trigger { width: 100%; height: 46px; inset: 0 0 auto; }.ce-vertical { writing-mode: horizontal-tb; transform: none; left: 52px; top: 11px; bottom: auto; font-size: 23px; }.ce-number { left: 22px; top: 16px; }.ce-plus { bottom: auto; top: 7px; left: auto; right: 20px; transform: none; }.ce-photo-caption { bottom: 20px; }.ce-photo-caption > strong { font-size: 44px; }.cl-page .ce-editorial h2 { font-size: 64px; }.ce-dialog-inner { padding-inline: 24px; }.cl-people-showcase { width: calc(100% - 32px); } }
 @media (prefers-reduced-motion: reduce) { .ce-experience *, .ce-experience *::before, .ce-dialog { animation: none !important; transition: none !important; } }
 html[data-quiet-motion] .ce-experience *, html[data-quiet-motion] .ce-dialog { animation: none !important; transition: none !important; }
 /* A viewport-sized stage: category changes never move the next section. */
@@ -137,33 +129,48 @@ html[data-quiet-motion] .ce-experience *, html[data-quiet-motion] .ce-dialog { a
 .cl-people-showcase .ce-official { align-self: start; color: var(--ce-copy); border-color: var(--ce-accent); flex: none; }
 .cl-people-showcase .ce-editorial :focus-visible { outline-color: var(--ce-accent); }
 .cl-page .cl-people-totals { width: min(calc(100% - 2 * var(--cl-pad)), 650px); margin: 35px auto 70px; padding-top: 25px; }
+.ce-mobile-picker, .ce-more, .ce-count-mobile { display: none; }
+
 @media (max-width: 960px) {
-  .cl-people-showcase { min-height: 44rem; padding-top: 75px; padding-bottom: 18px; }
-  .cl-people-showcase .ce-layout { grid-template-areas: "editorial" "gallery"; grid-template-rows: minmax(0, .85fr) minmax(0, 1.15fr); gap: 20px; }
-  .cl-people-showcase .ce-gallery { grid-area: gallery; order: initial; }
-  .cl-people-showcase .ce-editorial { grid-area: editorial; }
-  .cl-people-showcase .ce-editorial > .ce-eyebrow,
-  .cl-people-showcase .ce-editorial h2 { order: initial; }
-  .cl-people-showcase .ce-editorial h2 { font-size: 38px; margin-block: 10px; }
+  .cl-people-showcase {
+    height: auto;
+    min-height: 0;
+    padding-block: clamp(28px, 5vw, 50px);
+    scroll-margin-top: var(--header-height);
+  }
+  .cl-people-showcase .ce-layout, .cl-people-showcase .ce-editorial {
+    display: block;
+    height: auto;
+    overflow: visible;
+    padding-top: 0;
+  }
+  .cl-people-showcase .ce-gallery, .cl-people-showcase .ce-footnote { display: none; }
+  .cl-people-showcase .ce-editorial h2 { font-size: clamp(42px, 8vw, 70px); margin: 0 0 18px; }
   .cl-people-showcase .ce-editorial h2 br { display: none; }
-  .cl-people-showcase .ce-editorial h2 br::after { content: " "; }
-  .cl-people-showcase .ce-footnote { display: none; }
-  .cl-people-showcase .ce-official { margin-top: 10px; }
-}
-@media (max-width: 600px) {
-  .cl-people-showcase { padding-inline: 16px; }
-  .cl-people-showcase .ce-gallery { flex-direction: row; }
-  .cl-people-showcase .ce-panel { flex: 1 1 0; min-height: 0; border-bottom: 0; border-right: 1px solid rgb(168 200 230 / 32%); }
-  .cl-people-showcase .ce-panel.is-active { flex-grow: 6.4; }
-  .cl-people-showcase .ce-photo { inset: 0 0 0 28px; }
-  .cl-people-showcase .ce-trigger { inset: 0 auto 0 0; width: 100%; height: 100%; }
-  .cl-people-showcase .ce-panel.is-active .ce-trigger { width: 28px; }
-  .cl-people-showcase .ce-number { top: 14px; left: 50%; font-size: 8px; }
-  .cl-people-showcase .ce-vertical { top: auto; bottom: 42px; left: 50%; writing-mode: vertical-rl; transform: translateX(-50%) rotate(180deg); font-size: 18px; }
-  .cl-people-showcase .ce-plus { inset: auto auto 10px 50%; transform: translateX(-50%); font-size: 18px; }
-  .cl-people-showcase .ce-photo-caption { left: 8px; right: 8px; bottom: 15px; gap: 8px; }
-  .cl-people-showcase .ce-photo-caption > strong { font-size: 26px; overflow-wrap: anywhere; }
-  .cl-people-showcase .ce-photo-caption > span { font-size: 9px; }
+  .ce-count-desktop { display: none; }
+  .ce-count-mobile { display: inline; }
+  .ce-mobile-picker { display: grid; gap: 16px; }
+  .ce-mobile-photo { position: relative; height: clamp(150px, 40vw, 260px); overflow: hidden; }
+  .ce-mobile-photo img { object-fit: cover; object-position: 50% 43%; }
+  .ce-mobile-picker label { display: grid; gap: 5px; font: 650 .88rem/1.4 var(--font-nav); }
+  .ce-mobile-picker select {
+    width: 100%; min-height: 48px; padding: .65rem .8rem;
+    border: 1px solid var(--ce-rule); border-radius: 0;
+    color: var(--navy); background-color: var(--surface-primary);
+    font: 650 1rem/1.4 var(--font-primary);
+  }
+  .cl-people-showcase .ce-results { overflow: visible; padding: 14px 0 0; }
+  .cl-people-showcase .ce-count { position: static; font-size: .8rem; letter-spacing: normal; text-transform: none; }
+  .ce-results[data-expanded="false"] .ce-club[data-additional] { display: none; }
+  .cl-people-showcase .ce-club { min-height: 54px; padding: 10px 0; }
+  .cl-people-showcase .ce-club small { font-size: .77rem; margin-bottom: .15rem; }
+  .ce-more {
+    display: block; min-height: 44px; width: 100%; margin: 6px 0;
+    color: var(--ce-copy); border: 1px solid var(--ce-rule); background: transparent;
+    cursor: pointer; font: 650 .88rem/1.4 var(--font-nav);
+  }
+  .cl-people-showcase .ce-official { display: inline-flex; align-items: center; min-height: 44px; margin-top: 8px; }
+  .ce-dialog-inner { padding-inline: 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .cl-people-showcase, .cl-people-showcase::before, .cl-people-showcase .ce-count { transition: none; }

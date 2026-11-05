@@ -527,15 +527,19 @@ html[data-high-contrast] .pf-hero { --grid-ink: transparent; --atlas-ink: #05172
 .pf-page .pf-apply:hover { background: var(--color-secondary); }
 .pf-apply .pf-icon { width: 16px; }
 @media (max-width: 720px) {
-  .pf-card { grid-template-columns: 66px minmax(0, 1fr); gap: 12px; }
+  .pf-card { grid-template-columns: 92px minmax(0, 1fr); gap: 14px; }
   .pf-qualification span { width: 100%; }
   .pf-facts { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 9px; }
   .pf-school { grid-column: 1/-1; }
 }
-@media (max-width: 480px) {
-  .pf-card { position: relative; display: block; }
-  .pf-photo { position: absolute; top: 19px; right: 0; width: 58px; }
-  .pf-qualification, .pf-card h3 { padding-right: 70px; }
+@media (max-width: 600px) {
+  .pf-card { grid-template-columns: minmax(0, 1fr); gap: 14px; padding-block: 18px 22px; }
+  .pf-photo { width: 100%; aspect-ratio: 2.25; }
+  .pf-qualification { gap: 4px 10px; }
+  .pf-qualification span { width: auto; }
+  .pf-card h3 { margin-block: 7px 13px; }
+  .pf-card-actions { margin-top: 14px; }
+  .pf-card-actions > a { min-height: 44px; }
 }
 
 .pf-extra { margin-bottom: 10px; }

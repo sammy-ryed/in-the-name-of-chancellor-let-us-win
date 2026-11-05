@@ -27,6 +27,16 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.s-hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(8px, 1.6svh, 20px);
+}
+.s-hero-actions .s-button {
+  gap: clamp(18px, 2vw, 34px);
+  font-size: clamp(1.05rem, 1.6vw, 1.55rem);
+}
 .s-motto {
   font: 400 clamp(1.5rem, min(3.8vw, 6svh), 4.75rem)/1.1 var(--font-editorial);
   letter-spacing: -.045em;
@@ -128,7 +138,14 @@
   .s-stage { --mt: 52%; --mr: 48%; --mb: 100%; --mk: 100%; --ml: 100%; }
   .s-intro-pane { clip-path: polygon(0 0,100% 0,100% var(--mr),0 var(--mt)); }
   .s-hero-copy { inset: 3.5% auto auto var(--start); width: 66%; gap: 1.5svh; }
-  .s-hero-title { font-size: min(33cqw, 11svh); }
+  .s-hero-title { font-size: min(33cqw, 9.7svh); }
+  .s-hero-actions {
+    width: calc(100vw - var(--start) * 2);
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(12px, 3.6vw, 24px);
+  }
+  .s-hero-actions .s-button { gap: 12px; }
   .s-motto { font-size: clamp(1rem, 3.8svh, 2rem); }
   .s-hero-brand { top: 16%; right: 3%; gap: 1.4vw; font-size: 4.3vw; color: var(--color-gold-light); }
   .s-hero-brand .site-crest { width: min(16.5vw, 16svh); }
@@ -136,6 +153,11 @@
   .s-film { inset: max(0%, min(var(--mr), var(--mt))) 0 0; }
   .s-film { --film-control-left: 14px; }
   .s-home .s-film .s-preview-toggle { right: auto; left: calc(var(--film-control-left) + var(--film-mark-width) + 6px); }
+}
+
+@media (max-width: 760px) and (max-height: 480px) and (orientation: landscape) {
+  .s-hero-title span { display: inline; }
+  .s-hero-title span:last-child { display: block; }
 }
 
 .s-subject-links { grid-column: 1 / -1; align-self: end; min-width: 0; }

@@ -152,13 +152,13 @@ a:hover .cl-cta-go .cl-arrow {
 }
 .cl-hero img {
   object-fit: cover;
-  object-position: 50% 28%; /* keep the four students' faces in frame */
+  object-position: 55% 54%;
 }
 .cl-hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgb(11 45 82 / 88%) 0%, rgb(11 45 82 / 30%) 42%, transparent 68%);
+  background: linear-gradient(0deg, rgb(6 27 41 / 92%), rgb(6 27 41 / 35%) 34%, transparent 62%);
 }
 .cl-hero-text {
   position: absolute;
@@ -1089,6 +1089,7 @@ a:hover .cl-cta-go .cl-arrow {
     min-height: 0;
     margin: var(--edge) var(--edge) 0;
   }
+  .cl-hero img { object-position: 61% 48%; }
   .cl-band,
   .cl-home,
   .cl-explore,

@@ -1,22 +1,23 @@
+import { fieldPhotos } from "../photography";
 import { applicantCounts } from "./applicants";
 import type { Programme } from "./types";
 
 const areas = {
-  computing: { title: "Computer Science & AI", photo: "/career-centre/training.webp" },
-  engineering: { title: "Engineering & Technology", photo: "/home/racing.webp" },
-  health: { title: "Medicine & Health Sciences", photo: "/home/subjects/health.webp" },
-  business: { title: "Business & Commerce", photo: "/programmes/43f1c39be556.webp" },
-  sciences: { title: "Natural Sciences & Mathematics", photo: "/home/subjects/sciences.webp" },
-  humanities: { title: "Arts, Humanities & Education", photo: "/home/subjects/humanities.webp" },
-  design: { title: "Architecture, Design & Media", photo: "/home/subjects/design.webp" },
-  agriculture: { title: "Agriculture", photo: "/home/subjects/agriculture.webp" },
-  law: { title: "Law", photo: "/home/subjects/law.webp" },
-  hospitality: { title: "Hotel Management & Culinary Arts", photo: "/programmes/3ea73b8f3f7a.webp" },
+  computing: { title: "Computer Science & AI" },
+  engineering: { title: "Engineering & Technology" },
+  health: { title: "Medicine & Health Sciences" },
+  business: { title: "Business & Commerce" },
+  sciences: { title: "Natural Sciences & Mathematics" },
+  humanities: { title: "Arts, Humanities & Education" },
+  design: { title: "Architecture, Design & Media" },
+  agriculture: { title: "Agriculture" },
+  law: { title: "Law" },
+  hospitality: { title: "Hotel Management & Culinary Arts" },
 };
 
 export type StudyAreaId = keyof typeof areas;
 
-export function studyAreaOf(p: Programme): StudyAreaId {
+export function studyAreaOf(p: Pick<Programme, "name" | "college" | "department">): StudyAreaId {
   const inDepartment = (...ids: string[]) => p.department.some(id => ids.includes(id));
   if (p.college.includes("24139")) return "health";
   if (p.college.includes("28996")) return "agriculture";
@@ -34,7 +35,7 @@ export function studyAreaOf(p: Programme): StudyAreaId {
 
 export function groupStudyAreas(programmes: Programme[]) {
   const groups = new Map((Object.keys(areas) as StudyAreaId[]).map(id => [
-    id, { id, ...areas[id], programmes: [] as Programme[], applications: 0 },
+    id, { id, ...areas[id], photo: fieldPhotos[id], programmes: [] as Programme[], applications: 0 },
   ]));
   for (const p of programmes) {
     const group = groups.get(studyAreaOf(p))!;

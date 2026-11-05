@@ -18,7 +18,7 @@ export function ProgrammeRow({ programme: p, labels }: { programme: Programme; l
   return (
     <li className="pf-card">
       <div className="pf-photo">
-        <Image src={p.photo || "/home/campus.webp"} alt="" fill sizes="(max-width: 480px) 58px, (max-width: 720px) 66px, (max-width: 1460px) 10vw, 146px" />
+        <Image src={p.photo || "/home/campus.webp"} alt="" fill sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 920px) 92px, (max-width: 1460px) 10vw, 146px" />
       </div>
       <div className="pf-card-content">
         <div className="pf-qualification">{p.certification}{campus && <span>{campus}</span>}</div>

@@ -6,27 +6,27 @@ import { clubContacts, clubProfiles, clubs, studentAffairs } from "./clubs";
 import categoryImages from "./club-images.json";
 import "./club-expand.css";
 
-// Independently implemented from the supplied hover-expand visual reference.
-const categories = [{ type: "All interests", image: "/home/film.webp", alt: "SRM students celebrating their robotics project", count: clubs.length }, ...categoryImages.map(category => ({
+const allInterests = "All interests";
+const mobilePreviewCount = 4;
+const categories = categoryImages.map(category => ({
   ...category,
-  // A campus photograph makes the opening panel a human introduction to service.
-  image: category.type === "Service" ? "/home/film.webp" : category.image,
-  alt: category.type === "Service" ? "SRM students celebrating together with their robotics project" : category.alt,
-  count: clubs.filter(club => club.type === category.type).length,
-}))];
+  count: category.type === allInterests ? clubs.length : clubs.filter(club => club.type === category.type).length,
+}));
 type Club = (typeof clubs)[number];
 
 export function ClubCards() {
-  const [active, setActive] = useState("All interests");
+  const [active, setActive] = useState(allInterests);
+  const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState<Club | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
   const triggers = useRef<(HTMLButtonElement | null)[]>([]);
   const results = useRef<HTMLDivElement>(null);
-  const found = clubs.filter(club => active === "All interests" || club.type === active);
-  const shown = active;
+  const found = clubs.filter(club => active === allInterests || club.type === active);
+  const current = categories.find(category => category.type === active) ?? categories[0];
   const choose = (type: string) => {
     setActive(type);
+    setExpanded(false);
     if (results.current) results.current.scrollTop = 0;
   };
 
@@ -53,11 +53,11 @@ export function ClubCards() {
   return <div id="clubs" className="ce-experience" data-category={active}>
     <div className="ce-layout">
       <div className="ce-gallery" role="group" aria-label="Explore club categories">
-        {categories.map((category, index) => <article key={category.type} data-interest={category.type} className={`ce-panel${shown === category.type ? " is-active" : ""}`}
+        {categories.map((category, index) => <article key={category.type} data-interest={category.type} className={`ce-panel${active === category.type ? " is-active" : ""}`}
           onPointerEnter={event => {
             if (event.pointerType === "mouse" && !event.currentTarget.parentElement?.querySelector(":focus-visible")) choose(category.type);
           }}>
-          <div className="ce-photo" aria-hidden="true"><Image src={category.image} alt={category.alt} fill sizes="(max-width: 700px) 85vw, 45vw" unoptimized /><div className="ce-photo-shade" />
+          <div className="ce-photo" aria-hidden="true"><Image src={category.image} alt="" fill sizes="(max-width: 960px) 1px, 45vw" /><div className="ce-photo-shade" />
             <div className="ce-photo-caption"><strong>{category.type}</strong><span>{category.count} {category.count === 1 ? "club" : "clubs"} to explore</span></div>
           </div>
           <button type="button" className="ce-trigger" ref={element => { triggers.current[index] = element; }}
@@ -68,12 +68,30 @@ export function ClubCards() {
         </article>)}
       </div>
       <div className="ce-editorial">
-        <span className="ce-eyebrow">YOUR PEOPLE ARE HERE / 15 CLUBS</span>
         <h2 id="people-title">Find your<br /> people<span>.</span></h2>
-        <div id="club-category-list" className="ce-results" ref={results}>
-          <p className="ce-count" role="status">{active} / {found.length} {found.length === 1 ? "club" : "clubs"}</p>
-          {found.map(club => <button type="button" className="ce-club" key={club.name} onClick={event => { opener.current = event.currentTarget; setSelected(club); }}><span><small>{club.type}</small><strong>{club.name}</strong></span><span aria-hidden="true">↗</span></button>)}
+        <div className="ce-mobile-picker">
+          <figure className="ce-mobile-photo">
+            <Image src={current.image} alt={current.alt} fill sizes="(max-width: 960px) 93vw, 1px" />
+          </figure>
+          <label>
+            Filter by interest
+            <select value={active} onChange={event => choose(event.target.value)} aria-controls="club-category-list">
+              {categories.map(category => <option key={category.type} value={category.type}>{category.type} ({category.count})</option>)}
+            </select>
+          </label>
         </div>
+        <div id="club-category-list" className="ce-results" ref={results} data-expanded={expanded}>
+          <p className="ce-count" role="status">
+            <span className="ce-count-desktop">{active} / </span>
+            <span className="ce-count-mobile">{!expanded && found.length > mobilePreviewCount ? `Showing ${mobilePreviewCount} of ` : ""}</span>
+            {found.length} {found.length === 1 ? "club" : "clubs"}
+          </p>
+          {found.map((club, index) => <button type="button" className="ce-club" key={club.name} data-additional={index >= mobilePreviewCount || undefined} onClick={event => { opener.current = event.currentTarget; setSelected(club); }}><span><small>{club.type}</small><strong>{club.name}</strong></span><span aria-hidden="true">↗</span></button>)}
+        </div>
+        {found.length > mobilePreviewCount && <button className="ce-more" type="button" aria-expanded={expanded}
+          aria-controls="club-category-list" onClick={() => setExpanded(!expanded)}>
+          {expanded ? "Show fewer clubs" : `Show all ${found.length} clubs`}
+        </button>}
         <p className="ce-footnote">Open a club to find out how to join.</p>
         <a className="ce-official" href={clubProfiles}>Official club profiles <span aria-hidden="true">↗</span></a>
       </div>
