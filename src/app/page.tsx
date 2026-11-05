@@ -1,12 +1,11 @@
 import { SrmCrest } from "@/components/HomeLogo";
 import { MotionPreview } from "@/features/home/MotionPreview";
-import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Film } from "@/features/home/Film";
 import { Choreography } from "@/features/home/Choreography";
 import { NewsReel } from "@/features/home/NewsReel";
-import { community } from "@/features/home/content";
+import { TeamRoll } from "@/features/home/TeamRoll";
 import { actions, tourUrl } from "@/lib/navigation";
 import "./home.css";
 import "./home-scenes.css";
@@ -92,21 +91,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <section className="s-community" aria-labelledby="people-title">
-        <div className="s-community-lead">
-          <h2 id="people-title" className="s-community-title"><span>Great ideas</span>{" "}<span>need great</span>{" "}<span>teams.</span></h2>
-          <Link className="yellow-action s-button" href="/campus">Explore campus life <Arrow /></Link>
-        </div>
-        <div className="s-team">
-          {community.map((item) => (
-            <a href={item.href} key={item.name}>
-              <span className="s-team-photo"><Image src={`/home/${item.image}.webp`} alt="" width={240} height={156} unoptimized /></span>
-              <span className="s-team-copy"><strong>{item.name}</strong><small>{item.place}</small></span>
-              <span className="s-team-arrow" aria-hidden="true">↗</span>
-            </a>
-          ))}
-        </div>
-      </section>
+      <TeamRoll />
       <section className="s-news" aria-labelledby="news-title">
         <h2 id="news-title" className="s-news-title">
           Campus news.

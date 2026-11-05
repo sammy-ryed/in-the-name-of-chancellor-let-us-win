@@ -75,10 +75,6 @@ export function Choreography() {
               { scale: 0.91, opacity: 0.18, y: "-6vh", duration: 0.1 },
               0.9,
             );
-          gsap.from(q(".s-community-title span"), {
-            y: 16, stagger: 0.08, duration: 0.45,
-            scrollTrigger: { trigger: q(".s-community")[0], start: "top 85%", once: true },
-          });
           gsap.from(q(".s-news-title span"), {
             xPercent: 21,
             ease: "none",

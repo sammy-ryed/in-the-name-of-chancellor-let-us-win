@@ -1,6 +1,6 @@
 import { srm } from "@/lib/navigation";
 
-export const filmId = "S_xAJo_siHA";
+export const filmId = "4c7Ob4pDYMQ";
 export const filmUrl = "https://www.youtube.com/watch?v=" + filmId;
 export const community = [
   {
