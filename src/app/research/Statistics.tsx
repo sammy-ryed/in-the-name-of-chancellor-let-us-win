@@ -4,44 +4,79 @@ import { useEffect, useRef } from "react";
 import { statistics } from "./content";
 import s from "./research.module.css";
 
-function Statistic({ value, label }: { value: string; label: string }) {
-  const number = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const node = number.current;
-    if (!node) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
-    let played = false;
-    const finish = () => { cancelAnimationFrame(frame); node.textContent = value; };
-    const preference = () => {
-      if (reduced.matches || document.documentElement.hasAttribute("data-quiet-motion")) { played = true; finish(); }
-    };
-    const digits = value.match(/[\d,]+/)![0];
-    const target = Number(digits.replaceAll(",", ""));
-    const format = (n: number) => value.replace(digits, new Intl.NumberFormat("en-IN").format(n));
-    const observer = new IntersectionObserver(entries => {
-      if (!entries.some(entry => entry.isIntersecting) || played) return;
-      played = true;
-      observer.disconnect();
-      if (reduced.matches || document.documentElement.hasAttribute("data-quiet-motion")) return finish();
-      node.textContent = format(0);
-      const start = performance.now();
-      const tick = (now: number) => {
-        const progress = Math.min((now - start) / 1800, 1);
-        node.textContent = format(Math.round(target * (1 - Math.pow(1 - progress, 3))));
-        if (progress < 1) frame = requestAnimationFrame(tick);
-        else finish();
-      };
-      frame = requestAnimationFrame(tick);
-    }, { threshold: .5 });
-    observer.observe(node);
-    reduced.addEventListener("change", preference);
-    window.addEventListener("srm-reading-change", preference);
-    return () => { observer.disconnect(); finish(); reduced.removeEventListener("change", preference); window.removeEventListener("srm-reading-change", preference); };
-  }, [value]);
-  return <div><strong aria-label={value}><span ref={number} aria-hidden="true">{value}</span></strong><span>{label}</span></div>;
-}
+const formatter = new Intl.NumberFormat("en-IN");
 
 export function ResearchStatistics() {
-  return <div className={s.stats}>{statistics.map(([value, label]) => <Statistic key={label} value={value} label={label} />)}</div>;
+  const list = useRef<HTMLDListElement>(null);
+
+  useEffect(() => {
+    const nodes = list.current?.querySelectorAll<HTMLElement>("[data-count]");
+    if (!nodes || !("IntersectionObserver" in window)) return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const quiet = () => preference.matches || document.documentElement.hasAttribute("data-quiet-motion");
+    if (quiet()) return;
+
+    const counts = Array.from(nodes, node => {
+      const final = node.textContent ?? "";
+      const digits = final.match(/[\d,]+/)?.[0] ?? "";
+      const target = Number(digits.replaceAll(",", ""));
+      return { node, final, target, format: (value: number) => final.replace(digits, formatter.format(value)) };
+    });
+    const byNode = new Map(counts.map(count => [count.node, count]));
+    const frames = new Set<number>();
+
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        observer.unobserve(entry.target);
+        const count = byNode.get(entry.target as HTMLElement);
+        if (!count) continue;
+        let start: number | undefined;
+        let frame: number;
+        const tick = (now: number) => {
+          frames.delete(frame);
+          start ??= now;
+          const progress = Math.min((now - start) / 1450, 1);
+          const value = Math.floor(count.target * (1 - (1 - progress) ** 2));
+          count.node.textContent = progress === 1 ? count.final : count.format(value);
+          if (progress < 1) {
+            frame = requestAnimationFrame(tick);
+            frames.add(frame);
+          }
+        };
+        frame = requestAnimationFrame(tick);
+        frames.add(frame);
+      }
+    }, { threshold: 0.65 });
+
+    const finish = () => {
+      observer.disconnect();
+      frames.forEach(cancelAnimationFrame);
+      frames.clear();
+      counts.forEach(count => { count.node.textContent = count.final; });
+    };
+    const updatePreference = () => { if (quiet()) finish(); };
+    counts.forEach(count => {
+      count.node.textContent = count.format(0);
+      observer.observe(count.node);
+    });
+    preference.addEventListener("change", updatePreference);
+    window.addEventListener("srm-reading-change", updatePreference);
+    return () => {
+      finish();
+      preference.removeEventListener("change", updatePreference);
+      window.removeEventListener("srm-reading-change", updatePreference);
+    };
+  }, []);
+
+  return (
+    <dl ref={list} className={s.stats}>
+      {statistics.map(([value, label]) => (
+        <div key={label}>
+          <dt>{label}</dt>
+          <dd><span aria-hidden="true" data-count="">{value}</span><span className={s.srOnly}>{value}</span></dd>
+        </div>
+      ))}
+    </dl>
+  );
 }

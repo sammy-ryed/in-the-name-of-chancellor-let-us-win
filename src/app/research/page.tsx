@@ -13,60 +13,100 @@ export const metadata: Metadata = {
   description: "Explore SRMIST research centres, funded projects, shared facilities and opportunities for researchers. Figures from the 2025–26 prospectus.",
 };
 
-function Heading({ number, title, intro }: { number: string; title: string; intro: string }) {
-  return <div className={s.sectionHead}><div><p className={s.eyebrow}>{number} / Research at SRMIST</p><h2>{title}</h2></div><p className={s.editorial}>{intro}</p></div>;
+const sections = [
+  ["glance", "At a glance"], ["projects", "Projects"], ["centres", "Centres"],
+  ["facilities", "Facilities"], ["innovation", "Innovation"], ["opportunities", "Opportunities"],
+];
+
+const innovation = [
+  { title: "Patents & technology transfer", text: "Protect an invention, explore licensing or take a research idea to market with CIAP.", label: "Explore CIAP", href: sources.ciap },
+  { title: "Industry collaboration", text: "Find the university’s policies for consultancy and academic work with industry.", label: "Read the research policy", href: sources.policy },
+  { title: "Research to entrepreneurship", text: "Explore FabLab prototyping, NewGen IEDC and incubation for new ventures.", label: "Explore incubation", href: prospectus + "#page=39" },
+];
+
+const opportunities = [
+  { title: "Apply for a Ph.D.", text: "Doctoral applications and admissions.", href: sources.phd },
+  { title: "Funding & fellowships", text: "Seed funding, grants and fellowship policies.", href: sources.policy },
+  { title: "Research scholar handbook", text: "University guidance and doctoral regulations.", href: sources.handbook },
+  { title: "Research events", text: "Research Day and the Dr. Paarivendhar Research Colloquium.", href: prospectus + "#page=32" },
+];
+
+function Heading({ id, title, intro }: { id: string; title: string; intro?: string }) {
+  return (
+    <header className={s.sectionHead}>
+      <h2 id={id}>{title}</h2>
+      {intro && <p>{intro}</p>}
+    </header>
+  );
 }
 
 export default function ResearchPage() {
-  return <><div className={s.page}>
-    <ResearchHero />
-    <section className={s.section} id="glance" aria-label="Research at a glance">
-      <Heading number="02" title="Research at a glance" intro="Ideas explored. Knowledge shared. A snapshot of research at SRMIST." />
-      <ResearchStatistics />
-      <p className={s.note}>Figures from the <a href={prospectus + "#page=31"}>SRMIST University Prospectus AY 2025–26, pp. 31–32 ↗</a>. These are prospectus figures, rather than live totals.</p>
-    </section>
+  return (
+    <>
+      <div className={s.page}>
+        <ResearchHero />
+        <nav className={s.jumps} aria-label="Research sections">
+          {sections.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
+        </nav>
 
-    <section className={`${s.section} ${s.dark}`} id="centres" aria-label="Research areas and centres">
-      <Heading number="03" title="Many disciplines. Shared curiosity." intro="Explore research areas and the centres that bring people, expertise and facilities together." />
-      <div className={s.centreCards}>{centreGroups.map((group, index) => <article key={group.title}>
-        <div className={s.centreImage}><Image src={group.image} alt={group.alt} fill sizes="(max-width: 700px) 100vw, 30vw" /><span>0{index + 1}</span></div>
-        <h3>{group.title}</h3><ul>{group.centres.slice(0, 2).map(name => <li key={name}>{name}</li>)}</ul>
-        <a href={prospectus + "#page=33"} className={s.textLink}>View official centre listing <span aria-hidden="true">↗</span></a>
-      </article>)}</div>
-      <details className={s.directory} id="all-centres"><summary>View All Research Centres <span aria-hidden="true">+</span></summary><div>{centreGroups.map(group => <div key={group.title}><h3>{group.title}</h3><ul>{group.centres.map(name => <li key={name}>{name}</li>)}</ul></div>)}</div></details>
-      <p className={s.note}>Centre names drawn from the <a href={prospectus + "#page=33"}>2025–26 prospectus, p. 33 ↗</a>; grouped here by research area. Shared instrumentation and computing facilities are listed below.</p>
-    </section>
+        <section className={s.section} id="glance" aria-labelledby="glance-title">
+          <Heading id="glance-title" title="Research at a glance" intro="SRMIST’s published research figures for 2025–26." />
+          <ResearchStatistics />
+          <p className={s.note}><a href={prospectus + "#page=31"}>University prospectus 2025–26, pp. 31–32 <span aria-hidden="true">↗</span></a></p>
+        </section>
 
-    <section className={`${s.section} ${s.projectSection}`} id="projects" aria-label="Featured research projects">
-      <Heading number="04" title="Research in focus" intro="From electric mobility to cancer models. Explore four funded research initiatives." />
-      <p className={s.instructions}>Featured research projects <span>Hover, focus or tap a card to explore ↓</span></p>
-      <ProjectStack />
-    </section>
+        <section className={`${s.section} ${s.warm}`} id="projects" aria-labelledby="projects-title">
+          <Heading id="projects-title" title="Research in focus" intro="Explore four funded projects, the questions behind them and who supported the work." />
+          <ProjectStack />
+          <p className={s.note}>Photos illustrate the research areas. Each project links to its original report.</p>
+        </section>
 
-    <section className={`${s.section} ${s.dark}`} id="facilities" aria-label="Research facilities and infrastructure">
-      <Heading number="05" title="The space to discover" intro="Specialist instruments, shared infrastructure and laboratories built for deeper enquiry." />
-      <ResearchFacilities />
-      <p className={s.note}>Infrastructure descriptions: <a href={sources.infrastructure}>SRMIST 2024–25 brochure ↗</a>. Instrument access: <a href={sources.facilities}>SRM Online Services ↗</a>.</p>
-    </section>
+        <section className={s.section} id="centres" aria-labelledby="centres-title">
+          <Heading id="centres-title" title="Find a research centre" intro="Browse by discipline to find the teams working in your field." />
+          <div id="all-centres" className={s.centreCards}>
+            {centreGroups.map(group => (
+              <article key={group.title}>
+                <div className={s.centreImage}><Image src={group.image} alt={group.alt} fill sizes="(max-width: 720px) 100vw, 28vw" /></div>
+                <h3>{group.title}</h3>
+                <details className={s.directory}>
+                  <summary>{group.centres.length} centres <span aria-hidden="true">+</span></summary>
+                  <ul>{group.centres.map(name => <li key={name}>{name}</li>)}</ul>
+                </details>
+              </article>
+            ))}
+          </div>
+          <p className={s.note}><a href={prospectus + "#page=33"}>Official centre directory, p. 33 <span aria-hidden="true">↗</span></a></p>
+        </section>
 
-    <section className={s.section} id="innovation" aria-label="Innovation patents and collaborations">
-      <Heading number="06" title="From discovery to possibility" intro="Support for protecting ideas, working with industry and building something new." />
-      <div className={s.innovationGrid}>
-        <a href={sources.ciap}><span className={s.eyebrow}>01 / Protect</span><h3>Patents & Technology Transfer</h3><p>CIAP supports intellectual property protection, licensing and the journey from invention to commercialisation.</p><span className={s.cardLink}>Explore CIAP <span aria-hidden="true">↗</span></span></a>
-        <a href={sources.policy}><span className={s.eyebrow}>02 / Collaborate</span><h3>Industry Collaboration & Consultancy</h3><p>Research policy and consultancy support connect academic expertise with industry challenges.</p><span className={s.cardLink}>Research policy <span aria-hidden="true">↗</span></span></a>
-        <a href={prospectus + "#page=39"}><span className={s.eyebrow}>03 / Create</span><h3>Research to Entrepreneurship</h3><p>FabLab prototyping, NewGen IEDC and incubation initiatives support the development of ideas into ventures.</p><span className={s.cardLink}>Explore the innovation ecosystem <span aria-hidden="true">↗</span></span></a>
+        <section className={`${s.section} ${s.dark}`} id="facilities" aria-labelledby="facilities-title">
+          <Heading id="facilities-title" title="Inside the facilities" intro="Find shared instruments, laboratory services and the right place to request access." />
+          <ResearchFacilities />
+        </section>
+
+        <section className={s.section} id="innovation" aria-labelledby="innovation-title">
+          <Heading id="innovation-title" title="Beyond the laboratory" />
+          <div className={s.innovationGrid}>
+            {innovation.map(item => (
+              <a href={item.href} key={item.title}>
+                <h3>{item.title}</h3><p>{item.text}</p>
+                <span className={s.cardLink}>{item.label} <span aria-hidden="true">↗</span></span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className={`${s.section} ${s.warm}`} id="opportunities" aria-labelledby="opportunities-title">
+          <Heading id="opportunities-title" title="Start your research at SRMIST" intro="Applications, funding and guidance for current and future researchers." />
+          <div className={s.opportunities}>
+            {opportunities.map(item => (
+              <a href={item.href} key={item.title}>
+                <div><h3>{item.title}</h3><p>{item.text}</p></div><span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
       </div>
-    </section>
-
-    <section className={`${s.section} ${s.dark}`} id="opportunities" aria-label="Research opportunities and support">
-      <Heading number="07" title="Your next research question starts here" intro="Find a programme, explore support and connect with the research community." />
-      <div className={s.opportunities}>{[
-        { title: "Ph.D. Programmes", text: "Explore doctoral applications and the admissions process.", label: "Ph.D. admissions", href: sources.phd },
-        { title: "Research Funding & Fellowships", text: "Learn about seed funding, research grants and fellowship support through SRMIST’s research policy.", label: "Funding & fellowship policy", href: sources.policy },
-        { title: "Publications & Research Scholars", text: "Find research information, doctoral regulations and scholar guidance in the university handbook.", label: "University handbook 2025–26", href: sources.handbook },
-        { title: "Research Events & Community", text: "Connect with Research Day and the Dr. Paarivendhar Research Colloquium.", label: "Research community & support", href: prospectus + "#page=32" },
-      ].map((item, index) => <a href={item.href} key={item.title}><span className={s.rowNumber}>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.text}</p><span className={s.cardLink}>{item.label}</span></div><span aria-hidden="true">↗</span></a>)}</div>
-      <div className={s.sourceFoot}><span>Explore. Question. Discover.</span><a href={prospectus}>Read the SRMIST 2025–26 prospectus ↗</a></div>
-    </section>
-  </div><SiteFooter /></>;
+      <SiteFooter />
+    </>
+  );
 }
