@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SiteFooter } from "@/components/SiteFooter";
 import { application, courses, criteria, faculties, source } from "@/features/explore/academic";
 import { programmeFee } from "@/features/explore/fee-listing";
+import { coursePhoto, fieldPhotos } from "@/features/programmes/photography";
 import { routes } from "@/lib/navigation";
 import { CompareCourseLink } from "./CompareCourseLink";
 import styles from "./detail.module.css";
@@ -20,7 +21,9 @@ type Props = { params: Promise<{ id: string }> };
 
 const byId = new Map(courses.map(course => [course.id, course]));
 const facultyPhoto: Record<string, string> = {
-  engineering: "/home/subjects/engineering.webp",
+  engineering: fieldPhotos.engineering,
+  management: fieldPhotos.business,
+  "hotel-and-catering-management": fieldPhotos.hospitality,
   "medicine-health-sciences": "/home/subjects/health.webp",
   "agricultural-science": "/home/subjects/agriculture.webp",
   law: "/home/subjects/law.webp",
@@ -60,7 +63,7 @@ export default async function Page({ params }: Props) {
               <p className={styles.faculty}>{faculties[course.faculty]}</p>
             </div>
             <div className={styles.photo}>
-              <Image src={facultyPhoto[course.faculty] ?? "/home/campus.webp"} alt="" fill sizes="(max-width: 700px) 0px, 26vw" />
+              <Image src={coursePhoto(course.name, facultyPhoto[course.faculty] ?? "/home/campus.webp")} alt="" fill sizes="(max-width: 700px) 0px, 26vw" />
             </div>
           </header>
           <div className={styles.body} id="guide-content">

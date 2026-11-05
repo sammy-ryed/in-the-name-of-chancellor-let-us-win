@@ -7,15 +7,13 @@ import { Choreography } from "@/features/home/Choreography";
 import { SubjectLinks } from "@/features/home/SubjectLinks";
 import { NewsReel } from "@/features/home/NewsReel";
 import { TeamRoll } from "@/features/home/TeamRoll";
-import { actions, tourUrl } from "@/lib/navigation";
+import { HomeAction, HomeArrow } from "@/features/home/HomeAction";
+import { actions, routes, tourUrl } from "@/lib/navigation";
 import "./home.css";
 import "./home-scenes.css";
 import "@/features/home/journeys.css";
 
 export const metadata = { title: "Life at SRM" };
-function Arrow() {
-  return <span className="s-arrow" aria-hidden="true" />;
-}
 export default function Page() {
   return (
     <div className="s-home">
@@ -26,10 +24,13 @@ export default function Page() {
             <div className="s-intro-pane">
               <div className="s-hero-copy">
                 <h1 className="s-hero-title"><span>Ready for</span>{" "}<span>life at</span>{" "}<span>SRMIST?</span></h1>
-                <p className="s-motto">Learn. Leap. Lead.</p>
+                <div className="s-hero-actions">
+                  <p className="s-motto">Learn. Leap. Lead.</p>
+                  <HomeAction href={routes.admissions.href}>Apply now</HomeAction>
+                </div>
               </div>
             </div>
-            <div className="s-hero-brand" aria-hidden="true"><SrmCrest /><Arrow /></div>
+            <div className="s-hero-brand" aria-hidden="true"><SrmCrest /><HomeArrow /></div>
             <div className="s-film-pane" data-search-surface="media"><Film /></div>
           </section>
           <section className="s-academics" aria-labelledby="academics-title">
@@ -49,9 +50,7 @@ export default function Page() {
                   Design a building, test a circuit, grow a crop. Start with a
                   subject and see where you can take it.
                 </p>
-                <Link className="yellow-action s-button" href="/programmes">
-                  Find a programme <Arrow />
-                </Link>
+                <HomeAction href={routes.programmes.href}>Find a programme</HomeAction>
               </div>
               <SubjectLinks />
             </div>
@@ -67,7 +66,7 @@ export default function Page() {
           <h2 id="place-title">Find your way</h2>
           <p className="s-serif">Start at the lake, pass through Arch Gate and step inside T.P. Ganesan Auditorium.</p>
           <div className="s-tour-links">
-            <a className="yellow-action s-button" href={tourUrl}>Enter the 360° tour <Arrow /></a>
+            <HomeAction href={tourUrl}>Enter the 360° tour</HomeAction>
             <a href="/home/campus-map.webp">View campus map ↗</a>
           </div>
         </div>
@@ -89,9 +88,7 @@ export default function Page() {
               from SRM.
             </p>
             <p>Meet the students, teams and ideas making news on campus.</p>
-            <Link className="yellow-action s-button" href="/news">
-              All news <Arrow />
-            </Link>
+            <HomeAction href={routes.news.href}>All news</HomeAction>
           </div>
           <NewsReel />
         </div>
@@ -104,7 +101,7 @@ export default function Page() {
               {a.detail}
             </span>
             <span className="s-action-mark yellow-action" aria-hidden="true">
-              <Arrow />
+              <HomeArrow />
             </span>
           </Link>
         ))}

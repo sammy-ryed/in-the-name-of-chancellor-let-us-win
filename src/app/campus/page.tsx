@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ClubCards } from "@/features/campus/ClubCards";
@@ -14,6 +14,10 @@ export const metadata = {
   title: "Campus life",
   description: "Clubs, events, housing and getting around SRM's Kattankulathur campus.",
 };
+
+const portraitHero = getImageProps({
+  src: "/campus/green-walkway-portrait.webp", width: 768, height: 1344, alt: "", sizes: "100vw",
+}).props;
 
 const blocks = Object.values(hostels).reduce((n, rooms) => n + rooms.length, 0);
 const day = new Intl.DateTimeFormat("en-IN", { day: "numeric" });
@@ -42,14 +46,17 @@ export default function Page() {
 
       {/* 1 — Hero */}
       <header className="cl-hero">
-        <Image
-          src="/home/film.webp"
-          alt="SRM students celebrating beside the robot they built"
-          fill
-          priority
-          sizes="100vw"
-          unoptimized
-        />
+        <picture>
+          <source media="(max-width: 760px) and (orientation: portrait)" srcSet={portraitHero.srcSet} sizes={portraitHero.sizes} />
+          <Image
+            src="/campus/green-walkway.webp"
+            alt="Students crossing a tree-lined walkway on the Kattankulathur campus"
+            fill
+            loading="eager"
+            fetchPriority="high"
+            sizes="(max-width: 760px) 100vw, 95vw"
+          />
+        </picture>
         <div className="cl-hero-text">
           <h1>Campus <span>life</span></h1>
           <p>Clubs, fests, late-night builds and a campus that never quite switches off.</p>

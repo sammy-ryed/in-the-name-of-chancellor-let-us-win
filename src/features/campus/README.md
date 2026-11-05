@@ -1,21 +1,7 @@
 # Find your people
 
-`ClubCards` implements the supplied hover-expand visual reference independently,
-using the existing React and CSS stack. No premium package or new library is used.
+The desktop gallery opens each interest on hover or click. All categories are keyboard accessible with Tab, the arrow keys, Home and End. The selected category updates the club list next to the gallery.
 
-Seven category panels plus an All interests panel cover every entry in `clubs.ts`. Desktop expands a panel on
-mouse hover or click; keyboard users can tab to every category and use arrow keys,
-Home, and End. Mobile uses a vertical tap-to-expand gallery. OS reduced motion and
-the site's Reduce motion setting disable transitions.
+Phones and tablets have one category photograph, a native interest picker and four matching clubs in normal page flow. Show all expands the list. Both layouts share the category data, selection and club detail dialog. The dialog returns focus to the club that opened it on dismissal.
 
-The heading and matching club list stay on the left on desktop; the gallery is on
-the right. Hovering, tapping, or using the keyboard to select a panel updates the
-left-hand list. All interests shows all 15 clubs; there is no separate search or
-filter toolbar. The native dialog retains coordinator contacts,
-Student Affairs links, the unconfirmed recruitment status, related clubs, Escape,
-focus return, and scroll locking. Existing `#people` and `#clubs` anchors remain.
-
-`club-images.json` records public SRM club image sources. Optimized local WebP
-files live in `public/campus`; the opening Service panel uses the existing SRM
-campus film still instead of the club-logo thumbnail. Photos illustrate categories
-and are not intended as individual portraits or proof of club membership.
+`club-images.json` records the original SRM images. The All interests photograph is from SRM's Aaruush archive. The Campus Life hero and its portrait crop come from [SRM’s Kattankulathur walkway photograph](https://www.srmist.edu.in/wp-content/uploads/2022/04/Copy-of-Campus_GreenWalkways_VOOL0322-scaled.jpg). Optimized WebP files live in `public/campus`.

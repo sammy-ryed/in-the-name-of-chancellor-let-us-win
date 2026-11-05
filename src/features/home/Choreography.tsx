@@ -22,6 +22,7 @@ export function Choreography() {
           home.classList.add("s-moving");
           const stage = q(".s-stage")[0] as HTMLElement,
             hero = q(".s-hero")[0] as HTMLElement,
+            intro = q(".s-hero-copy")[0] as HTMLElement,
             acad = q(".s-academics")[0] as HTMLElement;
           const opening = gsap.timeline({
             defaults: { ease: "none" },
@@ -34,6 +35,7 @@ export function Choreography() {
             },
             onUpdate() {
               const t = opening.progress();
+              if (intro.inert !== (t >= .22)) intro.inert = t >= .22;
               if (hero.inert !== t > 0.81) hero.inert = t > 0.81;
               if (acad.inert !== t < 0.76) acad.inert = t < 0.76;
             },
@@ -57,7 +59,7 @@ export function Choreography() {
               },
               0,
             )
-            .to(q(".s-hero-copy"), { y: "-12vh", opacity: 0, duration: 0.22 }, 0)
+            .to(intro, { y: "-12vh", opacity: 0, duration: 0.22 }, 0)
             .to(
               q(".s-hero-brand"),
               { x: "24vw", opacity: 0, duration: 0.23 },
@@ -88,6 +90,7 @@ export function Choreography() {
           return () => {
             home.classList.remove("s-moving");
             hero.inert = false;
+            intro.inert = false;
             acad.inert = false;
           };
         },

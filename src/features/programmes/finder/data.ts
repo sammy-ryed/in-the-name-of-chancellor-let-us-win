@@ -1,5 +1,7 @@
 import { application, courses, price } from "@/features/explore/academic";
 import { programmeFee } from "@/features/explore/fee-listing";
+import { coursePhoto, fieldPhotos } from "../photography";
+import { studyAreaOf } from "./studyAreas";
 import raw from "./programmes.json";
 import facts from "./card-facts.json";
 import type { FinderData, Programme } from "./types";
@@ -38,7 +40,7 @@ const programmes = raw.programmes.map((p): Programme => {
     feePeriod: ambiguous ? undefined : fee ? period : matchedFee?.period,
     feeCourseId: match?.id,
     feeUrl: doctoral ? "https://www.srmist.edu.in/admission-india/phd/" : undefined,
-    photo: published?.photo,
+    photo: coursePhoto(p.subject, fieldPhotos[studyAreaOf(p)], published?.photo),
     applyUrl: doctoral ? "https://admissions.srmist.edu.in/srmistonline/phdapplication"
       : match ? application(match) : "https://applications.srmist.edu.in/",
   };

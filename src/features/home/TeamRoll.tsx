@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { HomeAction } from "./HomeAction";
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -83,9 +83,7 @@ export function TeamRoll() {
             <span className="team-word" key={i}><span>{word}</span>{" "}</span>
           ))}
         </h2>
-        <Link className="yellow-action s-button" href="/campus">
-          Explore campus life <span className="s-arrow" aria-hidden="true" />
-        </Link>
+        <HomeAction href="/campus">Explore campus life</HomeAction>
       </div>
       <ol id="home-teams" ref={list} className="team-list">
         {community.map((team, i) => (
