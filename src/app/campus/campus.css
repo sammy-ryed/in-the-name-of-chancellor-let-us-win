@@ -172,6 +172,8 @@ a:hover .cl-cta-go .cl-arrow {
   line-height: 0.82;
   color: var(--surface-primary);
 }
+.cl-hero h1 span { color: var(--color-gold-light); }
+.cl-hero .section-shortcuts a { color: var(--color-primary-dark); }
 .cl-hero p {
   margin-top: var(--space-5) !important;
   max-width: 30ch;
@@ -880,10 +882,36 @@ a:hover .cl-cta-go .cl-arrow {
    Accommodation & dining
    ===================================================================== */
 .ac-hero {
-  padding: clamp(var(--space-16), 9vw, var(--space-24)) 0 var(--space-10);
-  border-bottom: 1px solid var(--border-default);
-  background: var(--surface-warm);
-  margin-right: var(--edge);
+  position: relative;
+  isolation: isolate;
+  background: var(--navy);
+  color: white;
+  border-bottom: 4px solid var(--color-gold);
+  padding: clamp(4.5rem, 7vw, 7rem) 0 clamp(2rem, 4vw, 4rem);
+}
+.ac-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 58%;
+  z-index: -1;
+  background: url("/campus/srm-university-lake.webp") center / cover;
+  clip-path: polygon(12% 0,100% 0,100% 100%,0 100%);
+}
+.ac-hero .cl-wrap > * { max-width: 53%; }
+.ac-hero .ac-crumb, .ac-hero .ac-crumb a { color: var(--color-blue-pale); }
+.cl-page .ac-hero h1 { color: white; }
+.ac-hero .cl-lede { color: var(--color-blue-pale); }
+.ac-hero .ac-jump a { color: var(--color-primary-dark); }
+@media (max-width: 700px) {
+  .ac-hero { padding: 2rem 0 0; }
+  .ac-hero .cl-wrap > * { max-width: 100%; }
+  .ac-hero::after {
+    position: static;
+    display: block;
+    margin-top: 1.25rem;
+    height: clamp(8rem, 30vw, 12rem);
+    clip-path: polygon(0 12%,100% 0,100% 100%,0 100%);
+  }
 }
 .ac-crumb {
   display: flex;
@@ -901,7 +929,10 @@ a:hover .cl-cta-go .cl-arrow {
 }
 .ac-hero .cl-lede {
   margin-top: var(--space-6);
-  max-width: 46rem;
+  max-width: min(53%, 46rem);
+}
+@media (max-width: 700px) {
+  .ac-hero .cl-lede { max-width: 100%; }
 }
 .ac-jump {
   list-style: none;

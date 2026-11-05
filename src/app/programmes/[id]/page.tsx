@@ -11,6 +11,12 @@ import {
   application,
 } from "@/features/explore/academic";
 export const metadata = { title: "Programme details" };
+
+// The catalogue ships with the app. Reject unknown IDs before a loading boundary can stream a 200.
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return courses.map(({ id }) => ({ id }));
+}
 export default async function Page({
   params,
 }: {

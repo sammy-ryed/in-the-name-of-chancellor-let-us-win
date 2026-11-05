@@ -239,3 +239,28 @@ a:focus-visible {
   outline-offset: 2px;
   box-shadow: 0 0 0 5px var(--action-yellow);
 }
+
+/* Shortcuts on the image-led campus and student pages. */
+.section-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem;
+  margin-top: 1.25rem;
+}
+.section-shortcuts a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .55rem .85rem;
+  background: var(--surface-primary);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--border-strong);
+  font: 650 .875rem/1.2 var(--font-nav);
+  text-decoration: none;
+}
+.section-shortcuts a:is(:hover,:focus-visible) {
+  background: var(--color-gold-light);
+  color: var(--color-primary-dark);
+  border-color: currentColor;
+}

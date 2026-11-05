@@ -26,7 +26,7 @@ const featuredStories = [
 ];
 export default function Page() {
   return <div className="news-experience light-guide">
-    <Guide title="Campus news" section="News" image="developer" intro="Student work, university news and achievements from across SRM.">
+    <Guide title="Campus news" section="News" image="racing" intro="Student work, university news and achievements from across SRM.">
       <section className="newsroom-layout" aria-labelledby="newsroom-title">
         <div className="newsroom-editorial">
           <div className="newsroom-kicker">THE PEOPLE. THE IDEAS. THE MOMENT.</div>

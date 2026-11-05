@@ -24,7 +24,8 @@ const sectionNotes: Record<string, string> = {
     "Find the right application, entrance exam schedule and eligibility guidance for your programme.",
   News: "Read campus stories, student achievements and announcements.",
   Home: "Start on the SRM homepage and explore academics, campus life and news.",
-  Alumni: "Find reunion events, photo albums and award-winning SRM graduates.",
+  Alumni:
+    "Find reunion events, photo albums and award-winning SRM graduates. Alumni Day 2026 is on 19 December at Dr. T. P. Ganesan Auditorium; register in advance.",
   Placements:
     "Compare published placement outcomes by batch and find training and placement contacts.",
   Events:

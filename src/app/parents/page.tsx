@@ -6,7 +6,11 @@ export default function Page() {
   return (
     <Guide
       title="Parents"
-      links={[["Attendance, marks & contacts", "parent-portals"]]}
+      links={[
+        ["Attendance and marks", "parent-portals"],
+        ["Fees, housing and visits", "family-visits"],
+        ["Safety and support", "family-support"],
+      ]}
       image="campus"
       intro="Choose the portal for your student’s intake, or go directly to the office that can help."
     >
@@ -28,12 +32,12 @@ export default function Page() {
           ]}
         />
       </Section>
-      <Section title="Fees, housing & visits">
+      <Section id="family-visits" title="Fees, housing & visits">
         <Resources
           items={[
             {
               title: "Programme fees and eligibility",
-              href: "/programmes",
+              href: "/programmes/fees",
               note: "Check the specific campus and degree.",
             },
             {
@@ -54,7 +58,7 @@ export default function Page() {
           ]}
         />
       </Section>
-      <Section title="Safety and support">
+      <Section id="family-support" title="Safety and support">
         <Resources
           items={[
             {

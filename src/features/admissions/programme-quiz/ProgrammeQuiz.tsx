@@ -105,7 +105,7 @@ export function ProgrammeQuiz({ initial }: { initial: FirstStep }) {
       if (q.kind === "amount") void answer(Number(amount));
       if (q.kind === "multiple" && picked.length) void answer(picked);
     }}>
-      <div className="pq-options">
+      <div key={q.id} className="pq-options">
         {q.options?.map(option => q.kind === "single" ?
           <button type="button" className="pq-choice" aria-pressed={picked.includes(option.id)} disabled={busy}
             key={option.id} onClick={() => void answer(option.id)}>{option.label} <span aria-hidden="true">→</span></button>

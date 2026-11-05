@@ -148,7 +148,8 @@ export function Choreography() {
               { y: "0svh", duration: 0.34 },
               0.34,
             )
-            .to(q(".s-roster"), { y: "-43svh", duration: 0.3 }, 0.7);
+            // Hold the list under the headline (it used to slide up across the stacked title).
+            .to(q(".s-roster"), { y: "0svh", duration: 0.3 }, 0.7);
           gsap.from(q(".s-news-title span"), {
             xPercent: 21,
             ease: "none",

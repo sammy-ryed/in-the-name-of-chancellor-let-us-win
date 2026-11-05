@@ -19,5 +19,5 @@ export function FinderFromURL({ data }: { data: FinderData }) {
     levels: params.getAll("level").filter((v) => data.levels.some((o) => o.value === v)),
     query: params.get("q") ?? "",
   };
-  return <ProgrammeFinder key={params.toString()} data={data} initial={initial} />;
+  return <ProgrammeFinder key={params.toString()} data={data} initial={initial} areaId={params.get("area")} browseAll={params.get("view") === "all"} />;
 }
