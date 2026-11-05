@@ -1,106 +1,116 @@
 .access {
+  position: relative;
+  margin-block: 12px max(10px, env(safe-area-inset-bottom));
+  font: 500 .9rem/1.4 var(--font-nav);
+}
+.access button { cursor: pointer; font: inherit; }
+.access-trigger {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-gold-light);
+  background: var(--navy);
+  color: var(--color-gold-light);
+}
+.access-trigger:is(:hover, :focus-visible) { background: var(--color-gold-light); color: var(--navy); }
+.access-trigger svg { width: 23px; height: 23px; }
+.access:has(:popover-open) .access-trigger {
+  background: var(--color-gold-light);
+  color: var(--navy);
+}
+.access-panel {
   position: fixed;
-  z-index: 80;
-  right: 14px;
-  bottom: calc(14px + env(safe-area-inset-bottom));
-  color: #fff;
-  font:
-    14px/1.4 var(--font-primary);
+  inset: auto auto max(10px, env(safe-area-inset-bottom)) calc(var(--rail) + 10px);
+  margin: 0;
+  width: min(324px, calc(100% - 20px));
+  max-height: calc(100dvh - 20px);
+  overflow: auto;
+  padding: 0;
+  font: 500 .94rem/1.4 var(--font-nav);
+  background: var(--surface-warm);
+  color: var(--text-primary);
+  border: 1px solid var(--navy);
+  border-radius: 7px;
+  box-shadow: 0 8px 28px rgb(7 24 47 / 22%);
 }
-.access-chip,
-.access-hint,
-.access dialog {
-  background: var(--text-primary);
-  color: #fff;
-  border: 1px solid var(--text-secondary);
-  box-shadow: 0 4px 18px #10182045;
-}
-.access-chip {
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  padding-inline: 5px;
-}
-.access button {
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-}
-.access-chip button,
-.access-tabs button {
-  background: transparent;
-  border: 0;
-  min-height: 40px;
-  padding: 0 9px;
-}
-.access-chip button svg {
-  vertical-align: middle;
-  margin-right: 5px;
-  color: var(--color-gold);
-}
-.access-hint {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 8px);
-  width: 240px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  visibility: hidden;
-}
-.access-chip:hover + .access-hint,
-.access-chip:focus-within + .access-hint {
-  visibility: visible;
-}
-.access:has(dialog[open]) .access-hint {
-  visibility: hidden;
-}
-.access kbd {
-  border: 1px solid var(--text-muted);
-  border-radius: 3px;
-  padding: 1px 4px;
-}
-.access dialog {
-  position: fixed;
-  inset: auto 14px calc(66px + env(safe-area-inset-bottom)) auto;
-  width: min(310px, calc(100% - 28px));
-  border-radius: 15px;
-  padding: 18px;
-}
-.access dialog::backdrop {
-  background: #06142738;
-}
-.access-tabs,
-.access dialog label {
+.access-heading, .access-option, .access-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
-.access-tabs strong {
-  font-size: 1.15rem;
+.access-heading {
+  padding: 16px 12px 14px 20px;
+  background: linear-gradient(112deg, var(--navy) 65%, var(--brand-blue) 65%);
+  color: white;
+  border-bottom: 3px solid var(--action-yellow);
 }
-.access-tabs button {
-  font-size: 24px;
-  min-width: 40px;
+.access-heading h2 {
+  margin: 0;
+  font: 400 2.3rem/1 var(--display);
+  text-transform: uppercase;
 }
-.access dialog label {
-  padding: 11px 0;
-  border-top: 1px solid var(--text-secondary);
-  font-size: 1rem;
-}
-.access input {
-  width: 21px;
-  height: 21px;
-  accent-color: var(--color-gold);
-}
-.access-reset {
-  border: 1px solid var(--text-disabled);
+.access-heading button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
   background: transparent;
-  border-radius: 5px;
-  padding: 8px 12px;
+  color: white;
 }
-.access :focus-visible {
-  outline: 3px solid var(--color-gold);
-  outline-offset: 2px;
+.access-heading button:hover { color: var(--color-gold-light); }
+.access-options { padding-inline: 20px; }
+.access-option { min-height: 54px; cursor: pointer; font-weight: 600; }
+.access-option + .access-option { border-top: 1px solid var(--border-strong); }
+.access-option input {
+  appearance: none;
+  display: inline-grid;
+  align-items: center;
+  flex: none;
+  margin: 0;
+  width: 40px;
+  height: 24px;
+  padding: 3px;
+  border: 1px solid var(--text-secondary);
+  border-radius: 20px;
+  background: var(--surface-secondary);
+  cursor: pointer;
+}
+.access-option input::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+}
+.access-option input:checked { background: var(--navy); border-color: var(--navy); }
+.access-option input:checked::before { transform: translateX(16px); background: var(--color-gold-light); }
+@media (forced-colors: active) {
+  .access-option input { appearance: auto; }
+  .access-option input::before { content: none; }
+}
+.access-footer { padding: 2px 20px; background: var(--surface-blue); border-top: 1px solid var(--border-strong); }
+.access-reset {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--brand-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.access-reset:disabled { color: var(--text-secondary); cursor: default; text-decoration: none; }
+.access-footer kbd { font-size: .75rem; color: var(--text-secondary); }
+.access :focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .access-option input::before { transition: transform 120ms ease; }
+}
+@media (max-width: 760px) {
+  .access-trigger { width: 44px; height: 44px; border-color: transparent; background: transparent; }
+  .access-panel { inset: calc(var(--header-height) + 5px) 10px auto auto; max-height: calc(100dvh - var(--header-height) - 15px); }
 }
 html[data-large-text] {
   font-size: 125%;
@@ -146,13 +156,4 @@ html[data-large-text] .s-opening-note {
 }
 html[data-large-text] .s-news-aside .s-button {
   max-width: 100%;
-}
-@media (max-width: 760px) {
-  .access {
-    bottom: 8px;
-    right: 8px;
-  }
-  .access-chip button {
-    min-height: 36px;
-  }
 }

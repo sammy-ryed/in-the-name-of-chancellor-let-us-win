@@ -23,14 +23,15 @@ const sectionNotes: Record<string, string> = {
   Admissions:
     "Find the right application, entrance exam schedule and eligibility guidance for your programme.",
   News: "Read campus stories, student achievements and announcements.",
-  "Career Centre":
+  Home: "Start on the SRM homepage and explore academics, campus life and news.",
+  Alumni:
+    "Find reunion events, photo albums and award-winning SRM graduates. Alumni Day 2026 is on 19 December at Dr. T. P. Ganesan Auditorium; register in advance.",
+  Placements:
     "Compare published placement outcomes by batch and find training and placement contacts.",
   Events:
     "Use the campus calendar to see upcoming events, filter by date or find an organiser’s registration page.",
   Parents:
     "Choose ParentConnect for the 2025 intake onwards, or the earlier-batch login for older cohorts.",
-  Alumni:
-    "Alumni Day 2026 is on 19 December at Dr. T. P. Ganesan Auditorium; register in advance. The page also covers notable alumni, past reunions and how to join the alumni network.",
 };
 
 const portalInstructions: Record<string, string> = {
@@ -204,7 +205,7 @@ export function catalogue(): Entry[] {
         section: item.label,
         href: child.href,
         summary:
-          item.label === "Programmes"
+          child.href.startsWith("/programmes?college=")
             ? "Browse the " + child.label + " programmes in SRM’s finder."
             : child.label + " in the " + item.label + " guide.",
       })),

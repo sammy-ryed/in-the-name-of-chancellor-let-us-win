@@ -1,3 +1,5 @@
+import { start } from "@/features/admissions/programme-quiz/guided/flow";
+import { ProgrammeQuiz } from "@/features/admissions/programme-quiz/ProgrammeQuiz";
 import { Disclosure } from "@/components/Disclosure";
 import Link from "next/link";
 import { Guide, Action, Section, Resources } from "@/components/Guide";
@@ -25,12 +27,16 @@ export default async function Page({
       image="convocation"
       intro="Find your course, check the requirements and apply through SRM’s official portal."
       links={[
+        ["Take the programme quiz", "programme-finder"],
         ["How to apply", "apply"],
         ["SRMJEEE dates", "exam"],
         ["FAQs", "faq"],
         ["Ask admissions", "enquiry"],
       ]}
     >
+      <Section id="programme-finder" title="Which SRM programme fits your interests?">
+        <ProgrammeQuiz initial={start()} />
+      </Section>
       <Section
         id="apply"
         title={selected ? "Your selected programme" : "Choose your route"}

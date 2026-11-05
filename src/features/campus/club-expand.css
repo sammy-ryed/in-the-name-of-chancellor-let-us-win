@@ -138,7 +138,7 @@ html[data-quiet-motion] .ce-experience *, html[data-quiet-motion] .ce-dialog { a
 .cl-people-showcase .ce-editorial :focus-visible { outline-color: var(--ce-accent); }
 .cl-page .cl-people-totals { width: min(calc(100% - 2 * var(--cl-pad)), 650px); margin: 35px auto 70px; padding-top: 25px; }
 @media (max-width: 960px) {
-  .cl-people-showcase { padding-top: 75px; padding-bottom: 18px; }
+  .cl-people-showcase { min-height: 44rem; padding-top: 75px; padding-bottom: 18px; }
   .cl-people-showcase .ce-layout { grid-template-areas: "editorial" "gallery"; grid-template-rows: minmax(0, .85fr) minmax(0, 1.15fr); gap: 20px; }
   .cl-people-showcase .ce-gallery { grid-area: gallery; order: initial; }
   .cl-people-showcase .ce-editorial { grid-area: editorial; }

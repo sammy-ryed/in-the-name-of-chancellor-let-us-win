@@ -1,7 +1,7 @@
 import records from "./courses.json";
-import { srm as university } from "@/lib/navigation";
+import { routes, srm as university } from "@/lib/navigation";
 export { university };
-export const applyBtech = "https://applications.srmist.edu.in/btech";
+export const applyBtech = routes.apply.href;
 export const faculties: Record<string, string> = {
   engineering: "Engineering & Technology",
   management: "Management",

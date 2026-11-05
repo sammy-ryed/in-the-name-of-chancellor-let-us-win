@@ -9,95 +9,66 @@
   color: var(--ask-ink);
 }
 .ask-dock {
-  position: fixed;
-  z-index: 55;
-  left: 50%;
-  bottom: calc(14px + env(safe-area-inset-bottom));
-  transform: translateX(-50%);
+  height: var(--search-row);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  padding-inline: 14px;
 }
-.ask-dock button,
-.ask-panel button,
-.ask-panel input {
-  font: inherit;
-}
-.ask-dock button,
-.ask-panel button {
-  cursor: pointer;
-}
-.ask-icon {
-  width: 19px;
-  height: 19px;
-  display: block;
-  flex: none;
-}
+html[data-high-contrast] .ask-launch { background: var(--navy); }
 .ask-launch {
+  width: min(100%, 580px);
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  min-height: 44px;
-  padding: 0 12px 0 0;
-  background: var(--ask-ink);
+  gap: 12px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgb(168 200 230 / 48%);
+  border-radius: 6px;
+  background: rgb(11 45 82 / 83%);
+  backdrop-filter: blur(14px);
   color: white;
-  border: 1px solid var(--ask-gold);
-  font: 400 1.38rem/1 var(--ask-display) !important;
-  text-transform: uppercase;
-  white-space: nowrap;
+  cursor: pointer;
+  font: 600 .9rem/1.2 var(--font-nav);
+  text-align: left;
 }
-.ask-launch-mark {
-  display: grid;
-  place-items: center;
-  align-self: stretch;
-  width: 36px;
-  background: var(--ask-gold);
-  color: var(--ask-ink);
+.ask-launch:hover { background: rgb(11 45 82 / 94%); border-color: var(--ask-gold); }
+.ask-launch > .ask-icon { color: var(--ask-gold); }
+.ask-launch strong { flex: none; }
+.ask-prompt { padding-left: 12px; border-left: 1px solid #7290ac; font-weight: 400; color: #d6e5f3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ask-launch kbd { flex: none; margin-left: auto; font: 500 .7rem/1 var(--font-nav); color: #d6e5f3; border: 1px solid #65809c; border-radius: 3px; padding: 4px 5px; }
+/* Phones use the same search control as a thumb-reachable launcher. */
+@media (max-width: 760px) {
+  .ask-dock {
+    position: fixed;
+    right: calc(var(--space-4) + env(safe-area-inset-right));
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+    height: auto;
+    padding: 0;
+  }
+  .ask-launch {
+    width: auto;
+    min-height: 46px;
+    padding: 0 15px;
+    gap: 8px;
+    border-color: var(--ask-gold);
+    border-radius: var(--radius-full);
+    background: var(--ask-ink);
+    box-shadow: 0 3px 12px rgb(7 24 47 / 24%);
+  }
+  .ask-launch strong {
+    font: 400 1.35rem/1 var(--ask-display);
+    letter-spacing: .025em;
+    text-transform: uppercase;
+  }
+  .ask-launch :is(.ask-prompt, kbd) { display: none; }
 }
-.ask-launch kbd {
-  font: 500 0.7rem/1 var(--font-primary);
-  color: #d5e6f8;
-  margin-left: 6px;
-  text-transform: none;
-}
-.ask-launch:hover .ask-launch-mark,
-.ask-send:hover:enabled {
-  background: #ffe9a9;
-}
-.ask-tip {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: min(246px, calc(100vw - 50px));
-  padding: 8px 5px 8px 13px;
-  background: var(--ask-paper);
-  border: 1px solid var(--ask-ink);
-  border-left: 4px solid var(--ask-gold);
-}
-.ask-tip p {
-  margin: 0;
-  font-size: 0.84rem;
-}
-.ask-tip button,
-.ask-close,
-.ask-context button {
-  display: grid;
-  place-items: center;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  flex: none;
-}
-.ask-tip button {
-  width: 34px;
-  height: 34px;
-}
-.ask-tip .ask-icon,
-.ask-context .ask-icon {
-  width: 15px;
-  height: 15px;
-}
+.ask-icon { width: 19px; height: 19px; display: block; flex: none; }
+.ask-panel button, .ask-panel input { font: inherit; }
+.ask-panel button { cursor: pointer; }
+.ask-send:hover:enabled { background: #ffe9a9; }
+.ask-close, .ask-context button { display: grid; place-items: center; border: 0; background: transparent; color: inherit; flex: none; }
+.ask-context .ask-icon { width: 15px; height: 15px; }
 .ask-panel {
   inset: 0;
   position: fixed;
@@ -374,32 +345,6 @@ html[data-high-contrast] .ask-panel {
   to {
     opacity: 1;
     transform: none;
-  }
-}
-@media (max-width: 760px) {
-  .ask-dock {
-    left: calc(50% + 22px);
-    top: 9px;
-    bottom: auto;
-  }
-  .ask-launch {
-    min-height: 44px;
-    gap: 5px;
-    font-size: 1.13rem !important;
-    padding-right: 7px;
-  }
-  .ask-launch-mark {
-    width: 25px;
-  }
-  .ask-launch-mark .ask-icon {
-    width: 15px;
-  }
-  .ask-launch kbd {
-    display: none;
-  }
-  .ask-tip {
-    top: calc(100% + 7px);
-    bottom: auto;
   }
 }
 @media (max-width: 660px), (max-height: 530px) {

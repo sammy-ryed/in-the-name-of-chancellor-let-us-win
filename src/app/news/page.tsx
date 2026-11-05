@@ -41,9 +41,9 @@ export default function Page() {
         </aside>
       </section>
       <section className="newsroom-featured" aria-labelledby="news-featured-title"><div className="newsroom-kicker">A CLOSER LOOK</div><h2 id="news-featured-title">In focus</h2>
-        <div className="news-bento">{featuredStories.map(article => <a key={article.href} href={article.href}>
+        <div className="news-bento">{featuredStories.map(article => <Link key={article.href} href={article.href}>
           <div><Image src={article.image} alt={article.alt} fill unoptimized sizes="(max-width:650px) 100vw, 50vw" /></div><small>{article.category}</small><h3>{article.title} ↗</h3>
-        </a>)}</div>
+        </Link>)}</div>
       </section>
     </Guide>
   </div>;

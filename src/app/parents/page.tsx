@@ -1,14 +1,18 @@
 import { Guide, Section, Resources } from "@/components/Guide";
-import { srm } from "@/lib/navigation";
+import Link from "next/link";
+import { routes, srm } from "@/lib/navigation";
 export const metadata = { title: "Parents" };
 export default function Page() {
   return (
     <Guide
       title="Parents"
+      links={[["Attendance, marks & contacts", "parent-portals"]]}
       image="campus"
       intro="Choose the portal for your student’s intake, or go directly to the office that can help."
     >
-      <Section title="Choose your parent portal">
+      <Section id="parent-portals" title="Your student’s academic records">
+        <p>Choose your student’s intake to sign in for attendance and marks.
+          For a faculty advisor’s number, contact the student’s department. <Link href={routes.score.href}>About SCORE</Link></p>
         <Resources
           items={[
             {
@@ -34,7 +38,7 @@ export default function Page() {
             },
             {
               title: "Hostels and dining",
-              href: "/campus#housing",
+              href: routes.housing.href,
               note: "Compare blocks, facilities and booking guidance.",
             },
             {
