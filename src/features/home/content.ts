@@ -1,23 +1,69 @@
-import type { DirectoryContent } from "@/components/Directory";
-
-export const content = {
-  "title": "Explore SRM",
-  "intro": "Choose where to begin.",
-  "links": [
-    {
-      "label": "Find a programme",
-      "href": "/programmes",
-      "detail": "Explore courses and admissions."
-    },
-    {
-      "label": "Discover campus life",
-      "href": "/campus",
-      "detail": "Find clubs, events and places to visit."
-    },
-    {
-      "label": "Student services",
-      "href": "/students",
-      "detail": "Open academic tools and support."
-    }
-  ]
-} satisfies DirectoryContent;
+export const srm = "https://www.srmist.edu.in";
+export const filmId = "S_xAJo_siHA";
+export const filmUrl = "https://www.youtube.com/watch?v=" + filmId;
+export const tourUrl =
+  "https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm";
+export const community = [
+  {
+    name: "Student clubs",
+    place: "Find your people",
+    href: srm + "/life-at-srm/student-life/clubs/",
+    image: "students",
+  },
+  {
+    name: "Camber Racing",
+    place: "Build / compete",
+    href:
+      srm +
+      "/srmists-team-camber-racing-claims-national-title-at-formula-bharat-2026/",
+    image: "racing",
+  },
+  {
+    name: "Art & culture",
+    place: "On stage",
+    href: srm + "/life-at-srm/culture/",
+    image: "stage",
+  },
+  {
+    name: "SRM Sports",
+    place: "On the field",
+    href: srm + "/sports/",
+    image: "athletics",
+  },
+  {
+    name: "Innovation hub",
+    place: "In the lab",
+    href: srm + "/research/innovation-incubation/",
+    image: "research",
+  },
+];
+export const stories = [
+  {
+    title: "From Kattankulathur to the Steve Jobs Theater",
+    category: "Swift Student Challenge / 2026",
+    image: "developer",
+    alt: "SRM student Shourya Thakur at Apple",
+    href:
+      srm +
+      "/srmist-student-named-distinguished-winner-at-apples-swift-student-challenge-2026/",
+  },
+  {
+    title: "Camber Racing takes the national title",
+    category: "Formula Bharat / 2026",
+    image: "racing",
+    alt: "Team Camber Racing with its competition car",
+    href: community[1].href,
+  },
+  {
+    title: "The graduating class takes the stage",
+    category: "22nd convocation / 2026",
+    image: "convocation",
+    alt: "Graduates and university dignitaries at the convocation",
+    href: srm + "/srmist-22nd-convocation/",
+  },
+];
+export const actions = [
+  { label: "Programmes", detail: "Find your programme", href: "/programmes" },
+  { label: "Campus life", detail: "Find your people", href: "/campus" },
+  { label: "Students", detail: "Open student services", href: "/students" },
+];

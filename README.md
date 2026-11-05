@@ -25,3 +25,5 @@ git push -u origin sammyworks
 Sammy works on `sammyworks`. Other teammates branch from the published main with `git switch -c <feature-name> origin/main`. Push each feature branch and open a pull request into main.
 
 Before opening a PR, run `npm run lint`, `npm run typecheck` and `npm run build`.
+
+The homepage motion sequence, editing guide and media credits are in [src/features/home/README.md](src/features/home/README.md).

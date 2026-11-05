@@ -1,0 +1,112 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { actions, srm, tourUrl } from "./content";
+export function Rail() {
+  const panel = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata",
+    });
+    const tick = () => setTime(fmt.format(new Date()).toUpperCase());
+    tick();
+    const id = window.setInterval(tick, 10000);
+    return () => clearInterval(id);
+  }, []);
+  useEffect(() => {
+    if (!open) return;
+    const before = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = before;
+    };
+  }, [open]);
+  const logo = (
+    <Image
+      src="/home/srm-white.svg"
+      width={600}
+      height={203}
+      alt="SRM Institute of Science and Technology"
+      unoptimized
+    />
+  );
+  return (
+    <>
+      <aside className="s-rail" aria-label="Site controls">
+        <Link href="/" aria-label="SRM home">
+          {logo}
+        </Link>
+        <button
+          ref={trigger}
+          aria-label="Open menu"
+          aria-controls="srm-menu"
+          aria-expanded={open}
+          onClick={() => {
+            panel.current?.showModal();
+            setOpen(true);
+          }}
+        >
+          <i />
+          <i />
+        </button>
+        <a className="s-rail-caption" href="#explore">
+          Scroll for more
+        </a>
+        <span className="s-progress" aria-hidden="true" />
+      </aside>
+      <div className="s-edge" aria-hidden="true">
+        <span>{time} IST</span>
+        <span>Learn. Leap. Lead.</span>
+      </div>
+      <dialog
+        id="srm-menu"
+        ref={panel}
+        aria-label="Main navigation"
+        className="s-menu"
+        onClose={() => {
+          setOpen(false);
+          trigger.current?.focus({ preventScroll: true });
+        }}
+        onClick={(e) => {
+          if (e.target === panel.current) panel.current.close();
+        }}
+      >
+        <div className="s-menu-rail">
+          {logo}
+          <button
+            aria-label="Close menu"
+            onClick={() => panel.current?.close()}
+          >
+            ×
+          </button>
+        </div>
+        <nav className="s-menu-sheet s-lines">
+          {[
+            ...actions,
+            { label: "News", href: srm + "/news/" },
+            { label: "Admissions", href: srm + "/admissions/" },
+          ].map((a) => (
+            <Link
+              key={a.href}
+              href={a.href}
+              onClick={() => panel.current?.close()}
+            >
+              {a.label}
+            </Link>
+          ))}
+          <div>
+            <a href={tourUrl}>Virtual tour ↗</a>
+            <a href={srm + "/contact-us/"}>Contact SRM ↗</a>
+          </div>
+        </nav>
+      </dialog>
+    </>
+  );
+}
