@@ -32,10 +32,12 @@ export function SearchBox({
   value,
   onChange,
   inputRef,
+  placeholder = "Search by subject, degree or campus",
 }: {
   value: string;
   onChange: (v: string) => void;
   inputRef?: Ref<HTMLInputElement>;
+  placeholder?: string;
 }) {
   return (
     <div className="pf-search" role="search">
@@ -50,7 +52,7 @@ export function SearchBox({
         value={value}
         autoComplete="off"
         spellCheck={false}
-        placeholder="Search by subject, degree or campus"
+        placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Escape" && value && onChange("")}
       />
