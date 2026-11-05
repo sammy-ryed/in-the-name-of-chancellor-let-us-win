@@ -1,0 +1,5 @@
+.page { isolation: isolate; }
+.page [tabindex="-1"]:focus { outline: none; }
+.counter { position: relative; display: inline-block; white-space: nowrap; }
+.counterSizer { visibility: hidden; }
+.counterAnimated { position: absolute; right: 0; top: 0; }

@@ -1,0 +1,582 @@
+[
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/abb.jpg",
+    "name": "abb",
+    "file": "abb"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/accenture.jpg",
+    "name": "accenture",
+    "file": "accenture"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/accolite.jpg",
+    "name": "accolite",
+    "file": "accolite"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/aditya-birla.jpg",
+    "name": "aditya birla",
+    "file": "aditya-birla"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Afcons.jpg",
+    "name": "Afcons",
+    "file": "Afcons"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Affinsys.jpg",
+    "name": "Affinsys",
+    "file": "Affinsys"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/afford_medical.jpg",
+    "name": "afford medical",
+    "file": "afford_medical"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Akamai.jpg",
+    "name": "Akamai",
+    "file": "Akamai"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Alstom.jpg",
+    "name": "Alstom",
+    "file": "Alstom"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/amadeus.jpg",
+    "name": "amadeus",
+    "file": "amadeus"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/amazon.jpg",
+    "name": "amazon",
+    "file": "amazon"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/anand.jpg",
+    "name": "anand",
+    "file": "anand"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/AstraZeneca.jpg",
+    "name": "AstraZeneca",
+    "file": "AstraZeneca"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/ather.jpg",
+    "name": "ather",
+    "file": "ather"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Bajaj_Finserv.jpg",
+    "name": "Bajaj Finserv",
+    "file": "Bajaj_Finserv"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/bank_of_america.jpg",
+    "name": "bank of america",
+    "file": "bank_of_america"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/barclays.jpg",
+    "name": "barclays",
+    "file": "barclays"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/bny.jpg",
+    "name": "bny",
+    "file": "bny"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/capgemini.jpg",
+    "name": "capgemini",
+    "file": "capgemini"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/cognizant.jpg",
+    "name": "cognizant",
+    "file": "cognizant"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/cummins.jpg",
+    "name": "cummins",
+    "file": "cummins"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/daimler_truck.jpg",
+    "name": "daimler truck",
+    "file": "daimler_truck"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Dell.jpg",
+    "name": "Dell",
+    "file": "Dell"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/deloitte.jpg",
+    "name": "deloitte",
+    "file": "deloitte"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/ey.jpg",
+    "name": "ey",
+    "file": "ey"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/federal_bank.jpg",
+    "name": "federal bank",
+    "file": "federal_bank"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/fis.jpg",
+    "name": "fis",
+    "file": "fis"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/fiserv.jpg",
+    "name": "fiserv",
+    "file": "fiserv"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/ford.jpg",
+    "name": "ford",
+    "file": "ford"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Forma_Ai.jpg",
+    "name": "Forma Ai",
+    "file": "Forma_Ai"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/fractal.jpg",
+    "name": "fractal",
+    "file": "fractal"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/godrej.jpg",
+    "name": "godrej",
+    "file": "godrej"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hashed_in.jpg",
+    "name": "hashed in",
+    "file": "hashed_in"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/havells.jpg",
+    "name": "havells",
+    "file": "havells"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hcl.jpg",
+    "name": "hcl",
+    "file": "hcl"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hewlett_Packard.jpg",
+    "name": "hewlett Packard",
+    "file": "hewlett_Packard"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hindustan.jpg",
+    "name": "hindustan",
+    "file": "hindustan"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hitachi.jpg",
+    "name": "hitachi",
+    "file": "hitachi"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/honda.jpg",
+    "name": "honda",
+    "file": "honda"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/honeywell.jpg",
+    "name": "honeywell",
+    "file": "honeywell"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hp.jpg",
+    "name": "hp",
+    "file": "hp"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hsbc.jpg",
+    "name": "hsbc",
+    "file": "hsbc"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hyperverge.jpg",
+    "name": "hyperverge",
+    "file": "hyperverge"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/hyundai.jpg",
+    "name": "hyundai",
+    "file": "hyundai"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/ibm.jpg",
+    "name": "ibm",
+    "file": "ibm"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/infosys.jpg",
+    "name": "infosys",
+    "file": "infosys"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/intel.jpg",
+    "name": "intel",
+    "file": "intel"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/john_deere.jpg",
+    "name": "john deere",
+    "file": "john_deere"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/johnson.jpg",
+    "name": "johnson",
+    "file": "johnson"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/jp_morgan.jpg",
+    "name": "jp morgan",
+    "file": "jp_morgan"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/jsw.jpg",
+    "name": "jsw",
+    "file": "jsw"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/junglee_games.jpg",
+    "name": "junglee games",
+    "file": "junglee_games"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/juspay.jpg",
+    "name": "juspay",
+    "file": "juspay"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Kubota.jpg",
+    "name": "Kubota",
+    "file": "Kubota"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/l_and_t.jpg",
+    "name": "l and t",
+    "file": "l_and_t"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/latent_view.jpg",
+    "name": "latent view",
+    "file": "latent_view"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/linde.jpg",
+    "name": "linde",
+    "file": "linde"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/LT.jpg",
+    "name": "L&T",
+    "file": "LT"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/ltimindtree.jpg",
+    "name": "ltimindtree",
+    "file": "ltimindtree"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/maersk.jpg",
+    "name": "maersk",
+    "file": "maersk"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/maruthi.jpg",
+    "name": "maruthi",
+    "file": "maruthi"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/mckinley_rice.jpg",
+    "name": "mckinley rice",
+    "file": "mckinley_rice"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/microsoft.jpg",
+    "name": "microsoft",
+    "file": "microsoft"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/miq.jpg",
+    "name": "miq",
+    "file": "miq"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/morgan_stanley.jpg",
+    "name": "morgan stanley",
+    "file": "morgan_stanley"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/mu_sigma.jpg",
+    "name": "mu sigma",
+    "file": "mu_sigma"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/mufg.jpg",
+    "name": "mufg",
+    "file": "mufg"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Natwest.jpg",
+    "name": "Natwest",
+    "file": "Natwest"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/nokia.jpg",
+    "name": "nokia",
+    "file": "nokia"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Optum.jpg",
+    "name": "Optum",
+    "file": "Optum"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Oracle.jpg",
+    "name": "Oracle",
+    "file": "Oracle"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/PayPal.jpg",
+    "name": "PayPal",
+    "file": "PayPal"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Pharma_Ace.jpg",
+    "name": "Pharma Ace",
+    "file": "Pharma_Ace"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/philips.jpg",
+    "name": "philips",
+    "file": "philips"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/pinelabs-1.jpg",
+    "name": "pinelabs",
+    "file": "pinelabs-1"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/polycab.jpg",
+    "name": "polycab",
+    "file": "polycab"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/pwc.jpg",
+    "name": "pwc",
+    "file": "pwc"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/quantiphi.jpg",
+    "name": "quantiphi",
+    "file": "quantiphi"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/redbus.jpg",
+    "name": "redbus",
+    "file": "redbus"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/reliance.jpg",
+    "name": "reliance",
+    "file": "reliance"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/renault-nissan.jpg",
+    "name": "renault nissan",
+    "file": "renault-nissan"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/rich_panel.jpg",
+    "name": "rich panel",
+    "file": "rich_panel"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/royal_enfield.jpg",
+    "name": "royal enfield",
+    "file": "royal_enfield"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Sabre.jpg",
+    "name": "Sabre",
+    "file": "Sabre"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/saint_gobain.jpg",
+    "name": "saint gobain",
+    "file": "saint_gobain"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Sanmar.jpg",
+    "name": "Sanmar",
+    "file": "Sanmar"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/sap.jpg",
+    "name": "sap",
+    "file": "sap"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Schneider.jpg",
+    "name": "Schneider",
+    "file": "Schneider"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Shell.jpg",
+    "name": "Shell",
+    "file": "Shell"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/siemens.jpg",
+    "name": "siemens",
+    "file": "siemens"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/sobha_constructions.jpg",
+    "name": "sobha constructions",
+    "file": "sobha_constructions"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/societe_generale.jpg",
+    "name": "societe generale",
+    "file": "societe_generale"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/sophos.jpg",
+    "name": "sophos",
+    "file": "sophos"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/standard_charted.jpg",
+    "name": "standard charted",
+    "file": "standard_charted"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Sundaram.jpg",
+    "name": "Sundaram",
+    "file": "Sundaram"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/tata_power.jpg",
+    "name": "tata power",
+    "file": "tata_power"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/tata_technologies.jpg",
+    "name": "tata technologies",
+    "file": "tata_technologies"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/tcs.jpg",
+    "name": "tcs",
+    "file": "tcs"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/tvs.jpg",
+    "name": "tvs",
+    "file": "tvs"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/ui_path.jpg",
+    "name": "ui path",
+    "file": "ui_path"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/unisys.jpg",
+    "name": "unisys",
+    "file": "unisys"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/valuelabs.jpg",
+    "name": "valuelabs",
+    "file": "valuelabs"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/varroc.jpg",
+    "name": "varroc",
+    "file": "varroc"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/ve_commercial_vehicles.jpg",
+    "name": "ve commercial vehicles",
+    "file": "ve_commercial_vehicles"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/vedanta.jpg",
+    "name": "vedanta",
+    "file": "vedanta"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/verizon.jpg",
+    "name": "verizon",
+    "file": "verizon"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/volante.jpg",
+    "name": "volante",
+    "file": "volante"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/volvo.jpg",
+    "name": "volvo",
+    "file": "volvo"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/wabtec.jpg",
+    "name": "wabtec",
+    "file": "wabtec"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/wells_fargo.jpg",
+    "name": "wells fargo",
+    "file": "wells_fargo"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/western_digital.jpg",
+    "name": "western digital",
+    "file": "western_digital"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/wipro.jpg",
+    "name": "wipro",
+    "file": "wipro"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/yamaha.jpg",
+    "name": "yamaha",
+    "file": "yamaha"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/zf_group.jpg",
+    "name": "zf group",
+    "file": "zf_group"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/Zifo.jpg",
+    "name": "Zifo",
+    "file": "Zifo"
+  },
+  {
+    "url": "https://www.srmist.edu.in/wp-content/uploads/2025/04/zs.jpg",
+    "name": "zs",
+    "file": "zs"
+  }
+]
