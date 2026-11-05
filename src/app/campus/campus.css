@@ -4,6 +4,7 @@
    Lede: Newsreader (--font-editorial) · Body: DM Sans (--font-primary)
    ===================================================================== */
 .cl-page {
+  --cl-left: calc(var(--edge) * 2 + var(--rail));
   --cl-pad: clamp(var(--space-5), 5vw, var(--space-20));
   --cl-ink: var(--color-primary-dark);
   min-height: 100svh;
@@ -143,8 +144,8 @@ a:hover .cl-cta-go .cl-arrow {
 /* ---------- 1 · Hero ---------- */
 .cl-hero {
   position: relative;
-  height: calc(100svh - var(--edge)); /* fills the screen below the top gap */
-  min-height: 520px;
+  height: calc(100dvh - 2 * var(--edge)); /* equal top and bottom gaps */
+  min-height: 0;
   margin: var(--edge) var(--edge) 0 0;
   overflow: hidden;
   background: var(--color-primary-dark);
@@ -1053,8 +1054,8 @@ a:hover .cl-cta-go .cl-arrow {
 }
 @media (max-width: 760px) {
   .cl-hero {
-    height: calc(100svh - var(--header-height) - 2 * var(--edge)); /* full screen below the top bar */
-    min-height: 460px;
+    height: calc(100dvh - var(--header-height) - 2 * var(--edge));
+    min-height: 0;
     margin: var(--edge) var(--edge) 0;
   }
   .cl-band,

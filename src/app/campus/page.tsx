@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
-import { ClubDirectory } from "@/features/campus/ClubDirectory";
+import { ClubCards } from "@/features/campus/ClubCards";
 import { clubs } from "@/features/campus/clubs";
 import { campusLinks } from "@/features/campus/links";
 import hostels from "@/features/explore/hostels.json";
@@ -43,8 +43,8 @@ export default function Page() {
       {/* 1 — Hero */}
       <header className="cl-hero">
         <Image
-          src="/campus/students-hero.webp"
-          alt="Four SRM students, including a medical student in a white coat, standing outside SRM Tech Park"
+          src="/home/film.webp"
+          alt="SRM students celebrating beside the robot they built"
           fill
           priority
           sizes="100vw"
@@ -103,17 +103,9 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 3 — Find your people: club directory with a details drawer */}
-      <section id="clubs" className="cl-band cl-clubs" aria-labelledby="clubs-title">
-        <div className="cl-wrap">
-          <div className="cl-head">
-            <div>
-              <h2 id="clubs-title">Find your people</h2>
-            </div>
-            <p>Pick something you already love, or try something new. Open any club to see how to join.</p>
-          </div>
-          <ClubDirectory />
-        </div>
+      {/* 3 — Viewport-sized expanding gallery, category colors and joining details */}
+      <section id="people" className="cl-people-showcase" aria-labelledby="people-title">
+        <ClubCards />
       </section>
 
       {/* 4 — What's happening: compact timeline */}
