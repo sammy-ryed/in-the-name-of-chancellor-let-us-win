@@ -30,7 +30,7 @@ export default function Page() {
               </div>
             </div>
             <div className="s-hero-brand" aria-hidden="true"><SrmCrest /><Arrow /></div>
-            <div className="s-film-pane"><Film /></div>
+            <div className="s-film-pane" data-search-surface="media"><Film /></div>
           </section>
           <section className="s-academics" aria-labelledby="academics-title">
             <div className="s-acad-interior">
@@ -59,7 +59,7 @@ export default function Page() {
         </div>
       </div>
       <section id="explore" className="s-tour-section" aria-labelledby="place-title">
-        <figure className="s-tour-view">
+        <figure className="s-tour-view" data-search-surface="media">
           <MotionPreview label="virtual tour preview" mp4="/home/campus-tour-preview.mp4" poster="/home/campus-tour-preview.webp" />
           <figcaption>360° / Kattankulathur campus</figcaption>
         </figure>
