@@ -1,0 +1,195 @@
+.compass {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--surface-warm);
+}
+.bearings {
+  fill: currentColor;
+  font: 700 14px var(--font-nav);
+}
+.needle {
+  transform-origin: 100px 100px;
+  transform: rotate(32deg);
+}
+
+/* The loading state is entirely inline artwork and CSS, so it can paint before page media. */
+.loading {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 1.6rem;
+  min-height: 100svh;
+  padding: 4rem 1rem;
+  overflow: hidden;
+  color: var(--surface-warm);
+  background: var(--navy);
+}
+.instrument {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: min(88%, 760px);
+  padding-block: clamp(1rem, 3vw, 2rem);
+}
+.instrument::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: .24;
+  mask-image: radial-gradient(ellipse, black, transparent 72%);
+}
+.instrument::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 5%;
+  right: 5%;
+  top: 50%;
+  height: 1px;
+  background: var(--steel);
+}
+.instrument .compass { width: clamp(140px, 22vw, 212px); }
+.loading p {
+  margin: 0;
+  font: 400 clamp(2.25rem, 5vw, 4rem)/1 var(--display);
+  text-transform: uppercase;
+}
+.loading p span { color: var(--color-gold-light); }
+
+.missing {
+  display: grid;
+  grid-template-rows: minmax(min-content, 1fr) auto;
+  min-height: 100svh;
+  background: var(--surface-warm);
+  color: var(--navy);
+}
+.panorama {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: clamp(300px, 54svh, 680px);
+  margin: 0;
+  padding: max(3.75rem, var(--header-height)) 1rem 3rem;
+  background: var(--brand-blue);
+  overflow: hidden;
+}
+.panorama > img {
+  z-index: -3;
+  object-fit: cover;
+  object-position: 50% 55%;
+  filter: grayscale(1) contrast(1.1);
+}
+.panorama::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--color-primary);
+  mix-blend-mode: color;
+}
+.panorama::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(0deg, rgb(11 45 82 / 84%), rgb(11 45 82 / 48%) 66%, rgb(11 45 82 / 65%));
+}
+.registration {
+  position: absolute;
+  inset: max(3.5rem, var(--header-height)) clamp(16px, 4vw, 64px) 2.7rem;
+  pointer-events: none;
+  background:
+    linear-gradient(currentColor,currentColor) left top / 18px 1px,
+    linear-gradient(currentColor,currentColor) left top / 1px 18px,
+    linear-gradient(currentColor,currentColor) right top / 18px 1px,
+    linear-gradient(currentColor,currentColor) right top / 1px 18px,
+    linear-gradient(currentColor,currentColor) left bottom / 18px 1px,
+    linear-gradient(currentColor,currentColor) left bottom / 1px 18px,
+    linear-gradient(currentColor,currentColor) right bottom / 18px 1px,
+    linear-gradient(currentColor,currentColor) right bottom / 1px 18px;
+  background-repeat: no-repeat;
+  color: var(--color-gold-light);
+}
+.code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .035em;
+  color: var(--surface-warm);
+  font: 400 clamp(8rem, min(35vw, 61svh), 38rem)/.85 var(--display);
+}
+.code > span { display: block; transform: translateY(.08em); }
+.code .compass { width: .66em; flex: none; }
+.panorama figcaption {
+  position: absolute;
+  left: clamp(16px, 4vw, 64px);
+  bottom: .95rem;
+  color: white;
+  font: 600 .72rem/1.3 var(--font-nav);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.recovery {
+  display: grid;
+  grid-template-columns: 1fr minmax(18rem, .85fr);
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(2rem, 5vw, 5.5rem) clamp(20px, 5vw, 5rem);
+  border-top: 4px solid var(--action-yellow);
+}
+.recovery h1 {
+  margin: 0;
+  font: 400 clamp(4.25rem, 8.6vw, 9rem)/.93 var(--display);
+  text-transform: uppercase;
+}
+.recovery h1 span { color: var(--color-gold-dark); }
+.recoveryBody p {
+  margin: 0 0 1rem;
+  font: 400 clamp(1.35rem, 2.1vw, 2rem)/1.2 var(--font-editorial);
+}
+.actions { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem 1.25rem; }
+.actions a {
+  display: inline-flex;
+  gap: .7rem;
+  align-items: center;
+  min-height: 44px;
+  font: 650 .94rem/1.3 var(--font-nav);
+}
+.home { padding: .65rem 1rem; background: var(--action-yellow); text-decoration: none; }
+.home:hover { background: var(--action-hover); }
+.explore { text-underline-offset: .22em; }
+.explore:hover { color: var(--brand-blue); }
+@keyframes findBearing {
+  0%, 100% { transform: rotate(32deg); }
+  40% { transform: rotate(155deg); }
+  63% { transform: rotate(103deg); }
+  80% { transform: rotate(114deg); }
+}
+@keyframes settleBearing {
+  0% { transform: rotate(-75deg); }
+  68% { transform: rotate(46deg); }
+  86% { transform: rotate(25deg); }
+  100% { transform: rotate(32deg); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :global(html:not([data-quiet-motion])) .loading .needle {
+    animation: findBearing 2.8s cubic-bezier(.45,0,.18,1) infinite;
+  }
+  :global(html:not([data-quiet-motion])) .missing .needle {
+    animation: settleBearing 1.15s cubic-bezier(.22,.75,.25,1) both;
+  }
+}
+@media (max-width: 760px) {
+  .missing, .loading { min-height: calc(100svh - var(--header-height)); }
+  .panorama { min-height: clamp(260px, 46svh, 480px); padding-block: 3rem; }
+  .registration { top: 1.3rem; }
+  .recovery { grid-template-columns: 1fr; gap: .8rem; padding: 1.8rem 1.25rem 5.5rem; }
+}
