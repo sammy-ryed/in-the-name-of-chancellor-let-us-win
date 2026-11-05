@@ -25,27 +25,6 @@
 .guide button {
   cursor: pointer;
 }
-.guide-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  background: var(--navy);
-  color: var(--ice);
-  padding: 14px var(--pad);
-}
-.guide-footer nav {
-  display: flex;
-  gap: clamp(12px, 2.2vw, 36px);
-  flex-wrap: wrap;
-}
-.guide-footer a {
-  text-decoration: none;
-}
-.guide-footer a:hover {
-  color: var(--action-yellow);
-  text-decoration: underline;
-}
 .guide-jump,
 .guide-body {
   padding-inline: var(--pad);
@@ -398,9 +377,6 @@
 .news-bento a:first-child h3 {
   font-size: clamp(1.5rem, 3vw, 3rem);
 }
-.guide-footer {
-  padding-block: 26px 60px;
-}
 @media (max-width: 800px) {
   .filter-bar,
   .course-grid {
@@ -422,10 +398,6 @@
   }
   .news-bento a:first-child {
     grid-row: auto;
-  }
-  .guide-footer {
-    align-items: flex-start;
-    flex-direction: column;
   }
   .event-list a,
   .headline-list a {
@@ -573,8 +545,7 @@
   min-height: 44px;
   color: var(--copy);
 }
-.guide-jump a:hover,
-.guide-footer a:hover {
+.guide-jump a:hover {
   color: var(--action-yellow);
 }
 .guide-body {
@@ -707,10 +678,6 @@
 }
 .guide .news-bento a:hover h3 {
   text-decoration: underline;
-}
-.guide-footer {
-  background: var(--paper);
-  border-top: 1px solid var(--line);
 }
 @keyframes guide-film-pan {
   from {

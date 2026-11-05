@@ -702,33 +702,17 @@
   margin-top: var(--space-6);
 }
 
-/* Footer */
-.pf-foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--space-4) var(--space-8);
-  padding: var(--space-8) var(--pf-gutter) var(--space-20); /* clears the floating Accessibility button */
-  background: var(--surface-blue);
+/* Data source note, above the site footer */
+.pf-source {
+  margin: 0;
+  padding: var(--space-8) var(--pf-gutter);
   border-top: 1px solid var(--border-default);
+  background: var(--surface-blue);
   font-size: 0.875rem;
   color: var(--text-secondary);
 }
-.pf-foot p {
-  max-width: 60ch;
-}
-.pf-foot nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-6);
-  color: var(--text-primary);
-}
-.pf-foot nav a {
-  text-decoration: none;
-}
-.pf-foot a:hover {
+.pf-source a {
   color: var(--color-primary);
-  text-decoration: underline;
   text-underline-offset: 3px;
 }
 

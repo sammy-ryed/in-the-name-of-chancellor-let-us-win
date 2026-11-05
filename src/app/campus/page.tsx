@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SiteFooter } from "@/components/SiteFooter";
 import { ClubDirectory } from "@/features/campus/ClubDirectory";
 import { clubs } from "@/features/campus/clubs";
 import { campusLinks } from "@/features/campus/links";
@@ -250,6 +251,7 @@ export default function Page() {
         </Link>
       </section>
 
+      <SiteFooter />
     </div>
   );
 }

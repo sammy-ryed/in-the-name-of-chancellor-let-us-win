@@ -8,7 +8,6 @@
   --sky: var(--color-secondary);
   --steel: var(--border-strong);
 }
-.light-guide .guide-footer { color: var(--text-primary); }
 .light-guide .guide .news-bento :is(a, h3) { color: var(--text-primary); }
 .light-guide .guide :is(.guide-crumbs, .source-note, .news-bento small) { color: var(--text-secondary); }
 .light-guide .guide :is(.resources a:hover, .guide-jump a:hover, summary:hover) { color: var(--color-primary); }
