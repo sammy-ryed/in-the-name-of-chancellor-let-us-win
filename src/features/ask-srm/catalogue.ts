@@ -1,5 +1,5 @@
 import "server-only";
-import { navigation, services } from "@/lib/navigation";
+import { navigation, routes, services, tourUrl } from "@/lib/navigation";
 import { studentServices } from "@/features/students/services";
 import { clubs } from "@/features/campus/clubs";
 import { finderData } from "@/features/programmes/finder/data";
@@ -10,12 +10,13 @@ import hostels from "@/features/explore/hostels.json";
 import headlines from "@/features/explore/headlines.json";
 import events from "@/features/explore/events.json";
 import { stories } from "@/features/home/content";
-import { tourUrl } from "@/lib/navigation";
+import { generalContact } from "@/features/contact/directory";
 import type { Source } from "./types";
 
 export type Entry = Source & { keywords?: string };
 
 const sectionNotes: Record<string, string> = {
+  [routes.contact.label]: "For general university enquiries call " + generalContact.phone.label + " or email " + generalContact.email + ". The Contact us directory also lists admissions, student services, careers and alumni offices.",
   Programmes:
     "Search the SRM programme finder by degree, campus, faculty or department.",
   "Campus life":

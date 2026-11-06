@@ -5,8 +5,8 @@ Run `npm ci` and `npm run dev`, then open [localhost:3000](http://localhost:3000
 | Scene | Scroll and interaction | Team editing point |
 | --- | --- | --- |
 | Opening | The headline and motto sit in the left panel. The film aperture expands as you scroll, then gives way to academics. | `src/app/page.tsx`, `src/features/home/Choreography.tsx`, `src/app/home.css` |
-| Campus film | The muted local HD excerpt plays in view. The play cursor opens the full reel on desktop. Touch and keyboard users have a dedicated play button. | `src/features/home/Film.tsx` |
-| Find your way | An 18-second film visits the campus lake, Arch Gate, Central Library and T.P. Ganesan Auditorium. It plays once when it comes into view. Visitors can replay it, enter the full tour or open the illustrated map. | `src/features/home/journeys.css` |
+| Campus film | The muted nine-second excerpt plays in view on desktop. Fast phones play a 540p copy after the page loads; other phones start with the poster and a Play preview control. The full-film control opens the original reel. | `src/features/home/Film.tsx` |
+| Find your way | An 18-second film visits the campus lake, Arch Gate, Central Library and T.P. Ganesan Auditorium. It plays once in view when motion and connection preferences allow. Visitors can also play or replay it, enter the full tour or open the illustrated map. | `src/features/home/journeys.css` |
 | Community | On desktop the names roll past the center and select a portrait. Phones and tablets get swipeable cards. Reduced motion presents all five links in a directory. | `src/features/home/TeamRoll.tsx`, `src/features/home/content.ts` |
 | News and destinations | Swipe or drag the news strip, use its arrow buttons, or tab through the stories. The three closing bands lead into the other teammates’ routes. | `src/features/home/NewsReel.tsx`, `src/features/home/content.ts` |
 

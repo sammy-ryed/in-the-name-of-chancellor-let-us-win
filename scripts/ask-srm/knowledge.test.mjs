@@ -77,3 +77,14 @@ test("interest guidance, research facilities and family help link to usable dest
   const [advisor] = await search("How does a parent get their child's FA number?");
   assert.equal(advisor.href, "/parents#records");
 });
+
+test("general contacts and admissions enquiries reach the right published desk", async () => {
+  const [general] = await search("What is the SRM general enquiries email and phone number?");
+  assert.equal(general.href, "/contact");
+  assert.ok(general.summary.includes("infodesk@srmist.edu.in"));
+  const [law] = await search("Admissions contact for law");
+  assert.equal(law.href, "/contact#other-admissions");
+  const international = await search("International admissions email");
+  assert.equal(international[0].href, "/contact#international-admissions");
+  assert.ok(international.every(item => item.section !== "Course details"));
+});

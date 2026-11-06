@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export function InitialSectionScroll() {
   useEffect(() => {
-    // With a streamed page the browser can look for the fragment before it exists.
+    // Client-side navigation can commit the new section after the fragment was requested.
     const section = document.getElementById(window.location.hash.slice(1));
     if (!section) return;
     const frame = requestAnimationFrame(() => {

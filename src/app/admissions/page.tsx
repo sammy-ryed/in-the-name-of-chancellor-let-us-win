@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { admissionsEmails } from "@/features/admissions/contact";
 import { start } from "@/features/admissions/programme-quiz/guided/flow";
 import { ProgrammeQuiz } from "@/features/admissions/programme-quiz/ProgrammeQuiz";
 import { Disclosure } from "@/components/Disclosure";
@@ -44,6 +45,7 @@ export default async function AdmissionsPage({ searchParams }: {
       <Section id="programme-finder" title={<>Find a course <em>that fits</em></>}>
         <p>Tell us what you enjoy studying. The course finder builds a shortlist you can explore by campus, cost and entry requirements.</p>
         <ProgrammeQuiz initial={start()} />
+        <noscript><p><Link href={routes.programmes.href}>Browse programmes by subject and campus</Link>.</p></noscript>
       </Section>
       <Section id="faq" title="Before you apply">
         <Disclosure summary="What are the B.Tech entry requirements?">
@@ -62,8 +64,8 @@ export default async function AdmissionsPage({ searchParams }: {
         </Disclosure>
       </Section>
       <Section id="enquiry" title="Contact admissions">
-        <p>For an international application or a question about your applicant category, <a href="mailto:admissions.ir@srmist.edu.in">email International Relations</a>. For a domestic application, write your question below.</p>
-        <Enquiry context={selected ? `${selected.degree} · ${selected.name} / ${selected.campus}` : "General admissions"} courseId={selected?.id} />
+        <p>For an international application or a question about your applicant category, <a href={`mailto:${admissionsEmails.international}`}>email International Relations</a>. For a domestic application, contact the Indian admissions team.</p>
+        <Enquiry key={selected?.id ?? "general"} context={selected ? `${selected.degree} · ${selected.name} / ${selected.campus}` : "General admissions"} courseId={selected?.id} />
       </Section>
       <Resources items={[{ href: routes.parents.href, title: "For parents", note: "Portal access, fees, housing and student support." }]} />
     </AdmissionsLayout>

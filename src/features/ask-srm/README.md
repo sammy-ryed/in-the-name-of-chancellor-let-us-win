@@ -22,7 +22,7 @@ Common greetings, private-record requests and obvious credentials have local res
 
 `POST /api/ask-srm` accepts `{ mode: "search" | "ask", query, history? }`. History entries have a `user` or `assistant` role and a plain-text `content` field. The legacy `previous` question is also supported. Responses include `kind`, `sources` and an optional plain-text `answer`.
 
-Each running instance admits up to three simultaneous Groq requests and 15 per minute, including second lookups. Multiple instances have independent limits. The directory remains available during bursts.
+Each running instance admits up to three simultaneous Groq requests and 15 per minute, including second lookups. On Vercel, each verified client IP can use at most eight of those calls per window. Counts stay in process memory. Multiple instances have independent limits. The directory remains available during bursts.
 
 The server builds its index from the site's data under `catalogue.ts` and `site-guides.ts`. Update the underlying guide and its source together when dated information changes.
 

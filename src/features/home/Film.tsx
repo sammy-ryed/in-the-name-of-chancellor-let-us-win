@@ -11,7 +11,9 @@ export function Film() {
   return (
     <div className="s-film">
       <MotionPreview label="campus film preview" poster="/home/campus-preview.webp"
-        webm="/home/campus-preview.webm" mp4="/home/campus-preview.mp4" loop priority suspended={open} />
+        portraitPoster={{ small: "/home/campus-preview-portrait-480.avif", large: "/home/campus-preview-portrait-900.avif" }}
+        mobileMp4="/home/campus-preview-mobile.mp4" webm="/home/campus-preview.webm" mp4="/home/campus-preview.mp4"
+        loop priority suspended={open} />
       <button type="button" className="s-film-open" aria-label="Play full campus film" aria-haspopup="dialog"
         onClick={() => { dialog.current?.showModal(); setOpen(true); }}>
         <span className="s-film-mark" aria-hidden="true" />

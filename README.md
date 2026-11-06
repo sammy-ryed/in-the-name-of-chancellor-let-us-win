@@ -19,6 +19,12 @@ The root layout renders the homepage navigation on every route. Edit `src/compon
 
 Reuse `SiteFooter` for the full address and links, `ServiceFooter` for the compact version, and `Breadcrumbs` for parent links. Guide pages share `Section`, `Action` and `Resources`. Use `Disclosure` for expandable questions.
 
+## Production checks
+
+Run the admissions and Ask SRM regression suites against a production server. After `npm run build`, start `npm start` and run `node --test scripts/admissions/*.test.mjs scripts/ask-srm/*.test.mjs`. Set `SRM_TEST_URL` when the server uses a port other than 3000.
+
+The security headers and image source list live in `next.config.mjs`. Keep external embeds explicit and add new local image directories there. Next uses inline hydration scripts for prerendered pages, while inline HTML event handlers are blocked. Keep `GROQ_API_KEY` in the server environment. The scoped minimatch override patches the lint parser's glob handling until its dependency range includes a fixed release.
+
 ## Collaborate
 
 Publish the initial branches from this checkout:

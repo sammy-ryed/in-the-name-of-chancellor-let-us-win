@@ -19,6 +19,7 @@ function terms(text: string): string[] {
       .normalize("NFKC")
       .replace(/wi[\s-]?fi/g, "wifi")
       .replace(/\bwhat about\b/g, "")
+      .replace(/\b(?:enquir|inquir)(?:y|ies)\b/g, "enquiry")
       .replace(/\b(?:ktr|kattangulathur)\b/g, "kattankulathur")
       .replace(/\btrichy\b/g, "tiruchirappalli")
       .replace(/\b(?:aarush|arush)\b/g, "aaruush")
@@ -100,6 +101,8 @@ for (const d of docs) {
 
 const campusWords = new Set(["kattankulathur", "ramapuram", "vadapalani", "tiruchirappalli",
   "ncr", "acharapakkam", "baburayanpettai", "haryana", "ap", "sikkim"]);
+const contactIntents = new Set(["contact", "call", "phone", "telephone", "email", "helpline"]);
+const generalContactTerms = new Set([...contactIntents, "general", "main", "number", "detail", "office", "address", "desk", "helpdesk", "enquiry", "inquiry"]);
 const courseIntents = new Set(["fee", "eligibility", "duration", "semester", "tuition"]);
 const researchIntents = new Set(["research", "facility", "laboratory", "centre", "equipment", "instrument"]);
 
@@ -113,6 +116,7 @@ function rankSources(current: string[], prior: string[]) {
       Math.log(2 + docs.length / (counts.get(word) ?? 1)),
   }));
   const campuses = current.filter(w => campusWords.has(w));
+  const wantsContact = current.some(word => contactIntents.has(word));
   const hasCourseIntent = [...current, ...prior].some(w => courseIntents.has(w));
   const hasResearchIntent = current.some(w => researchIntents.has(w));
   const familyQuestion = [...current, ...prior].some(w => ["parent", "guardian", "child", "son", "daughter", "parentconnect"].includes(w));
@@ -145,6 +149,7 @@ function rankSources(current: string[], prior: string[]) {
         const extra = doc.title.filter(t => !current.includes(t) && !prior.includes(t));
         score *= 1 / (1 + extra.length * 0.06);
       }
+      if (wantsContact && doc.source.section === routes.contact.label) score *= 1.6;
       if (hasResearchIntent && doc.source.section === "Research") score *= 1.8;
       if (doc.source.section === "Parents" && !familyQuestion) score *= 0.64;
       if (doc.source.section === "Course details" && hasResearchIntent && !hasCourseIntent) score *= 0.65;
@@ -267,6 +272,11 @@ export function findSources(question: string, previous = ""): Source[] {
   // A new campus replaces the earlier one. Other topic words can carry forward.
   const prior = previous ? queryTerms(previous).filter(w =>
     !current.includes(w) && !(explicitCampuses.length && campusWords.has(w))) : [];
+  // A generic phone or email query belongs to the university desk, not a faculty chosen by index order.
+  if (!prior.length && current.some(word => contactIntents.has(word)) && current.every(word => generalContactTerms.has(word))) {
+    const general = docs.find(({ source }) => source.href === routes.contact.href);
+    if (general) return [general.source];
+  }
   const ranked = rankSources(current, prior);
   if (isCourseChoice(question)) return courseSuggestions(question, ranked);
   // SRM publishes international fees separately. A domestic amount is never
@@ -276,7 +286,11 @@ export function findSources(question: string, previous = ""): Source[] {
     && !/\b(?:hostels?|rooms?|accommodation)\b/i.test(question);
   if (internationalApplicant && [...current, ...prior].some(w => ["fee", "admission", "application", "apply", "eligibility", "tuition"].includes(w))) {
     const gateway = docs.find(({source}) => source.title === "International and NRI admissions");
-    if (gateway) return [gateway.source];
+    if (gateway) {
+      const contact = current.some(word => contactIntents.has(word)) &&
+        docs.find(({ source }) => source.href === routes.contact.href + "#international-admissions");
+      return contact ? [contact.source, gateway.source] : [gateway.source];
+    }
   }
   if (!ranked.length) return [];
 
