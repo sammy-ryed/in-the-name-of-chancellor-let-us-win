@@ -1,7 +1,7 @@
 import { SiteFooter } from "@/components/SiteFooter";
 import Image from "next/image";
 import Link from "next/link";
-import { srm } from "@/lib/navigation";
+import { routes } from "@/lib/navigation";
 import { studentServices, type StudentService } from "./services";
 import { StudentMotion } from "./StudentMotion";
 import "@/app/home.css";
@@ -145,8 +145,8 @@ export function StudentsPage() {
         <p className="s-serif">A new interest. A familiar face.<br />Somewhere to turn.</p>
         <Link className="yellow-action s-button" href="/campus">Explore campus life <Arrow />
         </Link>
-        <a className="st-text-link" href={srm + "/contact-us/"}>Talk to SRM <Arrow />
-        </a>
+        <Link className="st-text-link" href={routes.contact.href}>Talk to SRM <Arrow />
+        </Link>
       </div>
     </section>
     <SiteFooter />

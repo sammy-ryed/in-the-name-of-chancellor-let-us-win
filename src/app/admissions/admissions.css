@@ -163,3 +163,8 @@
   html:not([data-quiet-motion]) .admissions-experience :is(.admission-route-links a, .admission-planning a span) { transition: background .18s ease, transform .18s ease; }
   html:not([data-quiet-motion]) .admission-planning a:is(:hover,:focus-visible) span { transform: translateX(3px); }
 }
+
+@media (scripting: none) {
+  .admissions-experience .enquiry-compose,
+  .admissions-experience .pq-panel { display: none; }
+}

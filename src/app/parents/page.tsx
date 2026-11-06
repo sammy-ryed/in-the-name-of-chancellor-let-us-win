@@ -89,7 +89,7 @@ export default function ParentsPage() {
         <section id="family-support" className={styles.spread}><div><h2>Talk to someone</h2>
           <p>For a general enquiry, start with the SRM Information Centre.</p>
           <a className={styles.phone} href="tel:+914427455510">044 2745 5510</a>
-          <a href={srm + "/contact-us/"}>University contacts <span aria-hidden="true">↗</span></a>
+          <Link href={routes.contact.href}>University contacts <span aria-hidden="true">→</span></Link>
         </div><ResourceList items={support} /></section>
       </div>
     </div>

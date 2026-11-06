@@ -30,7 +30,7 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div className="s-hero-brand" aria-hidden="true"><SrmCrest /><HomeArrow /></div>
+            <div className="s-hero-brand" aria-hidden="true"><SrmCrest sizes="(max-width: 760px) 16.5vw, 13vw" /><HomeArrow /></div>
             <div className="s-film-pane" data-search-surface="media"><Film /></div>
           </section>
           <section className="s-academics" aria-labelledby="academics-title">

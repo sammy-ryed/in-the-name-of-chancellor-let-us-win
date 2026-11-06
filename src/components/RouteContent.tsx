@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import RouteLoading from "./wayfinding/RouteLoading";
 
 export function RouteContent({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -22,5 +23,8 @@ export function RouteContent({ children }: { children: ReactNode }) {
     return () => arrival?.cancel();
   }, [pathname]);
 
-  return <main ref={main} id="main">{children}</main>;
+  return <>
+    <main ref={main} id="main">{children}</main>
+    <RouteLoading key={pathname} pathname={pathname} />
+  </>;
 }

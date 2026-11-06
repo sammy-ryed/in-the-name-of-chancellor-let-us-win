@@ -6,6 +6,7 @@ const apply: Prompt = { section: "Admissions", question: "How do international s
 const placement: Prompt = { section: "Careers", question: "What are the placement figures?" };
 const first: Record<string, Prompt> = {
   programmes: fees, admissions: apply, campus: clubs, "career-centre": placement,
+  contact: { section: "Contact us", question: "How do I contact SRM admissions?" },
   parents: { section: "Parents", question: "How can a parent check attendance?" },
   students: { section: "Students", question: "How do I sign in to hostel Wi-Fi?" },
   news: { section: "News", question: "What did Camber Racing win?" },

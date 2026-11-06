@@ -4,6 +4,7 @@ import { recruiterCategories } from "@/app/career-centre/_ui/recruiter-categorie
 import { centreGroups, facilities, projects, sources as researchSources, statistics } from "@/app/research/content";
 import { alumniDay, alumniLinks, alumniOffice, notableAlumni } from "@/features/alumni/data";
 import { campusLinks } from "@/features/campus/links";
+import { contactOffices } from "@/features/contact/directory";
 import { routes, srm } from "@/lib/navigation";
 import type { Entry } from "./catalogue";
 
@@ -14,6 +15,13 @@ function section(section: string, items: Guide[]): Entry[] {
 
 export function siteGuides(): Entry[] {
   return [
+    ...contactOffices.map((office): Entry => ({
+      title: office.name + (office.group === "Admissions" && !office.name.toLowerCase().includes("admissions") ? " admissions" : "") + " contact",
+      section: routes.contact.label,
+      href: routes.contact.href + "#" + office.id,
+      summary: office.name + ". " + office.description + " Phone: " + office.phone.label + ". Email: " + office.email + ".",
+      keywords: [office.group, office.id, "office helpdesk helpline call telephone number email"].join(" "),
+    })),
     ...section("University", [
       ["SRM's history and name", "https://webstor.srmist.edu.in/web_assets/downloads/2020/ent-hand-book-2020-2021.pdf", "Sri Ramasamy Memorial Engineering College began in Kattankulathur in the 1985–86 academic year. SRM Institute of Science and Technology (SRMIST), formerly SRM University, dates to 2002.", "founded established origin full form stands for"],
       ["SRM motto", "https://webstor.srmist.edu.in/web_assets/downloads/2025/ugc-annual-report-2023-24.pdf", "SRMIST uses “Learn. Leap. Lead.” on its annual report.", "slogan tagline"],
@@ -21,7 +29,7 @@ export function siteGuides(): Entry[] {
     ]),
     ...section("Admissions", [
       ["International and NRI admissions", routes.international.href, "Foreign nationals, NRIs and NRI-sponsored applicants use the international application. The international admissions page links to its own eligibility and fee schedule. For questions about applicant category, email admissions.ir@srmist.edu.in.", "foreign overseas nri international application tuition fee eligibility"],
-      ["Contact admissions", "/admissions#enquiry", "Use the admissions enquiry form or email admissions.india@srmist.edu.in for domestic applicants. International applicants can email admissions.ir@srmist.edu.in.", "phone email help contact counsellor"],
+      ["Admissions enquiry form", "/admissions#enquiry", "Use the admissions enquiry form to send the university an application question.", "ask admissions application form counsellor"],
       ["SRMJEEE application fee", "/admissions#faq", "The admissions guide lists a non-refundable ₹1,400 application fee per phase for the 2027 B.Tech SRMJEEE. This is a registration charge, separate from tuition. Confirm before paying on the application portal.", "entrance exam registration payment refund"],
       ["Engineering scholarships and financial aid", srm + "/admission-india/engineering/scholarships/", "Open the engineering scholarships list and check the academic, entrance or other criteria for the specific award. Eligibility and renewal depend on the scheme.", "discount concession waiver merit aid renewal"],
       ["Find a course that fits", routes.finder.href, "The course finder quiz asks about your interests and study preferences, then suggests undergraduate programmes. Its shortlist links to the course, campus and fee details.", "quiz unsure pick choose recommend interest career confused 12th school"],

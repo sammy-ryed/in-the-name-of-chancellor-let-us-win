@@ -20,6 +20,12 @@ test("rejects privileged roles, oversized input, invalid JSON and third-party re
   ]) assert.equal((await post(invalid)).status, 400);
   assert.equal((await post(base, { origin: "https://unrelated.invalid" })).status, 403);
   assert.equal((await post(base, { "Content-Type": "text/plain" })).status, 415);
+  assert.equal((await post(base, { "Content-Type": "application/jsonp" })).status, 415);
+  assert.equal((await post(base, { "Sec-Fetch-Site": "cross-site" })).status, 403);
+  // This is valid JSON with an invalid UTF-8 byte inside the user string.
+  const invalidUtf8 = Buffer.concat([Buffer.from('{"mode":"ask","query":"hi'), Buffer.from([255]), Buffer.from('"}')]);
+  const invalid = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: invalidUtf8 });
+  assert.equal(invalid.status, 400);
   assert.equal((await post(" ".repeat(65537))).status, 413);
 });
 

@@ -22,6 +22,7 @@ export const routes = {
   alumni: { href: "/alumni", label: "Alumni" },
   news: { href: "/news", label: "News" },
   events: { href: "/events", label: "Events" },
+  contact: { href: "/contact", label: "Contact us" },
   finder: { href: "/admissions#programme-finder", label: "Course finder" },
   fees: { href: "/programmes/fees", label: "Fees & eligibility" },
   india: { href: "/admissions#apply", label: "Admissions in India" },
@@ -90,7 +91,7 @@ export const navigation: NavItem[] = [
   routes.news,
 ];
 
-export const services: NavLink[] = [routes.events];
+export const services: NavLink[] = [routes.events, routes.contact];
 
 export const actions = [
   { label: "Programmes", detail: "Find your programme", href: "/programmes" },

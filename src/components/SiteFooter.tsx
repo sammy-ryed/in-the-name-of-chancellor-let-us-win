@@ -62,7 +62,7 @@ const groups: FooterGroup[] = [
   { title: "Careers & contacts", links: [routes.placements, routes.outcomes, routes.recruiters,
     { label: "University careers", href: "https://careers.srmist.edu.in/" },
     { label: "Faculty directory", href: srm + "/faculty-gateway/" }, { label: "Library", href: srm + "/library/" },
-    { label: "Campus location", href: srm + "/visitors/" }, { label: "Contact SRM", href: srm + "/contact-us/" },
+    { label: "Campus location", href: srm + "/visitors/" }, routes.contact,
     { label: "Student support", href: "/campus#support" }] },
 ];
 

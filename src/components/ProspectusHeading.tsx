@@ -13,7 +13,7 @@ export function ProspectusHeading({ edition, parents, current, compact, children
 }) {
   return (
     <div className={styles.cover} data-edition={edition} data-compact={compact || undefined}>
-      {edition === "admissions" && <div className={styles.art} aria-hidden="true"><SrmCrest /></div>}
+      {edition === "admissions" && <div className={styles.art} aria-hidden="true"><SrmCrest sizes="(max-width: 760px) 30vw, 22vw" /></div>}
       <Breadcrumbs className={styles.trail} parents={parents} current={current} />
       <h1 className={styles.title}>{children}</h1>
     </div>

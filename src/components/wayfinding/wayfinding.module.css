@@ -13,13 +13,17 @@
   transform: rotate(32deg);
 }
 
-/* The loading state is entirely inline artwork and CSS, so it can paint before page media. */
+/* The compass appears only during a slow client transition and leaves site controls accessible. */
 .loading {
+  position: fixed;
+  inset: var(--header-height) 0 0 var(--rail);
+  z-index: 45;
+  pointer-events: none;
   display: grid;
   align-content: center;
   justify-items: center;
   gap: 1.6rem;
-  min-height: 100svh;
+  min-height: 0;
   padding: 4rem 1rem;
   overflow: hidden;
   color: var(--surface-warm);
@@ -188,7 +192,7 @@
   }
 }
 @media (max-width: 760px) {
-  .missing, .loading { min-height: calc(100svh - var(--header-height)); }
+  .missing { min-height: calc(100svh - var(--header-height)); }
   .panorama { min-height: clamp(260px, 46svh, 480px); padding-block: 3rem; }
   .registration { top: 1.3rem; }
   .recovery { grid-template-columns: 1fr; gap: .8rem; padding: 1.8rem 1.25rem 5.5rem; }

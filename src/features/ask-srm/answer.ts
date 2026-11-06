@@ -17,13 +17,20 @@ const instructions = [
 let windowStart = 0;
 let used = 0;
 let active = 0;
-function reserve(): boolean {
+const callsByClient = new Map<string, number>();
+function reserve(client?: string): boolean {
   const now = Date.now();
   if (now - windowStart >= 60_000) {
     windowStart = now;
     used = 0;
+    callsByClient.clear();
   }
   if (active >= 3 || used >= 15) return false;
+  if (client) {
+    const calls = callsByClient.get(client) ?? 0;
+    if (calls >= 8) return false;
+    callsByClient.set(client, calls + 1);
+  }
   used++;
   active++;
   return true;
@@ -38,8 +45,9 @@ async function complete(
   evidence: Source[],
   canSearch: boolean,
   signal: AbortSignal,
+  client?: string,
 ): Promise<ModelResult | null> {
-  if (signal.aborted || !reserve()) return null;
+  if (signal.aborted || !reserve(client)) return null;
   try {
     const model = process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-20b";
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -123,12 +131,13 @@ export async function answerFromSources(
   history: ChatMessage[],
   sources: Source[],
   signal: AbortSignal,
+  client?: string,
 ): Promise<SearchResponse> {
   const key = process.env.GROQ_API_KEY?.trim();
   if (!key || signal.aborted) return sourceGuide(sources);
   const deadline = AbortSignal.any([signal, AbortSignal.timeout(20_000)]);
   let evidence = sources;
-  let result = await complete(key, question, history, evidence, true, deadline);
+  let result = await complete(key, question, history, evidence, true, deadline, client);
   if (result?.type === "lookup" && Array.isArray(result.queries)) {
     const queries = result.queries.filter((q): q is string => typeof q === "string" && q.length >= 2 && q.length <= 160).slice(0, 2);
     const more = queries.flatMap((query) => findSources(query).slice(0, 4));
@@ -136,7 +145,7 @@ export async function answerFromSources(
     const unique = new Map(ranked.map((source) => [source.href + "\n" + source.title, source]));
     evidence = [...unique.values()].slice(0, 10);
     if (!evidence.length) return unknown([]);
-    result = await complete(key, question, history, evidence, false, deadline);
+    result = await complete(key, question, history, evidence, false, deadline, client);
   }
   return result ? renderAnswer(result, evidence) : sourceGuide(evidence);
 }
