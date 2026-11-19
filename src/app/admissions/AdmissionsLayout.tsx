@@ -6,7 +6,7 @@ import { Guide } from "@/components/Guide";
 import { GuideContents } from "@/components/GuideContents";
 import { SiteFooter } from "@/components/SiteFooter";
 import { routes } from "@/lib/navigation";
-import { application, applyBtech, university, type Course } from "@/features/explore/academic";
+import { application, university, type Course } from "@/features/explore/academic";
 import "./admissions.css";
 
 const internationalApplication = "https://intlapplications.srmist.edu.in/international-application-form-2027";
@@ -23,7 +23,7 @@ function ApplicationRoutes({ course }: { course?: Course }) {
       <h2 id="domestic-heading">Domestic applicants</h2>
       <p>{course ? `${course.degree} · ${course.name} / ${course.campus}` : "Apply through the Indian admissions portal for your programme."}</p>
       <div className="admission-route-links">
-        <a href={course ? application(course) : applyBtech}>{course ? "Open programme application" : "Apply for B.Tech / SRMJEEE"} <span aria-hidden="true">↗</span></a>
+        <Link href={course ? application(course) : routes.apply.href}>{course ? "Open programme application" : "Apply for B.Tech / SRMJEEE"} <span aria-hidden="true">{course ? "↗" : "→"}</span></Link>
         <a href={university + "/admission-india/"}>All domestic forms <span aria-hidden="true">↗</span></a>
       </div>
       {course && <Link className="admission-course-link" href={"/programmes/" + course.id}>Review this programme’s fees and eligibility</Link>}
@@ -42,6 +42,7 @@ function ApplicationRoutes({ course }: { course?: Course }) {
 const planningLinks = [
   { href: routes.programmes.href, label: "Browse programmes" },
   { href: routes.fees.href, label: "Compare tuition fees" },
+  { href: routes.scholarships.href, label: "Explore scholarships" },
   { href: "#programme-finder", label: "Take the course finder quiz" },
 ];
 
