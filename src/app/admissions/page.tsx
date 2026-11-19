@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { admissionsEmails } from "@/features/admissions/contact";
-import { start } from "@/features/admissions/programme-quiz/guided/flow";
-import { ProgrammeQuiz } from "@/features/admissions/programme-quiz/ProgrammeQuiz";
 import { Disclosure } from "@/components/Disclosure";
 import { Section, Resources } from "@/components/Guide";
 import { courses, applyBtech, university } from "@/features/explore/academic";
@@ -42,10 +40,9 @@ export default async function AdmissionsPage({ searchParams }: {
         </table>
         <p className="source-note">Dates may change. <a href={applyBtech}>Confirm the schedule with SRM <span aria-hidden="true">↗</span></a></p>
       </Section>
-      <Section id="programme-finder" title={<>Find a course <em>that fits</em></>}>
-        <p>Tell us what you enjoy studying. The course finder builds a shortlist you can explore by campus, cost and entry requirements.</p>
-        <ProgrammeQuiz initial={start()} />
-        <noscript><p><Link href={routes.programmes.href}>Browse programmes by subject and campus</Link>.</p></noscript>
+      <Section id="programme-finder" title={<>Find your <em>direction</em></>}>
+        <p>Would you test a model bridge, edit a film or plan a café menu? Try three minutes of everyday choices to discover course families you might enjoy.</p>
+        <Link className="admission-finder-link" href="/admissions/course-finder">Open the course finder <span aria-hidden="true">→</span></Link>
       </Section>
       <Section id="faq" title="Before you apply">
         <Disclosure summary="What are the B.Tech entry requirements?">

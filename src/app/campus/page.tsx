@@ -63,6 +63,7 @@ export default function Page() {
           <nav className="section-shortcuts" aria-label="Campus shortcuts">
             <a href="#people">Clubs and societies ↓</a>
             <a href="#whats-on">Events ↓</a>
+            <Link href="/campus/buddy">Campus Buddy ↗</Link>
             <Link href="/campus/accommodation">Accommodation ↗</Link>
           </nav>
         </div>

@@ -99,6 +99,11 @@ export const studentServices: StudentServiceGroup[] = [
     alt: "SRM students spending time together on campus",
     links: [
       {
+        label: "Campus Buddy",
+        href: "/campus/buddy",
+        detail: "Try a first-week campus walk with a sample senior",
+      },
+      {
         label: "Clubs & hostels",
         href: "/campus",
         detail: "Student communities and campus living",

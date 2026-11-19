@@ -237,7 +237,7 @@ export function catalogue(): Entry[] {
       })),
     ),
     ...courses.map((c): Entry => {
-      const { fee, period } = programmeFee(c);
+      const { fee, period, amount, conflict } = programmeFee(c);
       const qualifiers = [c.mode, c.shift].filter(Boolean).join(", ");
       return {
         title: c.degree + " " + c.name + " · " + c.campus + (qualifiers ? " · " + qualifiers : ""),
@@ -247,6 +247,8 @@ export function catalogue(): Entry[] {
           c.degree + " " + c.name + " · " + c.campus + " · " + qualifiers + ".",
           "Domestic fee listing — " + period + ": " + fee + ".",
           period === "Listed fee" && "The billing period is unspecified.",
+          conflict && "Fee sources differ. " + conflict,
+          amount === null && "Confirm conditions before comparing amounts.",
           c.duration && "Duration: " + c.duration + ".",
           c.notes,
           criteria(c),

@@ -16,7 +16,7 @@ test("the campus comparison uses the same B.Tech subject on both campuses", asyn
   const results = await search("Compare B.Tech CSE tuition at KTR and Ramapuram");
   assert.match(results[0].summary, /Kattankulathur.*Annual tuition: ₹4,75,000/);
   assert.match(results[1].summary, /Ramapuram.*Annual tuition: ₹3,75,000/);
-  assert.equal(results[2].href, "/programmes/fees?compare=a4bf715656e,a30d32f7612");
+  assert.equal(results[2].href, "/programmes/compare?compare=a4bf715656e,a30d32f7612");
   const changedCampus = await search("What about Ramapuram?", "B.Tech CSE tuition at KTR");
   assert.equal(changedCampus[0].href, results[1].href);
 });
@@ -69,7 +69,7 @@ test("parent portal searches list both official logins and explain the intake sp
 
 test("interest guidance, research facilities and family help link to usable destinations", async () => {
   const choices = await search("I am torn between engineering and design. How do I think through my interests?");
-  assert.equal(choices[0].href, "/admissions#programme-finder");
+  assert.equal(choices[0].href, "/admissions/course-finder");
   assert.ok(choices.some(item => /Design/.test(item.title)));
   assert.ok(choices.some(item => /Engineering/.test(item.title)));
   const [instrument] = await search("Where can I book research instruments?");

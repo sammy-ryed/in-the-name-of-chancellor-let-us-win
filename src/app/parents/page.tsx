@@ -26,6 +26,7 @@ const portalGuide = [
 ];
 type Resource = { title: string; note: string; href: string };
 const planning: Resource[] = [
+  { title: "Compare courses", note: "Look at a shortlist together, from coursework to career pathways and costs.", href: routes.compare.href },
   { title: "Tuition & eligibility", note: "Compare published programme fees by campus.", href: routes.fees.href },
   { title: "Hostel & dining", note: "Explore rooms, meals and booking guidance.", href: routes.housing.href },
   { title: "Examination notices", note: "Check announcements from the Controller of Examinations.", href: srm + "/controller-of-examinations/" },

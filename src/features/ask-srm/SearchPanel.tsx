@@ -15,8 +15,7 @@ import "./panel.css";
 
 const noContext: Turn[] = [];
 const shortcuts = [
-  { href: routes.programmes.href, label: "Programmes" },
-  { href: routes.fees.href, label: "Compare fees" },
+  routes.programmes, routes.finder, routes.compare,
   { href: routes.students.href, label: "Student services" },
 ];
 

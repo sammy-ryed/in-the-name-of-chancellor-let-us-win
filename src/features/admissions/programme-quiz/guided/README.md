@@ -1,6 +1,6 @@
 # Guided admissions quiz (v2)
 
-The admissions page renders the first question and submits answers to `/api/admissions/programme-finder/step`. The original v1 API remains available for existing clients. Both handlers are anonymous and stateless. Answers stay in the client between calls. No account, database, model call or third-party request is involved in scoring.
+The full-page student course finder uses v3 at `/admissions/course-finder`. Existing v2 clients submit answers to `/api/admissions/programme-finder/step`. The original v1 API remains available for existing clients. Both handlers are anonymous and stateless. Answers stay in the client between calls. No account, database, model call or third-party request is involved in scoring.
 
 ## One-question contract
 

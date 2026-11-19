@@ -2,24 +2,22 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { routes } from "@/lib/navigation";
+import { addToShortlist, comparisonHref, parseShortlist, writeShortlist } from "@/features/explore/shortlist";
+import { useShortlist } from "@/features/explore/useShortlist";
 
-/** Keep the comparison that led to this course, including any empty lettered slots. */
 export function CompareCourseLink({ courseId, className }: { courseId: string; className: string }) {
   const params = useSearchParams();
-  const slots = (params.get("compare") ?? "").split(",").slice(0, 3);
-  const existing = slots.some(Boolean);
-  const hasCourse = slots.includes(courseId);
-  const free = slots.indexOf("");
-  const canAdd = free !== -1 || slots.length < 3;
-  if (!hasCourse && canAdd) {
-    if (free !== -1) slots[free] = courseId;
-    else slots.push(courseId);
-  }
-  const label = existing && (hasCourse || !canAdd) ? "Back to your comparison" : "Compare this fee";
-  return (
-    <Link className={className} href={{ pathname: routes.fees.href, query: { compare: slots.join(",") } }}>
-      {label} <span aria-hidden="true">→</span>
+  const saved = useShortlist();
+  const shared = params.get("compare");
+  const slots = shared === null ? saved : parseShortlist(shared);
+  const selected = slots.includes(courseId);
+  const full = !selected && slots.every(Boolean);
+  const next = addToShortlist(slots, courseId);
+  const href = comparisonHref(next) + (params.get("view") === "table" ? "&view=table" : "");
+  return <>
+    <Link className={className} href={href} onNavigate={() => writeShortlist(next)}>
+      {selected ? "View your comparison" : full ? "Manage your three picks" : "Compare this course"} <span aria-hidden="true">→</span>
     </Link>
-  );
+    {full && <p>Remove a course from your shortlist to make room for this one.</p>}
+  </>;
 }

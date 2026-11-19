@@ -23,7 +23,9 @@ export const routes = {
   news: { href: "/news", label: "News" },
   events: { href: "/events", label: "Events" },
   contact: { href: "/contact", label: "Contact us" },
-  finder: { href: "/admissions#programme-finder", label: "Course finder" },
+  finder: { href: "/admissions/course-finder", label: "Find your direction" },
+  compare: { href: "/programmes/compare", label: "Compare courses" },
+  buddy: { href: "/campus/buddy", label: "Campus Buddy" },
   fees: { href: "/programmes/fees", label: "Fees & eligibility" },
   india: { href: "/admissions#apply", label: "Admissions in India" },
   international: { href: "/admissions#international", label: "International admissions" },
@@ -45,7 +47,7 @@ export const navigation: NavItem[] = [
   routes.home,
   {
     ...routes.admissions,
-    children: [routes.india, routes.international, routes.finder, routes.fees, routes.exam, routes.apply,
+    children: [routes.india, routes.international, routes.finder, routes.compare, routes.fees, routes.exam, routes.apply,
       { href: "/admissions#faq", label: "Admissions FAQs" },
       { href: "/admissions#enquiry", label: "Ask admissions" }],
   },
@@ -53,7 +55,7 @@ export const navigation: NavItem[] = [
     ...routes.programmes,
     // Faculties with programmes in the SRMIST Program Finder; ids are its college filter values.
     children: [
-      routes.finder, routes.fees,
+      routes.finder, routes.compare, routes.fees,
       { href: "/programmes?college=9812", label: "Engineering & Technology" },
       { href: "/programmes?college=24139", label: "Medicine & Health Sciences" },
       { href: "/programmes?college=23702", label: "Liberal Arts & Business Studies" },
@@ -66,7 +68,7 @@ export const navigation: NavItem[] = [
   {
     ...routes.campus,
     children: [
-      { href: "/campus#life", label: "Life at SRM" }, routes.festivals, routes.clubs,
+      { href: "/campus#life", label: "Life at SRM" }, routes.buddy, routes.festivals, routes.clubs,
       { href: "/campus#whats-on", label: "What’s happening" }, routes.housing,
       { href: "/campus#explore", label: "Explore Kattankulathur" },
       { href: "/campus#support", label: "Student support" },
@@ -84,9 +86,9 @@ export const navigation: NavItem[] = [
     { href: "/career-centre#support", label: "Training & contacts" },
   ] },
   { ...routes.students, children: [
-    { href: "/students#portals", label: "Academic portals" },
+    { href: "/students#portals", label: "Academic portals" }, routes.buddy,
     { href: "/students#wifi", label: "Wi-Fi & IT" }, routes.score] },
-  { ...routes.parents, children: [routes.portals, routes.score, routes.fees, routes.housing] },
+  { ...routes.parents, children: [routes.portals, routes.score, routes.compare, routes.fees, routes.housing] },
   { ...routes.alumni, children: [routes.photos, routes.reunions, routes.graduates] },
   routes.news,
 ];

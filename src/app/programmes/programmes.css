@@ -863,3 +863,142 @@ html[data-high-contrast] .pf-hero { --grid-ink: transparent; --atlas-ink: #05172
   .area-gallery-head { align-items: flex-start; flex-direction: column; gap: 0; padding-bottom: 2px; }
   .area-arrow { width: 30px; }
 }
+
+/* The desktop search occupies the row above the sticky shortlist. */
+@media (min-width: 761px) {
+  .s-chrome:has(.pf-shortbar) .site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--header-height);
+    background: #f3f3e9;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+/* The comparison bar stays with the directory while its native dialog holds the working shortlist. */
+.pf-shortbar {
+  position: sticky;
+  top: var(--header-height);
+  z-index: 8;
+  background: #edf2f5;
+  color: var(--color-primary-dark);
+  border-block: 1px solid #b2c2cd;
+}
+.pf-shortbar-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .6rem clamp(.8rem, 2vw, 2rem);
+  width: min(100%, var(--container-width));
+  margin-inline: auto;
+  padding: .25rem var(--pf-gutter);
+}
+.pf-shortbar-inner p { color: #435867; font-size: .9rem; }
+.pf-short-toggle, .pf-short-primary, .pf-short-view, .pf-add-course {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-height: 44px;
+  border-radius: 2px;
+  font: 650 .92rem/1.25 var(--pf-ui);
+  text-align: center;
+  cursor: pointer;
+}
+.pf-short-toggle { justify-self: start; padding: .35rem 0; border: 0; color: inherit; background: transparent; }
+.pf-short-toggle:hover { text-decoration: underline; text-underline-offset: .18em; }
+.pf-short-icon { width: 1.35rem; display: flex; gap: 2px; height: 1.12rem; align-items: end; flex: none; }
+.pf-short-icon i { height: 100%; flex: 1; border: 1px solid var(--color-primary); }
+.pf-short-icon i:first-child { height: 70%; background: var(--color-gold-light); }
+.pf-short-icon i:last-child { height: 84%; }
+.pf-short-count, .pf-letter, .pf-option-mark { font-variant-numeric: tabular-nums; font-weight: 750; }
+.pf-short-count { white-space: nowrap; background: #fffdf6; border: 1px solid #9cabb7; color: var(--color-primary-dark); padding: .16rem .38rem; font-size: .79rem; }
+.pf-page .pf-short-primary { padding: .6rem 1rem; border: 1px solid var(--color-primary-dark); background: var(--color-primary-dark); color: white; text-decoration: none; }
+.pf-short-primary .pf-icon { width: 1rem; }
+.pf-page .pf-short-primary:hover { background: var(--color-primary); }
+.pf-page .pf-short-view { width: fit-content; border: 0; background: transparent; color: var(--color-primary); padding: .45rem .2rem; text-underline-offset: .2rem; text-decoration: underline; }
+.pf-add-course { border: 1px solid var(--color-primary); padding: .45rem .75rem; background: white; color: var(--color-primary); }
+.pf-add-course > span { font-size: 1.18em; font-weight: 650; line-height: 1; }
+.pf-add-course:hover { background: var(--color-blue-pale); }
+.pf-add-course[data-added] { border-color: #927128; background: #fbebb9; color: #503a08; }
+.pf-main :is(.pf-add-course, .pf-refine-head, .pf-toolbar, .area-tile) { scroll-margin-top: calc(var(--header-height) + 4.5rem); }
+.pf .area-preview { top: calc(var(--header-height) + 4.4rem); }
+html:has(.pf-choice-drawer[open]) { overflow: hidden; }
+.pf-choice-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  width: min(100%, 33rem);
+  height: 100dvh;
+  max-width: 100%;
+  max-height: 100dvh;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid var(--color-primary-dark);
+  background: #f9f8f1;
+  color: var(--color-primary-dark);
+  overscroll-behavior: contain;
+  overflow: hidden;
+}
+.pf-choice-drawer::backdrop { background: rgb(10 28 48 / 46%); }
+.pf-choice-shell { display: flex; flex-direction: column; height: 100%; min-width: 0; }
+.pf-choice-head, .pf-choice-footer { display: flex; align-items: center; justify-content: space-between; gap: .85rem; flex: none; }
+.pf-choice-head {
+  border-top: .3rem solid var(--color-gold);
+  border-bottom: 1px solid #a3b4be;
+  padding: max(1.2rem, env(safe-area-inset-top)) clamp(1.2rem, 3vw, 2.2rem) 1rem;
+}
+.pf-choice-head h2 { font: 400 clamp(2.45rem, 4.4vw, 3.75rem)/.98 var(--display); text-wrap: balance; }
+.pf-choice-head button, .pf-picks li > button {
+  display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 1px solid #acb7b8;
+  color: var(--color-primary-dark); background: #fffef9; border-radius: 2px; cursor: pointer;
+}
+.pf-choice-head button:hover, .pf-picks li > button:hover { background: #e2ebef; }
+.pf-choice-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; overflow-wrap: anywhere; padding: 1.35rem clamp(1.2rem, 3vw, 2.2rem); }
+.pf-choice-programme { font: 500 1.5rem/1.15 var(--font-editorial); margin-bottom: .5rem; }
+.pf-choice-intro { color: #435867; max-width: 45ch; }
+.pf-picks, .pf-course-options { list-style: none; margin: 1.35rem 0; padding: 0; border-top: 1px solid #a3b4be; }
+.pf-picks li, .pf-course-options li { border-bottom: 1px solid #b9c5ca; }
+.pf-picks li { display: flex; gap: .85rem; padding: .9rem 0; min-height: 4.2rem; align-items: center; }
+.pf-letter, .pf-option-mark { display: grid; place-items: center; flex: none; width: 1.85rem; height: 1.85rem; border: 1px solid var(--color-primary-dark); }
+.pf-letter { background: #f5da81; }
+.pf-picks li[data-empty] { color: #5e6b72; }
+.pf-picks li[data-empty] .pf-letter { background: transparent; color: #526673; border: 1px dashed #7e939e; }
+.pf-picks li > div { flex: 1; min-width: 0; }
+.pf-picks small, .pf-course-options small { display: block; margin-top: .22rem; color: #4e626e; font: 500 .84rem/1.35 var(--pf-ui); }
+.pf-choice-footer { border-top: 1px solid #b3c0c6; padding: .85rem clamp(1.2rem, 3vw, 2.2rem) max(.85rem, env(safe-area-inset-bottom)); background: #fffdf4; flex-wrap: wrap; }
+.pf-choice-search { display: grid; gap: .35rem; margin-block: 1.3rem 1rem; font: 650 .92rem/1.35 var(--pf-ui); }
+.pf-choice-search input { font: 400 1rem/1.45 var(--pf-ui); color: var(--color-primary-dark); min-width: 0; width: 100%; padding: .7rem; background: white; border: 1px solid #93a2ac; border-radius: 2px; }
+.pf-page .pf-choice-note { padding: .66rem .85rem; background: #f7e9b9; margin-block: 1rem; }
+.pf-course-options button { display: flex; align-items: center; gap: .8rem; justify-content: space-between; width: 100%; min-height: 3.5rem; border: 0; padding: .8rem .25rem; text-align: start; font: inherit; background: transparent; color: var(--color-primary-dark); cursor: pointer; }
+.pf-course-options button:hover:not(:disabled) { background: #eaf0f3; }
+.pf-course-options button:disabled { color: #647079; cursor: default; }
+.pf-course-options button:disabled .pf-option-mark { border-style: dashed; color: #647079; }
+.pf-option-mark { color: var(--color-primary); font-size: 1.15rem; border-radius: 2px; }
+.pf-course-options button[aria-pressed=true] .pf-option-mark { background: #f5da81; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-quiet-motion]) .pf-choice-drawer[open] { animation: pf-choice-in 190ms var(--ease-standard); }
+}
+@keyframes pf-choice-in { from { transform: translateX(1.25rem); opacity: .74; } }
+@media (max-width: 670px) {
+  .pf-shortbar-inner { grid-template-columns: minmax(0, 1fr) auto; gap: .45rem; padding-inline: var(--pf-gutter); }
+  .pf-shortbar-inner p { display: none; }
+  .pf-shortbar .pf-short-primary { padding-inline: .7rem; }
+  .pf-short-toggle { text-align: left; }
+  .pf-choice-drawer { inset: auto 0 0; width: 100%; height: min(88dvh, 42rem); border: 0; border-radius: .8rem .8rem 0 0; }
+  .pf-choice-head { padding: 1rem 1.1rem .7rem; }
+  .pf-choice-body { padding-inline: 1.1rem; }
+  .pf-choice-footer { padding-inline: 1.1rem; }
+  .pf-short-icon { display: none; }
+  .pf-short-toggle, .pf-short-view { font-size: .875rem; }
+}
+@media (max-width: 450px) {
+  .pf-card-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .55rem .85rem; }
+  .pf-card-actions .pf-add-course { grid-column: 1 / -1; width: 100%; }
+  .pf-card-actions a { justify-content: center; text-align: center; }
+}
+@media (max-width: 670px) and (prefers-reduced-motion: no-preference) {
+  html:not([data-quiet-motion]) .pf-choice-drawer[open] { animation-name: pf-choice-up; }
+}
+@keyframes pf-choice-up { from { transform: translateY(1rem); opacity: .8; } }
