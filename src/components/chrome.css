@@ -360,7 +360,7 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
   .s-menu-nav {
     min-height: 0;
     container-type: size;
-    --menu-top-space: clamp(20px, 15dvh, 148px);
+    --menu-top-space: max(12px, calc(clamp(20px, 15dvh, 148px) - 72px));
     --menu-bottom-space: clamp(12px, 3dvh, 38px);
     padding-block: var(--menu-top-space) var(--menu-bottom-space);
     overflow: visible;
@@ -420,6 +420,7 @@ html[data-quiet-motion] .s-menu::backdrop { transition: none; }
 html:has(.s-menu[open]) { overflow: hidden; }
 
 .s-phone-sheet {
+  overflow-x: clip;
   --phone-pad: clamp(16px, 5vw, 32px);
   position: absolute;
   inset: 0;
@@ -430,6 +431,12 @@ html:has(.s-menu[open]) { overflow: hidden; }
   padding: env(safe-area-inset-top, 0px) max(var(--phone-pad), env(safe-area-inset-right))
     env(safe-area-inset-bottom, 0px) max(var(--phone-pad), env(safe-area-inset-left));
 }
+.s-menu-search-slot { flex: none; }
+.s-menu-sheet > .s-menu-search-slot {
+  width: var(--compact-width);
+  padding: 16px var(--menu-pad) 4px;
+}
+.s-phone-sheet > .s-menu-search-slot { padding-block: 8px; }
 .s-phone-head, .s-phone-foot {
   flex: none;
   display: flex;
@@ -450,7 +457,7 @@ html:has(.s-menu[open]) { overflow: hidden; }
 .s-phone-index ul { display: grid; }
 .s-phone-index li {
   display: flex; align-items: stretch;
-  min-width: 0; min-height: clamp(44px, 7.4dvh, 64px);
+  min-width: 0; min-height: clamp(44px, calc((100dvh - 196px) / 10), 64px);
   border-bottom: 1px solid rgb(168 200 230 / .3);
 }
 .s-phone-index a, .s-phone-pages a {

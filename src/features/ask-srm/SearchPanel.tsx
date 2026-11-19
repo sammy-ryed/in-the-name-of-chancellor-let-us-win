@@ -20,8 +20,8 @@ const shortcuts = [
   { href: routes.students.href, label: "Student services" },
 ];
 
-export function SearchPanel({ path, open, onClose }: {
-  path: string; open: boolean; onClose: () => void;
+export function SearchPanel({ path, open, onClose, onNavigate }: {
+  path: string; open: boolean; onClose: () => void; onNavigate: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const input = useRef<HTMLInputElement>(null);
@@ -52,6 +52,10 @@ export function SearchPanel({ path, open, onClose }: {
   }, [last?.id, typing]);
 
   function close() { dialog.current?.close(); }
+  function pickPage() {
+    close();
+    onNavigate();
+  }
   function submit(value: string) {
     const text = value.trim();
     if (text.length < 2) return;
@@ -117,11 +121,11 @@ export function SearchPanel({ path, open, onClose }: {
       </header>
       <div ref={scroller} className="ask-scroll">
         {typing ? (
-          <PageResults pages={matches?.result?.sources ?? []} pending={!matches} failed={matches?.failed} onPick={close} />
+          <PageResults pages={matches?.result?.sources ?? []} pending={!matches} failed={matches?.failed} onPick={pickPage} />
         ) : showResults ? (
           <SearchResults turn={last} pages={last.pages ?? []} pagesPending={!last.pages && !last.pagesFailed}
             pagesFailed={last.pagesFailed} onRetry={() => send(last.question, "retry", last.pages)}
-            onStop={stop} onFollowUp={followUp} onPick={close} comparison={feeAction(turns)} />
+            onStop={stop} onFollowUp={followUp} onPick={pickPage} comparison={feeAction(turns)} />
         ) : (
           <div className="ask-start">
             <h3>Suggested searches</h3>
@@ -133,7 +137,7 @@ export function SearchPanel({ path, open, onClose }: {
               ))}
             </div>
             <nav className="ask-shortcuts" aria-label="Quick links">
-              {shortcuts.map(item => <Link key={item.href} href={item.href} prefetch={false} onClick={close}>{item.label} <span aria-hidden="true">→</span></Link>)}
+              {shortcuts.map(item => <Link key={item.href} href={item.href} prefetch={false} onNavigate={pickPage}>{item.label} <span aria-hidden="true">→</span></Link>)}
             </nav>
             <p className="ask-privacy">AI overviews use Groq. Please leave out personal details.</p>
           </div>

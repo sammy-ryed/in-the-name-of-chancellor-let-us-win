@@ -85,6 +85,76 @@ html[data-high-contrast] .ask-launch {
   6%, 94% { opacity: 1; }
 }
 .ask-launch kbd { flex: none; margin-left: auto; font: 500 .7rem/1 var(--font-nav); color: inherit; border: 1px solid var(--launch-line); border-radius: 3px; padding: 4px 5px; }
+.site-header:has(.s-menu[open]) .ask-dock { visibility: hidden; }
+.ask-menu-launch {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--surface-primary);
+  text-align: left;
+  font: 550 .8rem/1.25 var(--font-nav);
+}
+.ask-menu-face, .ask-menu-content { display: flex; align-items: center; gap: 10px; }
+.ask-menu-face {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  margin-inline-start: auto;
+  padding: 6px 14px 6px 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-gold-light);
+  border-radius: inherit;
+  background: var(--color-primary-dark);
+}
+.ask-menu-face > .site-crest { width: 32px; }
+.ask-menu-content { flex: 1; min-width: 0; }
+.ask-menu-content strong { font: 400 1.4rem/1 var(--display); letter-spacing: .025em; }
+.ask-menu-content > span, .ask-menu-content .ask-icon { color: var(--color-gold-light); }
+.ask-menu-content .ask-icon { margin-inline-start: auto; }
+.ask-menu-launch:is(:hover, :focus-visible) .ask-menu-face { background: var(--navy); }
+@media (max-width: 760px) {
+  .site-header:has(.s-menu[data-returning]) .ask-launch {
+    transform: translateX(calc(100% - var(--tab-exposed)));
+    transition: none;
+  }
+
+  .ask-menu-launch { container-type: inline-size; }
+  .ask-menu-face { padding-inline: 0; justify-content: flex-end; }
+  .ask-menu-face > .site-crest { position: absolute; right: 7px; }
+  /* Anchor the text to its final position while the shell widens around it. */
+  .ask-menu-content { flex: none; width: calc(100cqi - 2px); box-sizing: border-box; padding-inline: 14px 48px; white-space: nowrap; }
+  .ask-menu-content .ask-icon { order: -1; margin: 0; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+  html:not([data-quiet-motion]) .site-header:has(.s-menu[open] > .s-phone-sheet) .ask-dock { visibility: visible; }
+  html:not([data-quiet-motion]) .s-menu:has(> .s-phone-sheet) {
+    transition: none;
+    &::backdrop { background: transparent; transition: none; }
+    .s-phone-sheet { isolation: isolate; background: transparent; }
+    .s-phone-sheet::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: var(--brand-blue);
+      opacity: 1;
+      transition: opacity 320ms cubic-bezier(.4,0,.3,1);
+    }
+    .s-phone-sheet > :not(.s-menu-search-slot) { transition: opacity 220ms ease-in-out; }
+    @starting-style {
+      .s-phone-sheet::before, .s-phone-sheet > :not(.s-menu-search-slot) { opacity: 0; }
+    }
+    &[data-returning] .s-phone-sheet::before,
+    &[data-returning] .s-phone-sheet > :not(.s-menu-search-slot) { opacity: 0; }
+  }
+}
 /* The dock clips the label as it slides away, leaving a full tap target for the crest. */
 @media (max-width: 760px) {
   .ask-dock {
@@ -111,6 +181,10 @@ html[data-high-contrast] .ask-launch {
     border-right: 0;
     border-radius: var(--radius-full) 0 0 var(--radius-full);
     box-shadow: 0 2px 4px rgb(7 24 47 / 22%);
+  }
+  .ask-launch { background-color: color-mix(in srgb, var(--surface-warm) 94%, transparent); }
+  .ask-launch:is([data-surface="dark"], [data-surface="media"]) {
+    background-color: color-mix(in srgb, var(--navy) 94%, transparent);
   }
   .ask-launch > .site-crest { display: block; grid-row: 1 / 3; width: 32px; }
   .ask-launch strong {
