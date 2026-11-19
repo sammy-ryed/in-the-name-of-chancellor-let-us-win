@@ -1,5 +1,6 @@
 import "server-only";
 import { catalogue } from "./catalogue";
+import { hiringEvidence, placementOverview, placementScope, taskEvidence } from "@/features/explore/ai-placements";
 import { candidates } from "@/features/admissions/programme-quiz/guided/catalogue";
 import { routes } from "@/lib/navigation";
 import events from "@/features/explore/events.json";
@@ -173,7 +174,11 @@ const tasters = candidates.map(({course, topics, example}) => ({
 }));
 
 function isCourseChoice(question: string) {
-  return /\b(?:(?:torn|choos(?:e|ing)|decid(?:e|ing)) between|my interests|what (?:course|programme|should i study)|which (?:course|programme|degree|branch).*(?:fit|suit|pick|choose|right for)|recommend (?:a |an |some )?(?:course|degree|programme))\b/i.test(question);
+  const previousFinderName = /^(?:(?:open|start|try|show me) (?:the )?)?["“']?find your direction["”']?(?: quiz| page)?[.?!]*$/i;
+  const choosingStream = /\b(?:what|which) (?:stream|subjects?) (?:should|can|could|do) i (?:take|pick|choose|study)\b/i;
+  if (previousFinderName.test(question.trim()) ||
+      (choosingStream.test(question) && /\b(?:class 10(?:th)?|10th|tenth standard)\b/i.test(question))) return true;
+  return /\b(?:(?:torn|choos(?:e|ing)|decid(?:e|ing)) between|my interests|what (?:course|programme|should i study)|which (?:course|programme|degree|branch).*(?:fits?|suits?|pick|choose|right for)|recommend (?:a |an |some )?(?:course|degree|programme))\b/i.test(question);
 }
 
 function courseSuggestions(question: string): Source[] {
@@ -192,9 +197,8 @@ function courseSuggestions(question: string): Source[] {
   });
   const finder = docs.find(({source}) => source.href === routes.finder.href)!.source;
   const results = [...new Set([...varied, ...matches])].slice(0, 3).map(({ taster }): Source => ({
-    title: taster.name, section: "Course finder", href: taster.href,
-    summary: "An illustrative undergraduate course-finder activity for " + taster.name + ": " + taster.example
-      + " This is an example of the work to try, not an assessed course requirement.",
+    title: taster.name, section: routes.finder.label, href: taster.href,
+    summary: "An activity you can try while exploring " + taster.name + ". " + taster.example,
   }));
   return [finder, ...results];
 }
@@ -239,11 +243,34 @@ function namedCampus(question: string) {
 
 const campusTopics = /\b(?:fees?|tuition|costs?|eligib\w*|duration|admissions?|apply|courses?|programmes?|degrees?|b[ .-]?tech|m[ .-]?tech|ph\.?d|cse|engineering|medicine|hostels?|housing|rooms?|accommodation|clubs?|placements?|labs?|laborator\w*|facilit\w*|travel|visits?|tour)\b/i;
 
+const placementPages: Source[] = [
+  ...[hiringEvidence, taskEvidence].map(item => ({
+    title: item.label, href: item.href, summary: item.summary, section: "AI and campus hiring",
+  })),
+  { title: "Check placement figures for your course", href: "/career-centre#support", section: "Career Centre",
+    summary: placementScope + " Ask your campus placement office how many students sought placements and how many were placed in the last two batches." },
+];
+
+function asksAboutAIPlacementImpact(question: string, history: string) {
+  // A named AI/ML degree and a question about its placement record are a
+  // different lookup. Look for an effect of the technology on hiring.
+  const q = question.replace(/\bai\s*[\/&-]\s*ml\b/gi, "the degree");
+  const ai = /\b(?:ai|genai|artificial intelligence|automation|chatgpt)\b/i;
+  const work = /\b(?:place?ments?|placed|hir(?:e|ed|ing)|recruit(?:ers?|ing|ment)?|jobs?|offers?|employability)\b/i;
+  const change = /\b(?:affect\w*|affract|impact\w*|effect|chang(?:e[ds]?|ing)|influenc\w*|replac\w*|disrupt\w*|reduc\w*|risk\w*|threat\w*|hurt|cut|lose|eliminat\w*|take (?:away|over)|taking (?:away|over)|because of|due to)\b/i;
+  if (ai.test(q) && work.test(q)) {
+    return change.test(q) || /^(?:ai (?:and|&) (?:campus )?(?:placements?|hiring)|(?:campus )?placements? (?:and|&) ai)[?.! ]*$/i.test(q.trim());
+  }
+  if (ai.test(q) && work.test(history)) return change.test(q) || /^(?:and |what about |how about )(?:generative )?ai[?.! ]*$/i.test(q.trim());
+  return work.test(q) && change.test(q) && /\b(?:it|that|this)\b/i.test(q) && ai.test(history);
+}
+
 export function retrieveQuestion(question: string, history: ChatMessage[]): {
   query: string; sources: Source[]; overview?: string;
 } {
   const campus = namedCampus(question);
   const context = topicContext(history);
+  if (asksAboutAIPlacementImpact(question, context)) return { query: question, sources: placementPages, overview: placementOverview };
   if (!campus) return { query: question, sources: findSources(question, context) };
 
   const previousTopic = history.findLast(turn => turn.role === "user" && !namedCampus(turn.content));

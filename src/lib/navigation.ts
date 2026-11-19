@@ -24,7 +24,7 @@ export const routes = {
   news: { href: "/news", label: "News" },
   events: { href: "/events", label: "Events" },
   contact: { href: "/contact", label: "Contact us" },
-  finder: { href: "/admissions/course-finder", label: "Find your direction" },
+  finder: { href: "/admissions/course-finder", label: "SRM Course Finder" },
   compare: { href: "/programmes/compare", label: "Compare courses" },
   buddy: { href: "/campus/buddy", label: "Campus Buddy" },
   fees: { href: "/programmes/fees", label: "Fees & eligibility" },

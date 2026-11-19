@@ -159,18 +159,36 @@
 .arithmetic,.feeIssue { padding: .65rem .8rem; background: var(--color-gold-pale); }
 .feeIssue { margin-top: .65rem; }
 .phoneFacts,.mobileTools,.mobileShortlist { display: none; }
-.picker { background: white; color: var(--ink); padding: clamp(1rem,2.6vw,2rem); }
-.desk > .picker { margin-top: 1.2rem; border: 1px solid var(--line); }
-.filters { display: grid; grid-template-columns: minmax(0,1.5fr) repeat(2,minmax(0,1fr)); gap: .8rem; margin: 1.25rem 0; }
+.picker { background: var(--surface-primary); color: var(--ink); padding: clamp(.95rem,2.5vw,1.8rem); }
+.pickerHead { margin-bottom: 1rem; }
+.findCourse { display: block; font-size: 1rem; font-weight: 650; }
+.findCourse input { display: block; width: 100%; min-height: 3rem; margin-top: .32rem; padding: .6rem .8rem; border: 1px solid var(--ink); border-radius: 0; background: var(--surface-primary); color: var(--ink); }
+.pickerFilters summary,.alternative summary { width: fit-content; min-height: 44px; padding: .65rem 0; cursor: pointer; font-size: .9rem; font-weight: 650; }
+.pickerFilters summary small { font-weight: 450; color: var(--text-secondary); }
+.pickerFilters summary:focus-visible,.alternative summary:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 3px; }
+.filters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; margin: .3rem 0 1rem; }
 .filters label,.copy { font-weight: 650; font-size: .85rem; }
-.filters :is(input,select),.copy input { width: 100%; min-width: 0; min-height: 44px; padding: .55rem; border: 1px solid var(--line); display: block; margin-top: .3rem; background: white; border-radius: 0; }
-.resultCount { color: var(--text-secondary); font-size: .85rem; }
-.options { list-style: none; padding: 0; margin-top: .6rem !important; }
-.options button { width: 100%; display: flex; justify-content: space-between; gap: .6rem; align-items: center; padding: .72rem .25rem; background: transparent; text-align: left; border: 0; border-top: 1px solid var(--line); }
+.filters select,.copy input { width: 100%; min-width: 0; min-height: 44px; padding: .55rem; border: 1px solid var(--line); display: block; margin-top: .3rem; background: var(--surface-primary); border-radius: 0; }
+.listHead { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; margin-top: .7rem; }
+.listHead h3 { font: 400 clamp(1.65rem,2.4vw,2.3rem)/1 var(--display); }
+.resultCount,.listSource { color: var(--text-secondary); font-size: .85rem; }
+.listSource { margin-top: .25rem !important; }
+.listSource a { text-decoration: underline; text-underline-offset: .2em; }
+.options { list-style: none; padding: 0; margin-top: .65rem !important; }
+.options button { width: 100%; display: flex; justify-content: space-between; gap: .7rem; align-items: center; padding: .75rem .15rem; background: transparent; text-align: left; border: 0; border-top: 1px solid var(--line); }
 .options button:hover:not(:disabled) { background: var(--surface-blue); }
-.options strong { display: block; line-height: 1.35; margin-top: .15rem; }
-.assign { background: var(--color-gold-light); text-align: center; min-width: 1.75rem; }
+.options strong { display: block; font-size: 1rem; line-height: 1.35; }
+.options small { margin-top: .12rem; }
+.rowEnd { display: inline-flex; align-items: center; gap: .85rem; white-space: nowrap; }
+.assign { display: grid; width: 1.85rem; height: 1.85rem; align-items: center; color: var(--ink); text-align: center; border: 1px solid var(--line); border-radius: 50%; }
 .more { margin-top: .75rem; }
+.alternative { margin: .5rem 1rem; }
+@media (max-width: 600px) {
+  .options li button { display: grid; grid-template-columns: 1fr auto; gap: .2rem .6rem; }
+  .rowEnd { display: contents; }
+  .rowEnd small { grid-column: 1; grid-row: 2; }
+  .assign { grid-column: 2; grid-row: 1 / 3; }
+}
 .dialog { width: min(52rem,calc(100% - 1.5rem)); max-height: 84dvh; border: 1px solid var(--ink); padding: 0; color: var(--ink); overscroll-behavior: contain; }
 .dialog::backdrop { background: rgb(11 45 82 / 58%); }
 @media (max-width: 760px) {
@@ -213,7 +231,6 @@
   .phoneFacts dd { margin-top: .15rem; }
   .commonSection { background: var(--surface-blue); padding: 1rem; }
   .filters { grid-template-columns: 1fr 1fr; }
-  .filters label:first-child { grid-column: 1/-1; }
 }
 @media (max-width: 380px) {
   .viewSwitch button { gap: .3rem; }

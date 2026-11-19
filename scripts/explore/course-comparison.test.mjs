@@ -85,6 +85,18 @@ test("a family handoff opens an empty undergraduate picker and a shared empty A 
   assert.doesNotMatch(selected, /aria-label="Change course A"/);
 });
 
+test("the picker leads with published applications and keeps campus filters independent", async () => {
+  const picker = (await comparisonPage("")).match(/<section[^>]*aria-label="Choose course A"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+  assert.ok(picker, "empty comparison opens the first picker");
+  const choices = Array.from(picker.matchAll(/<li><button[^>]*>([\s\S]*?)<\/button><\/li>/g), m => m[1].replaceAll("<!-- -->", ""));
+  assert.equal(choices.length, 5);
+  assert.match(choices[0], /Artificial Intelligence and Machine Learning[\s\S]*Kattankulathur[\s\S]*20,877 applications/);
+  assert.match(choices[1], /Computer Science and Engineering<\/strong>[\s\S]*16,648 applications/);
+  const otherCampus = await comparisonPage("q=Ramapuram");
+  assert.match(otherCampus, /Matching courses/);
+  assert.doesNotMatch(otherCampus, /[\d,]+(?:<!-- -->)? applications<\/small>/);
+});
+
 test("a shared table keeps the selected slots, every topic and one copy of cohort evidence", async () => {
   const selection = "compare=," + defaultCourseIds[0] + "," + defaultCourseIds[2];
   const page = await comparisonPage(selection + "&view=table");
@@ -98,5 +110,10 @@ test("a shared table keeps the selected slots, every topic and one copy of cohor
   assert.equal((table.match(/₹6\.32 lakh/g) || []).length, 1);
   assert.match(table, /Tuition rank/);
   assert.match(table, /SRM’s NIRF submission/);
+  assert.match(table, /Will AI affect campus placements\?/);
+  assert.equal((table.match(/35%/g) || []).length, 1);
+  assert.match(table, /Deloitte India campus survey/);
+  assert.match(table, /ILO task-level study/);
+  assert.match(table, /breakdown of AI’s effect on offers/);
   assert.doesNotMatch(await comparisonPage(selection), /<table\b/);
 });

@@ -14,14 +14,14 @@ type Props = {
   panel: ComparisonPanel;
   slots: Shortlist;
   courses: DirectoryCourse[];
-  isGallery: boolean;
+  showBrowseAll: boolean;
   onReview: () => void;
   onClose: () => void;
   onToggle: (id: string) => void;
   onCompare: () => void;
 };
 
-export function DirectoryComparison({ panel, slots, courses, isGallery, onReview, onClose, onToggle, onCompare }: Props) {
+export function DirectoryComparison({ panel, slots, courses, showBrowseAll, onReview, onClose, onToggle, onCompare }: Props) {
   const count = slots.filter(Boolean).length;
   const dialog = useRef<HTMLDialogElement>(null);
   const open = panel !== null;
@@ -70,7 +70,7 @@ export function DirectoryComparison({ panel, slots, courses, isGallery, onReview
           </div>
           <footer className="pf-choice-footer">
             {!picker && count >= 2 && <Link className="pf-short-primary" href={href} onNavigate={onCompare}>Compare {count} courses <Icon name="arrow" /></Link>}
-            {isGallery && !picker ? <Link href="/programmes?view=all" className="pf-short-view" onNavigate={onClose}>Browse all programmes</Link>
+            {showBrowseAll && !picker ? <Link href="/programmes?view=all" className="pf-short-view" onNavigate={onClose}>Browse all programmes</Link>
               : <button type="button" className="pf-short-view" onClick={onClose}>Keep browsing</button>}
           </footer>
         </div>

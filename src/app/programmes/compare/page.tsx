@@ -2,10 +2,11 @@ import Image from "next/image";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SiteFooter } from "@/components/SiteFooter";
 import { routes } from "@/lib/navigation";
+import { artsSubject } from "@/features/admissions/course-finder/arts-examples";
 import { familyNames, type FamilyId } from "@/features/explore/course-families";
 import { courseEvidence, courseIndex, pickerCourses } from "@/features/explore/course-evidence";
 import { rankTuition } from "@/features/explore/tuition-ranking";
-import { parseShortlist } from "@/features/explore/shortlist";
+import { parseShortlist, shortlistScope } from "@/features/explore/shortlist";
 import { programmePickerContext } from "@/features/explore/course-matches";
 import { ComparisonDesk } from "./ComparisonDesk";
 import styles from "./compare.module.css";
@@ -36,12 +37,12 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
         <Breadcrumbs className={styles.crumbs} parents={[routes.home, routes.programmes]} current="Compare courses" />
         <header className={styles.intro}>
           <div><h1>Compare your courses</h1>
-            <p className={styles.deck}>Choose up to three SRM programmes. Compare their fees, placements and what you’ll study, then keep exploring with your picks saved in this tab.</p>
+            <p className={styles.deck}>Choose up to three SRM programmes to see how their fees, subjects and placement evidence compare.</p>
           </div>
           <figure className={styles.photo}><Image src="/campus/tech-park.webp" alt="SRM Tech Park at Kattankulathur" fill sizes="(max-width: 760px) 0px, 24vw" /><figcaption>Tech Park, Kattankulathur</figcaption></figure>
         </header>
         <ComparisonDesk slots={slots} catalog={pickerCourses} family={family} initialQuery={query}
-          explicitCompare={compare !== undefined} requestedPicker={requestedPicker}
+          explicitCompare={compare !== undefined} requestedPicker={requestedPicker} scope={shortlistScope(first(params.from))} subject={artsSubject(first(params.subject))}
           entry={requestedPicker && entry ? { name: entry.name, url: entry.url, candidates: entry.candidates.map(c => c.id) } : undefined}
           pricing={rankTuition(slots)} />
       </div>

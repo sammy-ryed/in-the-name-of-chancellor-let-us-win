@@ -78,6 +78,17 @@ test("interest guidance, research facilities and family help link to usable dest
   assert.equal(advisor.href, "/parents#records");
 });
 
+test("finder aliases and Class 10 stream questions open the guided course finder", async () => {
+  for (const query of ["Find your direction", "Which course suits me?", "What stream should I take after 10th?"]) {
+    const [first] = await search(query);
+    assert.equal(first.title, "SRM Course Finder", query);
+    assert.equal(first.href, "/admissions/course-finder", query);
+  }
+  const directions = await search("Find directions to campus");
+  assert.ok(directions.some(s => s.href === "https://www.srmist.edu.in/visitors/"));
+  assert.ok(directions.every(s => s.href !== "/admissions/course-finder"));
+});
+
 test("general contacts and admissions enquiries reach the right published desk", async () => {
   const [general] = await search("What is the SRM general enquiries email and phone number?");
   assert.equal(general.href, "/contact");

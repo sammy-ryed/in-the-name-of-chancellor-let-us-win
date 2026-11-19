@@ -28,7 +28,7 @@ test("automated visit lifecycle, live passes, validation and concurrent capacity
       assert.match(page, /id="faq-title"/);
       const admissions = await (await fetch(`${base}/admissions`)).text();
       assert.match(admissions, /Schedule a Campus Visit/);
-      assert.match(admissions, /Take the course finder quiz/);
+      assert.match(admissions, /<a\b[^>]*href="\/admissions\/course-finder"[^>]*>Start the questions\b/);
       for (const asset of ["/campus/green-walkway.webp", "/campus/srm-university-lake.webp", "/home/subjects/agriculture.webp", "/research/laboratory.webp", "/home/clubs.webp"]) assert.equal((await fetch(`${base}${asset}`)).status, 200);
     });
     await t.test("server validates dates, campus, origin, body and personal information", async () => {
