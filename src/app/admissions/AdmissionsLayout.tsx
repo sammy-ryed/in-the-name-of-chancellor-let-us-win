@@ -40,6 +40,7 @@ function ApplicationRoutes({ course }: { course?: Course }) {
 }
 
 const planningLinks = [
+  { href: routes.campusVisit.href, label: "Schedule a Campus Visit" },
   { href: routes.programmes.href, label: "Browse programmes" },
   { href: routes.fees.href, label: "Compare tuition fees" },
   { href: routes.scholarships.href, label: "Explore scholarships" },
