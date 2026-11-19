@@ -13,6 +13,7 @@ export const tourUrl = "https://webstor.srmist.edu.in/web_assets/srmist-virtual-
 export const routes = {
   home: { href: "/", label: "Home" },
   admissions: { href: "/admissions", label: "Admissions" },
+  campusVisit: { href: "/admissions/campus-visit", label: "Schedule a Campus Visit" },
   programmes: { href: "/programmes", label: "Programmes" },
   campus: { href: "/campus", label: "Campus life" },
   placements: { href: "/career-centre", label: "Placements" },
@@ -45,7 +46,7 @@ export const navigation: NavItem[] = [
   routes.home,
   {
     ...routes.admissions,
-    children: [routes.india, routes.international, routes.finder, routes.fees, routes.exam, routes.apply,
+    children: [routes.india, routes.international, routes.campusVisit, routes.finder, routes.fees, routes.exam, routes.apply,
       { href: "/admissions#faq", label: "Admissions FAQs" },
       { href: "/admissions#enquiry", label: "Ask admissions" }],
   },

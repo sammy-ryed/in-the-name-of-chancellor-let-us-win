@@ -1,0 +1,39 @@
+/* Animation surfaces belong exclusively to the Campus Visit page. Nothing is
+   hidden by default: SSR, reduced-motion and no-JS views remain complete. */
+.cv-visit .cv-hero { overflow: clip; }
+.cv-visit .cv-hero-photo { transform-origin: 55% 50%; }
+.cv-visit :is(.cv-hero-actions,.cv-before) .cv-button { transition: background-color .2s; }
+.cv-visit :is(.cv-hero-photo,.cv-experience-image img,.cv-itinerary-photo img) { transition: none; }
+.cv-visit .cv-split-line { padding-block: .04em; margin-block: -.04em; }
+.cv-visit .cv-split-word { padding-block: .06em; margin-block: -.06em; }
+.cv-visit .cv-experience-image { overflow: clip; }
+.cv-visit .cv-experience-image img { transform-origin: 50% 60%; }
+.cv-visit .cv-timeline-wrap { position: relative; min-width: 0; }
+.cv-visit .cv-timeline li:not(:last-child)::before { display: none; }
+.cv-visit .cv-timeline-index { position: relative; z-index: 1; background: var(--surface-warm); }
+.cv-visit .cv-route-track { position: absolute; top: 16px; bottom: 16px; left: 15px; width: 2px; height: calc(100% - 32px); pointer-events: none; }
+.cv-visit .cv-route-track path { fill: none; stroke-width: 1; }
+.cv-visit .cv-route-base { stroke: var(--border-strong); }
+.cv-visit .cv-route-progress { stroke: var(--color-gold-dark); stroke-width: 2 !important; }
+.cv-visit .cv-itinerary-photo { overflow: clip; }
+.cv-visit .cv-itinerary-photo figcaption { z-index: 1; }
+.cv-visit .cv-progress-wrap { position: relative; isolation: isolate; background: white; }
+.cv-visit .cv-progress-indicator { position: absolute; top: 0; left: 0; opacity: 0; pointer-events: none; background: var(--color-gold-light); box-shadow: inset 0 -3px var(--color-gold-dark); }
+.cv-visit .cv-progress { position: relative; }
+.cv-visit .cv-progress-wrap[data-animated-progress] li[aria-current] { background: transparent; box-shadow: none; }
+.cv-visit .cv-booking { position: relative; scroll-margin-top: 32px; }
+.cv-visit .cv-busy-bar { position: absolute; top: 0; left: 0; z-index: 3; height: 3px; width: 100%; background: var(--color-gold); opacity: 0; pointer-events: none; }
+.cv-visit .cv-booking[aria-busy=true] > .cv-busy-bar { opacity: 1; }
+.cv-visit .cv-step-content { perspective: 1000px; }
+.cv-visit .cv-confirmed-mark { display: block; width: 40px; height: 40px; color: var(--color-success); margin-bottom: 16px; }
+.cv-visit .cv-confirmed-mark path { stroke: currentColor; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.cv-visit .cv-book-section > .cv-reveal { padding-bottom: 12px; }
+.cv-visit :is(.cv-hero-link, .cv-page-links a) { position: relative; width: fit-content; }
+.cv-visit :is(.cv-hero-link, .cv-page-links a)::after { content: ""; position: absolute; bottom: 8px; left: 0; width: 100%; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 100% 50%; transition: transform .25s; }
+.cv-visit :is(.cv-hero-link, .cv-page-links a):is(:hover,:focus-visible)::after { transform: scaleX(1); transform-origin: 0% 50%; }
+@media (prefers-reduced-motion: reduce) {
+  .cv-visit :is(.cv-hero-photo,.cv-itinerary-photo img) { transform: none !important; }
+  .cv-visit .cv-progress-indicator { display: none; }
+}
+html[data-quiet-motion] .cv-visit :is(.cv-hero-photo,.cv-itinerary-photo img) { transform: none !important; }
+@media (max-width: 560px) { .cv-visit .cv-page-links a { width: 100%; } }
