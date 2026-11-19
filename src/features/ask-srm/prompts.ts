@@ -5,6 +5,9 @@ const clubs: Prompt = { section: "Campus life", question: "How can I join a stud
 const apply: Prompt = { section: "Admissions", question: "How do international students apply?" };
 const placement: Prompt = { section: "Careers", question: "What are the placement figures?" };
 const first: Record<string, Prompt> = {
+  "/admissions/course-finder": { section: "Programmes", question: "How do I compare courses?" },
+  "/programmes/compare": { section: "Programmes", question: "How do I compare course fees?" },
+  "/campus/buddy": { section: "Campus Buddy", question: "Where do campus buddies meet?" },
   programmes: fees, admissions: apply, campus: clubs, "career-centre": placement,
   contact: { section: "Contact us", question: "How do I contact SRM admissions?" },
   parents: { section: "Parents", question: "How can a parent check attendance?" },
@@ -16,5 +19,5 @@ const first: Record<string, Prompt> = {
 };
 
 export function promptsFor(path: string): Prompt[] {
-  return [...new Set([first[path.split("/")[1]] ?? fees, apply, clubs, placement])].slice(0, 3);
+  return [...new Set([first[path] ?? first[path.split("/")[1]] ?? fees, apply, clubs, placement])].slice(0, 3);
 }

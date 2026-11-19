@@ -121,7 +121,7 @@ export function SearchResults({ turn, pages, pagesPending, pagesFailed, comparis
         {result && (
           <div className="ask-overview-actions">
             <button type="button" onClick={onFollowUp}>Ask a follow-up <span aria-hidden="true">↳</span></button>
-            {hasComparison && <Link href={comparison} prefetch={false} onNavigate={onPick}>Compare these fees <span aria-hidden="true">→</span></Link>}
+            {hasComparison && <Link href={comparison} prefetch={false} onNavigate={onPick}>Compare these courses <span aria-hidden="true">→</span></Link>}
           </div>
         )}
       </section>

@@ -70,6 +70,7 @@
 .more { display: inline-flex; gap: 18px; align-items: center; min-height: 44px; margin-top: 20px; padding: 9px 15px; background: transparent; border: 1px solid var(--ink); font-weight: 650 !important; }
 .more:hover { background: white; }
 .source { margin-top: 26px; max-width: 74ch; color: var(--muted); font-size: .82rem; }
+.moreEvidence { display: inline-block; margin: .8rem 0 0; font-size: .9rem; font-weight: 650; }
 .shortlist { grid-area: shortlist; position: sticky; top: calc(var(--header-height) + 14px); min-width: 0; border-top: 4px solid var(--color-gold); padding: 18px; background: #edece5; }
 .shortTop { flex-wrap: nowrap; justify-content: space-between; }
 .shortTop h2 { font-size: clamp(1.5rem, 2.1vw, 2.1rem); }

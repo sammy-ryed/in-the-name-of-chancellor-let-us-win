@@ -42,7 +42,7 @@ function ApplicationRoutes({ course }: { course?: Course }) {
 const planningLinks = [
   { href: routes.programmes.href, label: "Browse programmes" },
   { href: routes.fees.href, label: "Compare tuition fees" },
-  { href: "#programme-finder", label: "Take the course finder quiz" },
+  { href: "/admissions/course-finder", label: "Find your direction" },
 ];
 
 export function AdmissionsLayout({ classic, course, children }: {

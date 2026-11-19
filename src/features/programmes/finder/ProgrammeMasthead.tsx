@@ -54,7 +54,7 @@ export function ProgrammeMasthead({ area, areas, total, browseAll, hasFilters, o
           {children}
           <div className="pf-hero-links">
             <Link href="/programmes#study-areas" onClick={onBrowse}>{inDirectory ? "All study areas" : "Browse by study area"} <Icon name="chevron" /></Link>
-            <Link href={routes.fees.href}>Compare fees <Icon name="arrow" /></Link>
+            <Link href={routes.fees.href}>Browse fees <Icon name="arrow" /></Link>
             <Link href={routes.finder.href}>Try the course finder <Icon name="arrow" /></Link>
           </div>
         </div>
