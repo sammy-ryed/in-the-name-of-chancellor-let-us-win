@@ -168,3 +168,5 @@
   .admissions-experience .enquiry-compose,
   .admissions-experience .pq-panel { display: none; }
 }
+
+.admission-finder-link { display: inline-block; padding-block: .65rem; color: var(--color-primary); font-weight: 750; }

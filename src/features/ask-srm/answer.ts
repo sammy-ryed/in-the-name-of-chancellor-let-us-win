@@ -1,4 +1,5 @@
 import "server-only";
+import { groqJson } from "@/lib/groq";
 import { findSources } from "./search";
 import { figuresAreSupported } from "./evidence";
 import { sourceGuide } from "./conversation";
@@ -13,29 +14,6 @@ const instructions = [
   'When records miss the intended subject and canSearch is true, first use {"type":"lookup","queries":["precise English programme and campus or guide topic"]}. Use at most two distinct queries; for comparisons, query each option separately. Translate informal or multilingual questions into useful English search terms. Do not use lookup for unrelated questions. A lookup searches only this site.',
 ].join("\n");
 
-// Each running instance bounds outbound calls, including a second lookup on complex questions.
-let windowStart = 0;
-let used = 0;
-let active = 0;
-const callsByClient = new Map<string, number>();
-function reserve(client?: string): boolean {
-  const now = Date.now();
-  if (now - windowStart >= 60_000) {
-    windowStart = now;
-    used = 0;
-    callsByClient.clear();
-  }
-  if (active >= 3 || used >= 15) return false;
-  if (client) {
-    const calls = callsByClient.get(client) ?? 0;
-    if (calls >= 8) return false;
-    callsByClient.set(client, calls + 1);
-  }
-  used++;
-  active++;
-  return true;
-}
-
 type ModelResult = { type?: unknown; answer?: unknown; sources?: unknown; queries?: unknown };
 
 async function complete(
@@ -47,51 +25,21 @@ async function complete(
   signal: AbortSignal,
   client?: string,
 ): Promise<ModelResult | null> {
-  if (signal.aborted || !reserve(client)) return null;
-  try {
-    const model = process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-20b";
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      cache: "no-store",
-      headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" },
-      signal,
-      body: JSON.stringify({
-        model,
-        temperature: 0.2,
-        max_completion_tokens: 1400,
-        ...(model.startsWith("openai/gpt-oss-") ? { reasoning_effort: "low" } : {}),
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: instructions },
-          { role: "user", content: JSON.stringify({
-            todayInIndia: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }),
-            question,
-            recentConversation: history,
-            canSearch,
-            records: evidence.map((source, index) => ({
-              number: index + 1,
-              title: source.title,
-              section: source.section,
-              excerpt: source.summary.slice(0, 1400),
-            })),
-          }) },
-        ],
-      }),
-    });
-    if (!response.ok) {
-      // Keep provider diagnostics independent of visitor text and credentials.
-      console.warn("[Ask SRM] Groq returned HTTP", response.status);
-      return null;
-    }
-    const data = await response.json();
-    const completion = data?.choices?.[0];
-    if (completion?.finish_reason !== "stop" || typeof completion.message?.content !== "string") return null;
-    return JSON.parse(completion.message.content) as ModelResult | null;
-  } catch {
-    return null;
-  } finally {
-    active--;
-  }
+  return groqJson<ModelResult>(key, [
+    { role: "system", content: instructions },
+    { role: "user", content: JSON.stringify({
+      todayInIndia: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }),
+      question,
+      recentConversation: history,
+      canSearch,
+      records: evidence.map((source, index) => ({
+        number: index + 1,
+        title: source.title,
+        section: source.section,
+        excerpt: source.summary.slice(0, 1400),
+      })),
+    }) },
+  ], signal, client);
 }
 
 function unknown(sources: Source[]): SearchResponse {

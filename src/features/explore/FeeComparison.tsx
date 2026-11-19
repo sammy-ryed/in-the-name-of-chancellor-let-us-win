@@ -14,7 +14,7 @@ export function SlotMark({ index }: { index: number }) {
 
 const facts = [
   ["Fee", "fee"], ["Fee period", "period"], ["Campus", "campus"], ["Qualification", "degree"],
-  ["Study level", "level"], ["Duration", "duration"], ["Study mode", "mode"], ["Shift", "shift"], ["Listing notes", "notes"],
+  ["Study level", "level"], ["Duration", "duration"], ["Study mode", "mode"], ["Shift", "shift"], ["Listing notes", "notes"], ["Fee source conflict", "conflict"],
 ] as const;
 
 function comparisonNote(courses: FeeListing[]) {
@@ -75,6 +75,7 @@ export function FeeComparison({ slots, replacing, onReplace, onCancelReplace, on
           Compare fees <span aria-hidden="true">→</span>
         </button>
       )}
+      {count > 0 && <Link className={styles.moreEvidence} href={"/programmes/compare" + detailQuery}>Compare courses, careers and placements →</Link>}
       <dialog className={styles.dialog} ref={dialog} aria-labelledby="fee-comparison-title"
         onClick={event => {
           if (event.target !== dialog.current) return;

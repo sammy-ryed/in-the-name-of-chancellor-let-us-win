@@ -18,7 +18,10 @@ export interface Programme {
   fee?: string;
   feeUrl?: string;
   feeCourseId?: string;
+  compareCandidates?: string[];
+  compareSearch?: string;
   feePeriod?: string;
+  feeConflict?: string;
   photo?: string;
   applyUrl?: string;
   level: string[];
@@ -28,7 +31,14 @@ export interface Programme {
   department: string[];
 }
 
+export interface DirectoryCourse {
+  id: string;
+  title: string;
+  place: string;
+}
+
 export interface FinderData {
+  compareCourses: DirectoryCourse[];
   source: string;
   fetched: string;
   levels: Option[];

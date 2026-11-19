@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Page({ params }: Props) {
   const course = await getCourse(params);
-  const { fee, period } = programmeFee(course);
+  const { fee, period, conflict, alternateSource } = programmeFee(course);
   const official = source(course);
   const apply = application(course);
   const facts = [
@@ -77,11 +77,17 @@ export default async function Page({ params }: Props) {
                 <p>{criteria(course)}</p>
                 <a href={official}>Full eligibility and selection rules <span aria-hidden="true">↗</span></a>
               </section>
+              {course.level === "Undergraduate" && <section aria-labelledby="course-direction">
+                <h2 id="course-direction">Still choosing a subject?</h2>
+                <p>Try a few everyday decisions and see which course families fit what you enjoy.</p>
+                <Link href={routes.finder.href}>Find your direction <span aria-hidden="true">→</span></Link>
+              </section>}
             </div>
             <aside className={styles.fees} aria-labelledby="fee-label">
               <h2 id="fee-label">{period || "Listed fee"}</h2>
               <p className={styles.amount} data-prose={fee.length > 19 || undefined}>{fee}</p>
-              <Suspense fallback={<Link className={styles.compare} href={`${routes.fees.href}?compare=${course.id}`}>Compare this fee <span aria-hidden="true">→</span></Link>}>
+              {conflict && <p>{conflict} <a href={alternateSource}>Programme fee source</a></p>}
+              <Suspense fallback={<Link className={styles.compare} href={`${routes.compare.href}?compare=${course.id}`}>Compare course <span aria-hidden="true">→</span></Link>}>
                 <CompareCourseLink className={styles.compare} courseId={course.id} />
               </Suspense>
               <p>{course.notes || "Check the faculty schedule for registration, exams and other charges. Hostel and dining are listed separately."}</p>

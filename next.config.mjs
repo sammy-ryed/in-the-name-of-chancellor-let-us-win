@@ -24,7 +24,7 @@ const nextConfig = {
   images: {
     // Transform the site's published images, not API responses or arbitrary query variants.
     localPatterns: [
-      "/alumni", "/campus", "/career-centre", "/home", "/news", "/parents",
+      "/admissions", "/alumni", "/campus", "/career-centre", "/home", "/news", "/parents",
       "/programmes", "/prospectus", "/research", "/_next/static/media",
     ].map(directory => ({ pathname: directory + "/**", search: "" })),
   },

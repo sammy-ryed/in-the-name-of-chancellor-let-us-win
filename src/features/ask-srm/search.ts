@@ -176,7 +176,7 @@ function isCourseChoice(question: string) {
   return /\b(?:(?:torn|choos(?:e|ing)|decid(?:e|ing)) between|my interests|what (?:course|programme|should i study)|which (?:course|programme|degree|branch).*(?:fit|suit|pick|choose|right for)|recommend (?:a |an |some )?(?:course|degree|programme))\b/i.test(question);
 }
 
-function courseSuggestions(question: string, ranked: ReturnType<typeof rankSources>): Source[] {
+function courseSuggestions(question: string): Source[] {
   const interests = terms(question.replace(/coding|programming/gi, "software computer science")
     .replace(/drawing|sketching/gi, "design").replace(/biology/gi, "life health"));
   const matches = tasters.map(taster => ({
@@ -196,7 +196,7 @@ function courseSuggestions(question: string, ranked: ReturnType<typeof rankSourc
     summary: "An illustrative undergraduate course-finder activity for " + taster.name + ": " + taster.example
       + " This is an example of the work to try, not an assessed course requirement.",
   }));
-  return [finder, ...(results.length ? results : ranked.filter(({doc}) => doc.source.href !== finder.href).slice(0, 3).map(({doc}) => doc.source))];
+  return [finder, ...results];
 }
 
 function calendarSources(question: string): Source[] | undefined {
@@ -278,7 +278,7 @@ export function findSources(question: string, previous = ""): Source[] {
     if (general) return [general.source];
   }
   const ranked = rankSources(current, prior);
-  if (isCourseChoice(question)) return courseSuggestions(question, ranked);
+  if (isCourseChoice(question)) return courseSuggestions(question);
   // SRM publishes international fees separately. A domestic amount is never
   // supporting evidence for an NRI applicant's bill, even for the same degree.
   const admissionContext = question + " " + previous;
@@ -318,8 +318,8 @@ export function findSources(question: string, previous = ""): Source[] {
     }
     if (sources.length > 1) add({
       title: "Compare these programme listings", section: "Fees & eligibility",
-      href: "/programmes/fees?compare=" + sources.map(s => s.href.split("/").pop()).join(","),
-      summary: "The fee comparison opens with these listings selected: " + sources.map(s => s.title).join("; ") + ".",
+      href: routes.compare.href + "?compare=" + sources.map(s => s.href.split("/").pop()).join(","),
+      summary: "Compare the study paths, career evidence and fees for " + sources.map(s => s.title).join("; ") + ".",
     });
   }
   for (const { doc, score } of ranked) {

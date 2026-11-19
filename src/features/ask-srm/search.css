@@ -182,10 +182,6 @@ html[data-high-contrast] .ask-launch {
     border-radius: var(--radius-full) 0 0 var(--radius-full);
     box-shadow: 0 2px 4px rgb(7 24 47 / 22%);
   }
-  .ask-launch { background-color: color-mix(in srgb, var(--surface-warm) 94%, transparent); }
-  .ask-launch:is([data-surface="dark"], [data-surface="media"]) {
-    background-color: color-mix(in srgb, var(--navy) 94%, transparent);
-  }
   .ask-launch > .site-crest { display: block; grid-row: 1 / 3; width: 32px; }
   .ask-launch strong {
     font: 400 1.35rem/1 var(--ask-display);

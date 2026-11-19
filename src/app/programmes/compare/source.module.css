@@ -1,0 +1,8 @@
+.context { margin-block: 2rem; padding: 1.2rem 0 1.2rem 1.2rem; border-left: 3px solid var(--color-gold); }
+.context h2 { margin: 0; color: var(--color-primary-dark); font: 400 clamp(1.8rem, 3vw, 3rem)/1.1 var(--display); }
+.context p { max-width: 64ch; margin-block: .5rem; }
+.context a { color: var(--color-primary); font-weight: 650; }
+.context ul { list-style: none; margin-block: 1rem; padding: 0; }
+.context li { border-top: 1px solid var(--border-strong); }
+.context li button { width: 100%; color: var(--color-primary); text-align: left; border: 0; background: transparent; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .3rem 1rem; padding: .7rem 0; }
+.context li span { font-size: .88rem; }
