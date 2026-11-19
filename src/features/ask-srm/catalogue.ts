@@ -18,7 +18,7 @@ export type Entry = Source & { keywords?: string };
 const sectionNotes: Record<string, string> = {
   [routes.contact.label]: "For general university enquiries call " + generalContact.phone.label + " or email " + generalContact.email + ". The Contact us directory also lists admissions, student services, careers and alumni offices.",
   Programmes:
-    "Search the SRM programme finder by degree, campus, faculty or department.",
+    "Browse the programme directory by degree, campus, faculty or department.",
   "Campus life":
     "Explore clubs, hostel blocks, dining, culture and directions around campus.",
   Students:
@@ -107,7 +107,7 @@ export const universityOverview: Entry[] = [
     href: "https://www.srmist.edu.in/",
     keywords: "university introduction about full name stands for",
     summary:
-      "SRMIST stands for SRM Institute of Science and Technology. Its main campus is in Kattankulathur, Tamil Nadu. The programme finder lists degrees across its faculties and campuses.",
+      "SRMIST stands for SRM Institute of Science and Technology. Its main campus is in Kattankulathur, Tamil Nadu. The programme directory lists degrees across its faculties and campuses.",
   },
 ];
 
@@ -261,7 +261,7 @@ export function catalogue(): Entry[] {
       const campus = campuses.map(c => c.label).join(", ");
       return {
         title: p.name,
-        section: "Programme Finder",
+        section: "Programme directory",
         href: p.url,
         summary: [p.name, p.level.join(" / "), campus, p.duration].filter(Boolean).join(" · ")
           + ". Open the official programme page for its published details.",

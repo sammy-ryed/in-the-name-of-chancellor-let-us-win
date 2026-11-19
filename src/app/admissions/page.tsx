@@ -40,9 +40,9 @@ export default async function AdmissionsPage({ searchParams }: {
         </table>
         <p className="source-note">Dates may change. <a href={applyBtech}>Confirm the schedule with SRM <span aria-hidden="true">↗</span></a></p>
       </Section>
-      <Section id="programme-finder" title={<>Find your <em>direction</em></>}>
-        <p>Would you test a model bridge, edit a film or plan a café menu? Try three minutes of everyday choices to discover course families you might enjoy.</p>
-        <Link className="admission-finder-link" href="/admissions/course-finder">Open the course finder <span aria-hidden="true">→</span></Link>
+      <Section id="programme-finder" title={routes.finder.label}>
+        <p>Tell us what you enjoy doing. See undergraduate options at SRM, why they came up and an activity you can try before you choose.</p>
+        <Link className="admission-finder-link" href={routes.finder.href}>Start the questions <span aria-hidden="true">→</span></Link>
       </Section>
       <Section id="faq" title="Before you apply">
         <Disclosure summary="What are the B.Tech entry requirements?">

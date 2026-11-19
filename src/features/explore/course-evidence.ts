@@ -1,6 +1,8 @@
+import { byApplications, reportedApplications } from "./course-applications";
 import { cohortFor } from "@/features/admissions/programme-quiz/guided/earnings";
 import { courses, source, type Course } from "./academic";
 import { careerFor } from "./career-profiles";
+import { hiringEvidence, placementScope, placementsQuestion, taskEvidence, preparationTip } from "./ai-placements";
 import { familyFor } from "./course-families";
 import { programmeFee } from "./fee-listing";
 import { marketFor } from "./role-market";
@@ -11,7 +13,7 @@ import { curriculumEdition, curriculumFor } from "./cse-curricula";
 export { defaultCourseIds } from "./cse-curricula";
 const pdf = "https://webstor.srmist.edu.in/web_assets/downloads/2026/";
 const counselling = pdf + "srmjeee-2026-phase-i-round-ii-e-counselling-manual.pdf";
-const ilo = "https://www.ilo.org/publications/generative-ai-and-jobs-2025-update";
+
 
 export type Fact = { label: string; text: string; link?: { label: string; href: string } };
 function fact(label: string, text: string, linkLabel?: string, href?: string): Fact {
@@ -20,10 +22,10 @@ function fact(label: string, text: string, linkLabel?: string, href?: string): F
 export function pickerCourse(c: Course) {
   const curriculum = curriculumFor(c.id);
   return { id: c.id, title: c.name, short: curriculum?.short || c.name, degree: c.degree, campus: c.campus,
-    level: c.level, family: familyFor(c), shift: c.shift, mode: c.mode };
+    level: c.level, family: familyFor(c), shift: c.shift, mode: c.mode, applications: reportedApplications(c.id) };
 }
 export type PickerCourse = ReturnType<typeof pickerCourse>;
-export const pickerCourses = courses.map(pickerCourse);
+export const pickerCourses = courses.map(pickerCourse).sort((a, b) => byApplications(a, b) || a.title.localeCompare(b.title, "en-IN") || a.campus.localeCompare(b.campus, "en-IN"));
 export const courseIndex = new Map(courses.map(c => [c.id, c]));
 
 export function courseEvidence(course: Course) {
@@ -69,13 +71,20 @@ export function courseEvidence(course: Course) {
       fact("Indian market pay", market.pay?.text || "A sourced Indian salary for a named entry role and experience band is still unverified.", "Payscale role report", market.pay?.url),
       fact("Reading pay figures", "CTC is the employer’s cost. A salary survey can include bonuses or overtime. Take-home is what reaches your account after deductions. These figures describe different groups and measures."),
     ],
-    ai: career ? [
-      fact("Starting role", career.role),
-      fact("AI could assist with", career.assist),
-      fact("Your judgement", career.judgement),
-      fact("Practise this", career.practice),
-      fact("About these examples", "These are illustrative tasks for the role. The ILO’s 2025 research measures exposure by task. It does not predict whether an individual graduate will find a job.", "ILO task-level research", ilo),
-    ] : [fact("AI and this role", "A task-level example for this qualification is still under review.", "ILO task-level research", ilo)],
+    ai: [
+      fact(placementsQuestion, hiringEvidence.summary, hiringEvidence.label, hiringEvidence.href),
+      fact("What we know about this course", cohort
+        ? "The " + cohort.year + " figures cover " + cohort.label + ". SRM’s submission gives no breakdown of AI’s effect on offers for this particular course and campus."
+        : placementScope + " Ask your department how many students sought placement and how many were placed in each of the last two batches.",
+      "See the SRM reporting group", cohort?.source),
+      ...(career ? [
+        fact("Starting role", career.role),
+        fact("AI could assist with", career.assist),
+        fact("Your judgement", career.judgement),
+        fact("Practise this", career.practice),
+      ] : [fact("Prepare for an interview", preparationTip)]),
+      fact("How work may change", taskEvidence.summary, taskEvidence.label, taskEvidence.href),
+    ],
     cost: [
       fact("Published tuition", fee.fee + " · " + fee.period + (fee.period === "Listed fee" ? " (billing period unspecified)" : "") + ".", "Faculty fee listing", official),
       ...(fee.conflict ? [fact("Sources disagree", fee.conflict, "Programme page", fee.alternateSource)] : []),

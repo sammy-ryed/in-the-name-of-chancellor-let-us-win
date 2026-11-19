@@ -10,6 +10,27 @@ function post(data, headers = {}) {
   });
 }
 
+test("AI's effect on placements has a reviewed answer and matching primary sources", async () => {
+  for (const input of [
+    { query: "Will AI affect campus placements for CSE?", mode: "ask" },
+    { query: "will AI affract the placments?", mode: "ask" },
+    { query: "How will it affect campus hiring?", mode: "ask", previous: "I am worried about artificial intelligence" },
+    { query: "What about AI?", mode: "search", previous: "How do campus placements work?" },
+  ]) {
+    const response = await post(input);
+    const result = await response.json();
+    assert.equal(result.kind, input.mode === "ask" ? "guide" : "matches");
+    assert.deepEqual(result.sources.slice(0,2).map(source => new URL(source.href).hostname), ["www.deloitte.com", "www.ilo.org"]);
+    if (input.mode === "ask") {
+      assert.match(result.answer, /257 employers.*35%/);
+      assert.match(result.answer, /particular SRM course or campus/);
+      assert.match(result.answer, /project/);
+    }
+  }
+  const degree = await (await post({ query: "What were the placements for B.Tech CSE AI/ML?", mode: "search" })).json();
+  assert.ok(degree.sources.every(source => !source.href.includes("deloitte.com/in/en/about/press-room")));
+});
+
 test("rejects privileged roles, oversized input, invalid JSON and third-party requests", async () => {
   const base = { mode: "ask", query: "Hi" };
   for (const invalid of [

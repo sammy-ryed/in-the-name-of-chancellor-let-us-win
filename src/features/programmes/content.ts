@@ -5,7 +5,7 @@ export const content = {
   "intro": "Explore study options and plan your application.",
   "links": [
     {
-      "label": "Programme finder",
+      "label": "Official programme directory",
       "href": "https://www.srmist.edu.in/program-finder/",
       "detail": "Browse programmes by level and discipline."
     },

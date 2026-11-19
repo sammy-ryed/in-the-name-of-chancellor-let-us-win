@@ -12,7 +12,7 @@ import "./admissions.css";
 const internationalApplication = "https://intlapplications.srmist.edu.in/international-application-form-2027";
 const sections: [string, string][] = [
   ["SRMJEEE dates", "exam"],
-  ["Course finder", "programme-finder"],
+  [routes.finder.label, "programme-finder"],
   ["Common questions", "faq"],
   ["Contact admissions", "enquiry"],
 ];
@@ -44,7 +44,7 @@ const planningLinks = [
   { href: routes.programmes.href, label: "Browse programmes" },
   { href: routes.fees.href, label: "Compare tuition fees" },
   { href: routes.scholarships.href, label: "Explore scholarships" },
-  { href: "/admissions/course-finder", label: "Find your direction" },
+  routes.finder,
 ];
 
 export function AdmissionsLayout({ classic, course, children }: {

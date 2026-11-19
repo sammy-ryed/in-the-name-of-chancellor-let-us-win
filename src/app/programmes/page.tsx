@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { SiteFooter } from "@/components/SiteFooter";
-import { applicantSource } from "@/features/programmes/finder/applicants";
+import { applicantEdition, applicantSource } from "@/features/programmes/finder/applicants";
 import { finderData } from "@/features/programmes/finder/data";
 import { ProgrammeFinder } from "@/features/programmes/finder/ProgrammeFinder";
 import { FinderFromURL } from "@/features/programmes/finder/FinderFromURL";
@@ -21,7 +21,7 @@ export default function Page() {
         <details className="pf-source">
           <summary>Catalogue sources and how courses are ordered</summary>
           <p>
-            Catalogue from the <a href={finderData.source}>SRMIST Program Finder</a>. “Most applied to” uses <a href={applicantSource}>2024–25 Kattankulathur application counts</a>. Study areas are ordered by their total reported applications, then by the number of programmes they offer. Within each area, courses without a matched count follow alphabetically. Check the official programme page for intake-specific fees and eligibility.
+            Catalogue from the <a href={finderData.source}>SRMIST Program Finder</a>. “Most applied to” uses <a href={applicantSource}>Kattankulathur application counts in SRM’s {applicantEdition} disclosure</a>. Study areas are ordered by their total reported applications, then by the number of programmes they offer. Within each area, courses without a matched count follow alphabetically. Check the official programme page for intake-specific fees and eligibility.
           </p>
         </details>
       </div>

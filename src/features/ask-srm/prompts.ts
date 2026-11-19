@@ -1,3 +1,5 @@
+import { routes } from "@/lib/navigation";
+
 export type Prompt = { section: string; question: string };
 
 const fees: Prompt = { section: "Programmes", question: "What does B.Tech CSE cost at KTR?" };
@@ -5,7 +7,7 @@ const clubs: Prompt = { section: "Campus life", question: "How can I join a stud
 const apply: Prompt = { section: "Admissions", question: "How do international students apply?" };
 const placement: Prompt = { section: "Careers", question: "What are the placement figures?" };
 const first: Record<string, Prompt> = {
-  "/admissions/course-finder": { section: "Programmes", question: "How do I compare courses?" },
+  [routes.finder.href]: { section: routes.finder.label, question: "How does the SRM Course Finder suggest courses?" },
   "/programmes/compare": { section: "Programmes", question: "How do I compare course fees?" },
   "/campus/buddy": { section: "Campus Buddy", question: "Where do campus buddies meet?" },
   programmes: fees, admissions: apply, campus: clubs, "career-centre": placement,

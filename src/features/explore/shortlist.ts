@@ -1,8 +1,17 @@
 export type Shortlist = [string, string, string];
 
-const storageKey = "srm-course-shortlist-v1";
+export type ShortlistScope = "directory" | "finder";
+
+export function shortlistScope(from: string | null | undefined): ShortlistScope {
+  return from === "finder" ? "finder" : "directory";
+}
+
+const storageKey: Record<ShortlistScope, string> = {
+  directory: "srm-course-shortlist-v1", finder: "srm-course-finder-shortlist-v1",
+};
 export const shortlistChanged = "srm-course-shortlist-change";
-let lastSaved = "";
+const lastSaved = { directory: "", finder: "" };
+const memoryOnly = { directory: false, finder: false };
 
 export function parseShortlist(value: string): Shortlist {
   const slots: Shortlist = ["", "", ""];
@@ -16,20 +25,26 @@ export function parseShortlist(value: string): Shortlist {
   return slots;
 }
 
-export function readShortlistValue() {
+export function readShortlistValue(scope: ShortlistScope = "directory") {
   if (typeof window === "undefined") return "";
-  try { return window.sessionStorage.getItem(storageKey) ?? lastSaved; }
-  catch { return lastSaved; }
+  if (memoryOnly[scope]) return lastSaved[scope];
+  try { return window.sessionStorage.getItem(storageKey[scope]) ?? ""; }
+  catch { return lastSaved[scope]; }
 }
 
-export function readShortlist(): Shortlist {
-  return parseShortlist(readShortlistValue());
+export function readShortlist(scope: ShortlistScope = "directory"): Shortlist {
+  return parseShortlist(readShortlistValue(scope));
 }
 
-export function writeShortlist(slots: readonly string[]) {
+export function writeShortlist(slots: readonly string[], scope: ShortlistScope = "directory") {
   if (typeof window === "undefined") return;
-  lastSaved = parseShortlist(slots.join(",")).join(",");
-  try { window.sessionStorage.setItem(storageKey, lastSaved); } catch { /* Keep the in-memory selection. */ }
+  lastSaved[scope] = parseShortlist(slots.join(",")).join(",");
+  try {
+    window.sessionStorage.setItem(storageKey[scope], lastSaved[scope]);
+    memoryOnly[scope] = false;
+  } catch {
+    memoryOnly[scope] = true;
+  }
   window.dispatchEvent(new Event(shortlistChanged));
 }
 
@@ -40,7 +55,8 @@ export function addToShortlist(slots: readonly string[], id: string): Shortlist 
   return next;
 }
 
-export function comparisonHref(slots: readonly string[]) {
+export function comparisonHref(slots: readonly string[], scope: ShortlistScope = "directory") {
   const query = parseShortlist(slots.join(",")).join(",").replace(/,+$/, "");
+  if (scope === "finder") return "/programmes/compare?compare=" + encodeURIComponent(query) + "&from=finder";
   return query ? "/programmes/compare?compare=" + encodeURIComponent(query) : "/programmes/compare";
 }
