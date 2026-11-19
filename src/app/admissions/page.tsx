@@ -57,7 +57,7 @@ export default async function AdmissionsPage({ searchParams }: {
           <Link href={routes.programmes.href}>Look up your course</Link>
         </Disclosure>
         <Disclosure summary="Where can I check scholarship eligibility?">
-          <p>SRM lists its engineering scholarships and the criteria for each award on the <a href={university + "/admission-india/engineering/scholarships/"}>scholarships and aid page ↗</a>.</p>
+          <p>Explore merit awards, financial support and faculty-specific schemes on the <Link href={routes.scholarships.href}>Scholarships & eligibility page</Link>, including the amended categories effective from 2025–26 onwards.</p>
         </Disclosure>
       </Section>
       <Section id="enquiry" title="Contact admissions">
