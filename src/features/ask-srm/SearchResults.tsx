@@ -25,7 +25,7 @@ function PageResult({ source, cited, onPick }: { source: Source; cited: boolean;
   return (
     <li className="ask-page-result" data-cited={cited || undefined}>
       {internal ? (
-        <Link className="ask-result-link" data-ask-page href={source.href} prefetch={false} onClick={onPick}>{content}</Link>
+        <Link className="ask-result-link" data-ask-page href={source.href} prefetch={false} onNavigate={onPick}>{content}</Link>
       ) : (
         <a className="ask-result-link" data-ask-page href={source.href} target="_blank" rel="noopener noreferrer">
           {content}<span className="ask-sr"> (opens in a new tab)</span>
@@ -121,7 +121,7 @@ export function SearchResults({ turn, pages, pagesPending, pagesFailed, comparis
         {result && (
           <div className="ask-overview-actions">
             <button type="button" onClick={onFollowUp}>Ask a follow-up <span aria-hidden="true">↳</span></button>
-            {hasComparison && <Link href={comparison} prefetch={false} onClick={onPick}>Compare these fees <span aria-hidden="true">→</span></Link>}
+            {hasComparison && <Link href={comparison} prefetch={false} onNavigate={onPick}>Compare these fees <span aria-hidden="true">→</span></Link>}
           </div>
         )}
       </section>

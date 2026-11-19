@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { DM_Sans, Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import "@/components/chrome.css";
-import AskSRM from "@/features/ask-srm/AskSRM";
 import { RouteContent } from "@/components/RouteContent";
 import { SiteNavigation } from "@/components/SiteNavigation";
 import "@/components/access.css";
@@ -24,7 +23,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           Skip to content
         </a>
         <header className="site-header">
-          <AskSRM />
           <SiteNavigation />
         </header>
         <RouteContent>{children}</RouteContent>
