@@ -1,0 +1,85 @@
+.panel {
+  --table-line: var(--border-strong);
+  --label-width: clamp(8rem, 16vw, 13rem);
+  --course-width: 15rem;
+  container-type: inline-size;
+  width: 100%;
+  min-width: 0;
+}
+.tools {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .75rem;
+  padding: .6rem 0; border-top: 2px solid var(--color-primary-dark);
+}
+.tools label { font-weight: 700; font-size: .88rem; }
+.tools select {
+  display: block; width: auto; max-width: 100%; min-height: 44px;
+  background: white; border: 1px solid var(--color-primary-dark); padding: .3rem .6rem;
+}
+.hint { display: none; }
+.scroll {
+  position: relative; isolation: isolate;
+  max-height: 68svh; width: 100%; overflow: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--table-line); background: var(--surface-primary);
+  scroll-padding: 4rem 0 .5rem;
+}
+.scroll:focus-visible,.tools select:focus-visible {
+  outline: 3px solid var(--color-secondary); outline-offset: 2px;
+}
+.scroll table {
+  table-layout: fixed;
+  min-width: calc(var(--label-width) + var(--course-count) * var(--course-width));
+  width: 100%; border-spacing: 0;
+  color: var(--color-primary-dark); font-family: var(--font-primary);
+  font-size: .96rem; line-height: 1.5;
+}
+.labelColumn { width: var(--label-width); }
+.scroll :is(th,td) {
+  text-align: left; vertical-align: top; padding: .7rem .85rem;
+  border-right: 1px solid var(--table-line); border-bottom: 1px solid var(--table-line);
+  overflow-wrap: anywhere; hyphens: auto;
+}
+.scroll tr > :last-child { border-right: 0; }
+.scroll thead th { position: sticky; top: 0; z-index: 3; background: var(--surface-blue); border-bottom: 2px solid var(--color-primary-dark); }
+.scroll thead .corner { left: 0; z-index: 4; vertical-align: middle; font-weight: 700; }
+.heading { display: flex; gap: .55rem; align-items: start; }
+.heading > span:last-child { min-width: 0; }
+.heading strong { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font: 400 clamp(1.25rem, 2.2vw, 1.85rem)/1.09 var(--display); }
+.heading small { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.common small { display: block; }
+.heading small,.common small { margin-top: .17rem; font: 650 .76rem/1.35 var(--font-primary); }
+.letter {
+  flex-shrink: 0; display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem;
+  background: var(--color-gold-light); color: var(--color-primary-dark);
+  font: 400 1.15rem/1 var(--display);
+}
+.scroll .sectionHeader { background: var(--color-primary-dark); color: white; padding-block: .45rem; font: 400 1.45rem/1.15 var(--display); }
+.sectionHeader > span,.empty > span { position: sticky; left: .85rem; display: inline-block; max-width: calc(100cqi - 2rem); }
+.scroll .rowLabel { position: sticky; left: 0; z-index: 1; background: var(--surface-warm); font-size: .86rem; font-weight: 700; }
+.common {
+  position: sticky; left: calc(var(--label-width) + .85rem);
+  max-width: min(67ch,calc(100cqi - var(--label-width) - 2rem));
+}
+.common small { color: var(--color-secondary); margin: 0 0 .25rem; }
+.scroll td a { display: block; width: fit-content; max-width: 100%; margin-top: .45rem; color: var(--color-primary); font-size: .86rem; font-weight: 650; }
+.muted { color: var(--text-secondary); }
+.empty { background: var(--surface-blue); }
+.sr { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@container (max-width: 47rem) {
+  .scroll { --label-width: min(28cqi,8rem); --course-width: min(20rem, calc(100cqi - var(--label-width) - 2px)); max-height: 65svh; }
+  .scroll :is(th,td) { padding: .55rem .5rem; }
+  .heading { gap: .3rem; }
+  .heading strong { font-size: 1.25rem; }
+  .letter { width: 1.2rem; height: 1.3rem; font-size: 1.05rem; }
+  .scroll .rowLabel { font-size: .8rem; }
+  .hint { display: block; color: var(--text-secondary); font-size: .78rem; }
+  .common { left: calc(var(--label-width) + .5rem); max-width: calc(100cqi - var(--label-width) - 1.2rem); }
+  .sectionHeader > span,.empty > span { left: .5rem; }
+}
+@media print {
+  .tools { display: none; }
+  .scroll { max-height: none; overflow: visible; border: 0; }
+  .scroll table { min-width: 0; font-size: 9pt; }
+  .heading strong,.heading small { display: block; overflow: visible; }
+  .scroll :is(th,td),.scroll .rowLabel,.common { position: static; }
+}

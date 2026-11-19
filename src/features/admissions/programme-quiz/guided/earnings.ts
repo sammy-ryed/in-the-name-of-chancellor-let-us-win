@@ -8,6 +8,7 @@ export const cohorts = {
   pharmacy: { label: "SRMIST Pharmacy · four-year UG", year: "2023–24", medianINR: 625000, placed: 54, graduatedInTime: 100, source: "https://www.nirfindia.org/nirfpdfcdn/2025/pdf/Pharmacy/IR-P-U-0473.pdf" },
 } as const;
 export function cohortFor(course: Course) {
+  if (course.campus.startsWith("SRM University ")) return null;
   if (course.faculty === "engineering" && course.degree === "B.Tech" && course.duration === "4 years") return cohorts.engineering;
   if (course.id === "afccd862f02") return cohorts.architecture;
   if (course.id === "61b981b9c53") return cohorts.medical;

@@ -1,3 +1,4 @@
+import { routes } from "@/lib/navigation";
 import type { Turn } from "./useConversation";
 
 // Only offer a comparison for actual programme pages cited in consecutive fee answers.
@@ -15,5 +16,5 @@ export function feeAction(turns: Turn[]): string | undefined {
     if (!courses.length) break;
     courses.forEach(id => ids.add(id));
   }
-  if (ids.size >= 2 && ids.size <= 3) return "/programmes/fees?compare=" + [...ids].join(",");
+  if (ids.size >= 2 && ids.size <= 3) return routes.compare.href + "?compare=" + [...ids].join(",");
 }

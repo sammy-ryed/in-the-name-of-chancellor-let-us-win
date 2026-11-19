@@ -2,20 +2,25 @@
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { addToShortlist, readShortlist, writeShortlist } from "@/features/explore/shortlist";
+import { useShortlist } from "@/features/explore/useShortlist";
+import { DirectoryComparison, type ComparisonPanel } from "./DirectoryComparison";
+import { rememberPosition, type BrowsePosition } from "./browse-position";
 import { ProgrammeMasthead } from "./ProgrammeMasthead";
 import { groupStudyAreas } from "./studyAreas";
 import { AreaGallery } from "./AreaGallery";
 import { ActiveChips, ChoiceList, Icon, SearchBox, SelectField, SortSelect, type ActiveChip } from "./controls";
 import { activeCount, buildIndex, campusIndex, facetCounts, filterProgrammes, sortProgrammes } from "./filter";
 import { ProgrammeRow, type RowLabels } from "./ProgrammeRow";
-import { emptyFilters, sortOptions, type FinderData, type Filters, type SortKey } from "./types";
+import { emptyFilters, sortOptions, type FinderData, type Filters, type Programme, type SortKey } from "./types";
 
 const PAGE = 12;
 const fmt = (n: number) => n.toLocaleString("en-IN");
 
-export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = false }: {
+export function ProgrammeFinder({ data: catalogue, initial, saved, areaId, browseAll = false }: {
   data: FinderData;
   initial?: Partial<Filters>;
+  saved?: BrowsePosition;
   areaId?: string | null;
   browseAll?: boolean;
 }) {
@@ -36,8 +41,45 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
     };
   }, [area, catalogue]);
   const [filters, setFilters] = useState<Filters>({ ...emptyFilters, ...initial });
-  const [selectedSort, setSort] = useState<SortKey>();
-  const [limit, setLimit] = useState(PAGE);
+  const [selectedSort, setSort] = useState<SortKey | undefined>(saved?.sort);
+  const [limit, setLimit] = useState(saved?.limit ?? PAGE);
+  const slots = useShortlist();
+  const [panel, setPanel] = useState<ComparisonPanel>(null);
+  const [announcement, announce] = useState("");
+  const lastRow = useRef("");
+  useEffect(() => {
+    if (!saved) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(saved.focus)?.focus({ preventScroll: true });
+      window.scrollTo({ top: saved.scroll, behavior: "instant" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [saved]);
+  const rememberBrowse = () => {
+    const row = document.getElementById(lastRow.current);
+    const top = row?.getBoundingClientRect().top;
+    rememberPosition({ search: saved?.search ?? window.location.search, filters, sort: selectedSort, limit,
+      scroll: window.scrollY, focus: top !== undefined && top >= 0 && top < window.innerHeight ? lastRow.current : "pf-review" });
+  };
+  const toggleCourse = (id: string) => {
+    const current = readShortlist();
+    const slot = current.indexOf(id);
+    if (slot < 0 && current.every(Boolean)) {
+      announce("All three places are filled. Remove one to add another course.");
+      setPanel("shortlist");
+      return;
+    }
+    const next = slot < 0 ? addToShortlist(current, id) : current.map(value => value === id ? "" : value);
+    writeShortlist(next);
+    const course = catalogue.compareCourses.find(c => c.id === id);
+    announce(slot >= 0 ? `Removed ${course?.title} from your comparison.`
+      : `Added ${course?.title} to slot ${String.fromCharCode(65 + next.indexOf(id))}.`);
+  };
+  const chooseProgramme = (programme: Programme) => {
+    lastRow.current = "pf-choose-" + programme.id;
+    if (programme.feeCourseId) toggleCourse(programme.feeCourseId);
+    else setPanel(programme);
+  };
   const [sheetOpen, setSheetOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const sheet = useRef<HTMLDialogElement>(null);
@@ -108,7 +150,7 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
-      if (sheet.current?.open || e.key !== "/" || e.metaKey || e.ctrlKey || t.closest("input, textarea, select, [contenteditable]")) return;
+      if (document.querySelector("dialog[open]") || e.key !== "/" || e.metaKey || e.ctrlKey || t.closest("input, textarea, select, [contenteditable]")) return;
       e.preventDefault();
       searchRef.current?.focus();
     };
@@ -224,6 +266,9 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
         <SearchBox value={filters.query} onChange={(value) => set("query", value)} inputRef={searchRef}
           placeholder={area ? "Search this study area" : "Search by subject, degree or campus"} />
       </ProgrammeMasthead>
+      <DirectoryComparison panel={panel} slots={slots} courses={catalogue.compareCourses} isGallery={!area && !browseAll && active === 0}
+        onReview={() => setPanel("shortlist")} onClose={() => setPanel(null)} onToggle={toggleCourse} onCompare={rememberBrowse} />
+      <span className="pf-sr" role="status">{announcement}</span>
       {!area && !browseAll && active === 0 ? (
         <AreaGallery areas={areas} total={catalogue.programmes.length} />
       ) : (
@@ -266,7 +311,7 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
                 <>
                   <ol className="pf-list">
                     {shown.map((p) => (
-                      <ProgrammeRow key={p.id} programme={p} labels={labels} />
+                      <ProgrammeRow key={p.id} programme={p} labels={labels} slots={slots} onChoose={chooseProgramme} />
                     ))}
                   </ol>
                   {results.length > limit && (

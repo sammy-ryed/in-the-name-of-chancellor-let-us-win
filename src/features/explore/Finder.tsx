@@ -121,6 +121,7 @@ export function FeeCatalogue({ records, faculties, compare = "" }: CatalogueProp
                 <div className={styles.cost}>
                   <strong data-long={course.fee.length > 20 || undefined}>{course.fee}</strong>
                   <span>{course.period}</span>
+                  {course.conflict && <small>{course.conflict}</small>}
                 </div>
                 <button type="button" className={styles.pick} aria-pressed={active}
                   aria-label={active ? `Remove ${course.degree} ${course.name}, ${course.campus} from shortlist` : `${replacing !== null ? "Replace option " + slotLetters[replacing] + " with" : "Compare"} ${course.degree} ${course.name}, ${course.campus}`}

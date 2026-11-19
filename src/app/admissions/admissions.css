@@ -80,7 +80,7 @@
 .admission-campus figcaption a { display: inline-flex; gap: .55rem; align-items: center; min-height: 44px; }
 .admission-planning {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   padding-inline: max(var(--pad), calc((100% - 90rem) / 2));
   background: var(--navy);
   color: var(--surface-primary);
@@ -168,3 +168,5 @@
   .admissions-experience .enquiry-compose,
   .admissions-experience .pq-panel { display: none; }
 }
+
+.admission-finder-link { display: inline-block; padding-block: .65rem; color: var(--color-primary); font-weight: 750; }

@@ -18,4 +18,6 @@ test("allows a calculated difference only between two fees with matching periods
   assert.equal(figuresAreSupported("The difference is ₹1,00,000 per year.", annual), true);
   assert.equal(figuresAreSupported("The difference is ₹1 lakh.", [annual[0], course("Ramapuram", "Semester tuition: ₹3,75,000")]), false);
   assert.equal(figuresAreSupported("The difference is ₹2 lakh.", annual), false);
+  const disputed = { ...annual[0], summary: annual[0].summary + " Fee sources differ." };
+  assert.equal(figuresAreSupported("The difference is ₹1 lakh.", [disputed, annual[1]]), false);
 });

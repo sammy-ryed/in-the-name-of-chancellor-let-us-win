@@ -3,6 +3,8 @@ import recruiters from "@/app/career-centre/_ui/all-recruiters.json";
 import { recruiterCategories } from "@/app/career-centre/_ui/recruiter-categories";
 import { centreGroups, facilities, projects, sources as researchSources, statistics } from "@/app/research/content";
 import { alumniDay, alumniLinks, alumniOffice, notableAlumni } from "@/features/alumni/data";
+import { cseCurricula, curriculumEdition } from "@/features/explore/cse-curricula";
+import { cohorts } from "@/features/admissions/programme-quiz/guided/earnings";
 import { campusLinks } from "@/features/campus/links";
 import { contactOffices } from "@/features/contact/directory";
 import { routes, srm } from "@/lib/navigation";
@@ -32,8 +34,20 @@ export function siteGuides(): Entry[] {
       ["Admissions enquiry form", "/admissions#enquiry", "Use the admissions enquiry form to send the university an application question.", "ask admissions application form counsellor"],
       ["SRMJEEE application fee", "/admissions#faq", "The admissions guide lists a non-refundable ₹1,400 application fee per phase for the 2027 B.Tech SRMJEEE. This is a registration charge, separate from tuition. Confirm before paying on the application portal.", "entrance exam registration payment refund"],
       ["Engineering scholarships and financial aid", srm + "/admission-india/engineering/scholarships/", "Open the engineering scholarships list and check the academic, entrance or other criteria for the specific award. Eligibility and renewal depend on the scheme.", "discount concession waiver merit aid renewal"],
-      ["Find a course that fits", routes.finder.href, "The course finder quiz asks about your interests and study preferences, then suggests undergraduate programmes. Its shortlist links to the course, campus and fee details.", "quiz unsure pick choose recommend interest career confused 12th school"],
+      ["Find your direction · course finder", routes.finder.href, "Start with your school year and choose activities you would try. Get course families to explore, reasons drawn from your answers and a small activity to try. You can then pick specific SRM courses to compare.", "quiz unsure pick choose recommend interest career class 10 11 12 finished school direction"],
+      ["Compare courses", routes.compare.href, "Choose up to three degrees and campuses. Compare what you study, example projects, first roles, AI at work, placement evidence and published fees. Build a shortlist on the programmes page. Choose Table view to see the courses side by side across every topic, or jump straight to Fees & costs. You can then continue browsing where you left off. Placement evidence names the graduating group it covers.", "specialisation specialization core versus differences curriculum scope employability pay CTC career shortlist table view side by side"],
       ["Compare programme fees and eligibility", routes.fees.href, "Choose up to three programmes in the fee catalogue. Compare campus, degree, timing, entry requirements, and the published fee period. A listed fee with no period should be confirmed with the faculty. Domestic tuition excludes hostel charges and does not establish an international fee.", "comparison shortlist cost cheaper cheapest budget tuition amount semester annual total campus fees"],
+    ]),
+    ...section("Course comparison", [
+      ...Object.values(cseCurricula).map((course): Guide => [
+        course.short + " curriculum · Kattankulathur", course.href,
+        [curriculumEdition, course.core, course.elective, course.lab].join(" "),
+        "CSE B.Tech subject syllabus required elective regulation project modules",
+      ]),
+      ["CSE comparison · whose median salary is reported?", cohorts.engineering.source,
+        "The " + cohorts.engineering.year + " median annual salary was ₹" + (cohorts.engineering.medianINR / 100000).toFixed(2)
+        + " lakh among placed graduates in the SRMIST four-year undergraduate engineering cohort. The report combines branches. Separate figures for CSE Core, AI/ML and Data Science are unavailable in these records.",
+        "placed graduates placement pay engineering salary cohort KTR Kattankulathur median"],
     ]),
     ...section("Parents", [
       ["Parent portal · ParentConnect for 2025 intake onwards", "https://parentconnect.srmist.edu.in/", "For 2025 intake onwards, use the parent or guardian email registered during enrolment. Select Forgot Password on ParentConnect to receive a setup email.", "parent portal sign in login first password guardian reset registration"],
@@ -45,6 +59,7 @@ export function siteGuides(): Entry[] {
       ["Family support and safety contacts", "/parents#family-support", "For residential concerns, use the hostel office. The family guide links to the Information Centre, counselling, anti-ragging and anti-discrimination teams.", "parents help ragging bullying discrimination complaint"],
     ]),
     ...section("Campus life", [
+      ["Campus Buddy", routes.buddy.href, "Try a Kattankulathur first-week pairing with a fictional senior. Pick a language and a time, see why a match fits, and plan a walk from Arch Gate to the Central Library. After both accept, practise introducing yourselves through SRM email. Second- and third-year students can try the senior side. This demo stays in your browser tab.", "buddy buddies newcomer new fresher orientation peer mentor senior first week campus walk"],
       ["Aaruush and Milan festivals", routes.festivals.href, "Aaruush is SRM’s technical festival for student projects and competitions. Milan is its cultural festival for performances and intercollegiate competitions. Use the organisers' pages for the schedule and registration.", "aarush fest cultural techfest festival music dance"],
       ["Book a hostel room", routes.housing.href + "#booking", "At Kattankulathur, check the booking schedule for your intake, read the hostel rules and book on the student portal once your round opens. Room allocation, prices and availability vary by booking round.", "hostel accommodation housing room vacancy allotment room rent charges hostel fees freshers"],
       ["Hostel mess and campus food", routes.housing.href + "#dining", "Hostel residents use mess halls, and the campus also has eateries. The university dining page lists meals, timings and outlets.", "cafeteria meals food hall dining"],
