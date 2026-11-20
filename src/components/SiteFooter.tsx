@@ -59,7 +59,7 @@ const groups: FooterGroup[] = [
     { label: "Admissions enquiry", href: "/admissions#enquiry" }] },
   { title: "Our community", links: [routes.students, routes.parents, routes.portals, routes.score,
     routes.alumni, routes.photos, routes.reunions, routes.graduates, { label: "Student portal", href: studentPortal }] },
-  { title: "Careers & contacts", links: [routes.placements, routes.outcomes, routes.recruiters,
+  { title: "Careers & contacts", links: [routes.placements, routes.outcomes, routes.recruiters, routes.dei,
     { label: "University careers", href: "https://careers.srmist.edu.in/" },
     { label: "Faculty directory", href: srm + "/faculty-gateway/" }, { label: "Library", href: srm + "/library/" },
     { label: "Campus location", href: srm + "/visitors/" }, routes.contact,
