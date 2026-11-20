@@ -1,13 +1,14 @@
 import "server-only";
 import { catalogue } from "./catalogue";
+import { hiringEvidence, placementOverview, placementScope, taskEvidence } from "@/features/explore/ai-placements";
 import { candidates } from "@/features/admissions/programme-quiz/guided/catalogue";
-import { routes } from "@/lib/navigation";
+import { routes, tourUrl } from "@/lib/navigation";
 import events from "@/features/explore/events.json";
 import { topicContext } from "./conversation";
 import type { ChatMessage, Source } from "./types";
 
 const fillers = new Set(
-  "a an and are as at be by can could do does for from get give go how i in information is it like me my of on or please srm srmist tell that the their there this to university us want what when where which who will with would you your".split(
+  "a an and are as at be by can could do does for from get give go happens happen if any something someone here really need before currently exactly just hi how i in information is it like me my of on or please srm srmist tell that the their there this to university us want what when where which who will with would you your".split(
     " ",
   ),
 );
@@ -23,6 +24,7 @@ function terms(text: string): string[] {
       .replace(/\b(?:ktr|kattangulathur)\b/g, "kattankulathur")
       .replace(/\btrichy\b/g, "tiruchirappalli")
       .replace(/\b(?:aarush|arush)\b/g, "aaruush")
+      .replace(/\b(?:xrd|x[- ]ray diffraction)\b/g, "diffraction instrument")
       .replace(/\b(?:instruments?|instrumentation)\b/g, "instrument")
       .replace(/\bbook(?:ing)?\b/g, "booking")
       .replace(/\b(?:hostels?|accommodation|housing|dorms?)\b/g, "hostel")
@@ -99,6 +101,82 @@ for (const d of docs) {
     counts.set(word, 1 + (counts.get(word) ?? 0));
 }
 
+// Correct a single missing, extra, swapped or mistyped letter in a short list of
+// service names. Leave names of people, programmes and unknown subjects intact.
+const serviceWords = ["campus", "visit", "tour", "hostel", "scholarship", "scholarships", "admission", "admissions",
+  "accommodation", "eligibility", "application", "programme", "buddy", "placement", "placements", "srmjeee"];
+function oneLetterApart(a: string, b: string) {
+  if (Math.abs(a.length - b.length) > 1) return false;
+  let i = 0;
+  while (i < Math.min(a.length, b.length) && a[i] === b[i]) i++;
+  if (a.length < b.length) return a.slice(i) === b.slice(i + 1);
+  if (a.length > b.length) return a.slice(i + 1) === b.slice(i);
+  return a.slice(i + 1) === b.slice(i + 1)
+    || (a[i] === b[i + 1] && a[i + 1] === b[i] && a.slice(i + 2) === b.slice(i + 2));
+}
+function normaliseQuery(text: string) {
+  return text.replace(/[a-z]+/gi, original => {
+    const word = original.toLowerCase();
+    if (word === "fess") return "fees";
+    if (word.length < 4 || fillers.has(word) || counts.has(word) || serviceWords.includes(word)) return original;
+    const candidates = serviceWords.filter(target => oneLetterApart(word, target));
+    return candidates.length === 1 ? candidates[0] : original;
+  });
+}
+
+const byHref = new Map<string, Source>();
+for (const { source } of docs) if (!byHref.has(source.href)) byHref.set(source.href, source);
+
+type StudentTask = "visit" | "virtual" | "buddy" | "scholarship" | "application";
+function studentTask(text: string): StudentTask | undefined {
+  if (/\b(?:virtual|360|online|remotely|from home)\b/i.test(text) && /\b(?:tour|walkthrough|explore|visit)\b/i.test(text)) return "virtual";
+  if (/\b(?:campus budd(?:y|ies)|(?:fresher|newcomer|peer) (?:buddy|mentor)|buddy (?:program(?:me)?|match))\b/i.test(text)
+    || (/\bseniors?\b/i.test(text) && /\b(?:show me around|before (?:classes|college) start|first (?:day|week)|as a fresher|pair(?:ed)? with|mentor(?:ing)?)\b/i.test(text))) return "buddy";
+  if (/\b(?:scholarships?|fee waivers?|financial (?:aid|assistance))\b/i.test(text)) return "scholarship";
+  if (/\b(?:campus (?:visits?|tours?|entry pass)|campus visitor|(?:visit|tour|see) (?:the |your |our )?campus|visit (?:srm(?:ist)?|ktr|kattankulathur|ramapuram|vadapalani|trichy|tiruchirappalli)|(?:visitor|visit|visitor.s) pass)\b/i.test(text)
+    && !/\b(?:directions|address|how (?:do|can) i (?:reach|get to)|hostel visiting|visiting hours)\b/i.test(text)) return "visit";
+  if (/\b(?:srmjeee|b[. -]?tech|entrance exam)\b/i.test(text)
+    && /\b(?:apply|application|register|upload|documents?|photograph|signature)\b/i.test(text)
+    && !/\b(?:nri|international|foreign|deadline|dates?|contacts?|email|phone|fees?|refund\w*|eligib\w*)\b/i.test(text)) return "application";
+}
+
+function taskSources(question: string, lastQuestion: string): Source[] | undefined {
+  if (/^(?:(?:what|which) (?:courses?|degrees?|programmes?) (?:does srm(?:ist)? offer|are (?:available|offered)(?: at srm(?:ist)?)?)|(?:open|browse|show me) (?:the )?(?:programme|course) directory)[?!. ]*$/i.test(question.trim())) {
+    const directory = byHref.get(routes.programmes.href);
+    if (directory) return [directory];
+  }
+  let task = studentTask(question);
+  const previous = lastQuestion && studentTask(lastQuestion);
+  if (!task && previous) {
+    // A switch to a named service or programme should outrank an earlier task.
+    if (/\b(?:hostels?|placements?|wi[ -]?fi|clubs?|nri|international|portal|attendance|timetable|grades?|exams?|library login|b[. -]?tech|medical|mba|phd|courses?|programmes?)\b/i.test(question)) return;
+    if (previous === "visit" && (/\b(?:slot|availability|available|weekend|tomorrow|pass|documents?|meeting|meet|reschedule|cancel|bring|itinerary|how long|join me|step.free)\b/i.test(question)
+      || /\b(?:come|take|bring|bring along|attend|accompany|join|with)\b.{0,22}\b(?:parents?|family)\b|\b(?:parents?|family)\b.{0,16}\b(?:join|attend|come|accompany)\b/i.test(question))) task = previous;
+    if (previous === "buddy" && /\b(?:meet|meeting|senior|language|match|pair|walk|checklist|withdraw)\b/i.test(question)) task = previous;
+    if (previous === "scholarship" && /\b(?:renew\w*|documents?|apply|eligib\w*|cover\w*|cgpa)\b/i.test(question)) task = previous;
+    if (previous === "application" && /\b(?:documents?|upload|photos?|signature|records|register)\b/i.test(question)) task = previous;
+  }
+  let href: string;
+  if (task === "visit") {
+    href = routes.campusVisit.href;
+    if (/\b(?:pass|qr|id|documents?|meeting|where do we meet|reschedul\w*|cancel\w*|bring|step.free|arriv\w*)\b/i.test(question)
+        && !/\b(?:parents?|family|children|friends?)\b/i.test(question)) href += "#before-arrival";
+    else if (/\b(?:itinerary|how long|duration|what (?:will|can) (?:we|i) see)\b/i.test(question)) href += "#itinerary";
+  } else if (task === "virtual") href = tourUrl;
+  else if (task === "buddy") href = routes.buddy.href;
+  else if (task === "application") {
+    href = routes.apply.href + (/\b(?:documents?|upload|photos?|photograph|signature|records)\b/i.test(question) ? "#prepare" : "");
+  } else if (task === "scholarship") {
+    const specific = terms(question + (previous === "scholarship" ? " " + lastQuestion : "")).filter(word =>
+      !["scholarship", "based", "ward", "srm", "concession", "reference"].includes(word));
+    const award = docs.find(({source,title}) => source.href.startsWith(routes.scholarships.href + "#")
+      && !source.href.endsWith("#apply") && title.some(word => specific.includes(word)));
+    href = award?.source.href ?? routes.scholarships.href + (/\b(?:renew\w*|documents?|apply|applying)\b/i.test(question) ? "#apply" : "");
+  } else return;
+  const source = byHref.get(href);
+  return source ? [source] : undefined;
+}
+
 const campusWords = new Set(["kattankulathur", "ramapuram", "vadapalani", "tiruchirappalli",
   "ncr", "acharapakkam", "baburayanpettai", "haryana", "ap", "sikkim"]);
 const contactIntents = new Set(["contact", "call", "phone", "telephone", "email", "helpline"]);
@@ -106,8 +184,18 @@ const generalContactTerms = new Set([...contactIntents, "general", "main", "numb
 const courseIntents = new Set(["fee", "eligibility", "duration", "semester", "tuition"]);
 const researchIntents = new Set(["research", "facility", "laboratory", "centre", "equipment", "instrument"]);
 
-function rankSources(current: string[], prior: string[]) {
+// A shared action such as booking or paying a fee is insufficient evidence
+// for the object of that action. Require a matching subject when one is given.
+const generalSearchWords = new Set([
+  "fee", "cost", "booking", "slot", "available", "availability", "eligibility", "duration",
+  "admission", "application", "registration", "apply", "service", "option", "detail", "help",
+  "office", "contact", "where", "get", "book", "find", "any", "campus", "number",
+]);
+
+function rankSources(current: string[], prior: string[], candidates = docs) {
   if (!current.length && !prior.length) return [];
+  const subjects = new Set(current.filter(word => !generalSearchWords.has(word)));
+  const asksFee = current.includes("fee");
   const weights = [...current, ...prior].map((word, i) => ({
     word,
     prior: i >= current.length,
@@ -120,11 +208,14 @@ function rankSources(current: string[], prior: string[]) {
   const hasCourseIntent = [...current, ...prior].some(w => courseIntents.has(w));
   const hasResearchIntent = current.some(w => researchIntents.has(w));
   const familyQuestion = [...current, ...prior].some(w => ["parent", "guardian", "child", "son", "daughter", "parentconnect"].includes(w));
-  return docs
+  return candidates
     .map((doc) => {
       let score = 0,
         hits = 0;
       let distinctiveMatch = false;
+      let subjectHits = 0;
+      let subjectInTitleOrTags = false;
+      let feeHit = false;
       for (const { word, weight, prior } of weights) {
         let strength = 0;
         if (doc.title.includes(word)) strength = 7;
@@ -136,7 +227,14 @@ function rankSources(current: string[], prior: string[]) {
         if (strength > 2 || (counts.get(word) ?? 0) < docs.length / 12)
           distinctiveMatch = true;
         score += weight * strength;
-        if (!prior) hits++;
+        if (!prior) {
+          hits++;
+          if (subjects.has(word) && (strength !== 3 || word.length > 3)) {
+            subjectHits++;
+            if (strength >= 4) subjectInTitleOrTags = true;
+          }
+          if (word === "fee") feeHit = true;
+        }
       }
       // A complete title is a better destination than a catalogue entry mentioning the same words.
       if (doc.title.length && doc.title.every((t) => current.includes(t)))
@@ -153,6 +251,9 @@ function rankSources(current: string[], prior: string[]) {
       if (hasResearchIntent && doc.source.section === "Research") score *= 1.8;
       if (doc.source.section === "Parents" && !familyQuestion) score *= 0.64;
       if (doc.source.section === "Course details" && hasResearchIntent && !hasCourseIntent) score *= 0.65;
+      if (subjects.size && !subjectHits) score = 0;
+      if (subjects.size > 1 && subjectHits < 2 && !subjectInTitleOrTags && !prior.length) score = 0;
+      if (asksFee && !feeHit && !prior.length) score = 0;
       const coverage = hits / Math.max(1, current.length);
       return {
         doc,
@@ -173,10 +274,15 @@ const tasters = candidates.map(({course, topics, example}) => ({
 }));
 
 function isCourseChoice(question: string) {
-  return /\b(?:(?:torn|choos(?:e|ing)|decid(?:e|ing)) between|my interests|what (?:course|programme|should i study)|which (?:course|programme|degree|branch).*(?:fit|suit|pick|choose|right for)|recommend (?:a |an |some )?(?:course|degree|programme))\b/i.test(question);
+  const previousFinderName = /^(?:(?:open|start|try|show me) (?:the )?)?["“']?find your direction["”']?(?: quiz| page)?[.?!]*$/i;
+  const choosingStream = /\b(?:what|which) (?:stream|subjects?) (?:should|can|could|do) i (?:take|pick|choose|study)\b/i;
+  if (/\b(?:what|which) (?:courses?|degrees?|programmes?|streams?) (?:should|could|can) i (?:take|choose|pick|study)\b/i.test(question)) return true;
+  if (/\b(?:not sure|don.t know|undecided|confused)\b.{0,35}\b(?:what to (?:study|choose|pick)|which (?:course|degree|stream|subject))\b/i.test(question) || previousFinderName.test(question.trim()) ||
+      (choosingStream.test(question) && /\b(?:class 10(?:th)?|10th|tenth standard)\b/i.test(question))) return true;
+  return /\b(?:(?:torn|choos(?:e|ing)|decid(?:e|ing)) between|my interests|what should i study|which (?:course|programme|degree|branch).*(?:fits?|suits?|pick|choose|right for)|recommend (?:a |an |some )?(?:course|degree|programme))\b/i.test(question);
 }
 
-function courseSuggestions(question: string, ranked: ReturnType<typeof rankSources>): Source[] {
+function courseSuggestions(question: string): Source[] {
   const interests = terms(question.replace(/coding|programming/gi, "software computer science")
     .replace(/drawing|sketching/gi, "design").replace(/biology/gi, "life health"));
   const matches = tasters.map(taster => ({
@@ -192,11 +298,10 @@ function courseSuggestions(question: string, ranked: ReturnType<typeof rankSourc
   });
   const finder = docs.find(({source}) => source.href === routes.finder.href)!.source;
   const results = [...new Set([...varied, ...matches])].slice(0, 3).map(({ taster }): Source => ({
-    title: taster.name, section: "Course finder", href: taster.href,
-    summary: "An illustrative undergraduate course-finder activity for " + taster.name + ": " + taster.example
-      + " This is an example of the work to try, not an assessed course requirement.",
+    title: taster.name, section: routes.finder.label, href: taster.href,
+    summary: "An activity you can try while exploring " + taster.name + ". " + taster.example,
   }));
-  return [finder, ...(results.length ? results : ranked.filter(({doc}) => doc.source.href !== finder.href).slice(0, 3).map(({doc}) => doc.source))];
+  return [finder, ...results];
 }
 
 function calendarSources(question: string): Source[] | undefined {
@@ -239,11 +344,43 @@ function namedCampus(question: string) {
 
 const campusTopics = /\b(?:fees?|tuition|costs?|eligib\w*|duration|admissions?|apply|courses?|programmes?|degrees?|b[ .-]?tech|m[ .-]?tech|ph\.?d|cse|engineering|medicine|hostels?|housing|rooms?|accommodation|clubs?|placements?|labs?|laborator\w*|facilit\w*|travel|visits?|tour)\b/i;
 
+const placementPages: Source[] = [
+  ...[hiringEvidence, taskEvidence].map(item => ({
+    title: item.label, href: item.href, summary: item.summary, section: "AI and campus hiring",
+  })),
+  { title: "Check placement figures for your course", href: "/career-centre#support", section: "Career Centre",
+    summary: placementScope + " Ask your campus placement office how many students sought placements and how many were placed in the last two batches." },
+];
+
+function asksAboutAIPlacementImpact(question: string, history: string) {
+  // A named AI/ML degree and a question about its placement record are a
+  // different lookup. Look for an effect of the technology on hiring.
+  const q = question.replace(/\bai\s*[\/&-]\s*ml\b/gi, "the degree");
+  const ai = /\b(?:ai|genai|artificial intelligence|automation|chatgpt)\b/i;
+  const work = /\b(?:place?ments?|placed|hir(?:e|ed|ing)|recruit(?:ers?|ing|ment)?|jobs?|offers?|employability)\b/i;
+  const change = /\b(?:affect\w*|affract|impact\w*|effect|chang(?:e[ds]?|ing)|influenc\w*|replac\w*|disrupt\w*|reduc\w*|risk\w*|threat\w*|hurt|cut|lose|eliminat\w*|take (?:away|over)|taking (?:away|over)|because of|due to)\b/i;
+  if (ai.test(q) && work.test(q)) {
+    return change.test(q) || /^(?:ai (?:and|&) (?:campus )?(?:placements?|hiring)|(?:campus )?placements? (?:and|&) ai)[?.! ]*$/i.test(q.trim());
+  }
+  if (ai.test(q) && work.test(history)) return change.test(q) || /^(?:and |what about |how about )(?:generative )?ai[?.! ]*$/i.test(q.trim());
+  return work.test(q) && change.test(q) && /\b(?:it|that|this)\b/i.test(q) && ai.test(history);
+}
+
 export function retrieveQuestion(question: string, history: ChatMessage[]): {
   query: string; sources: Source[]; overview?: string;
 } {
+  question = normaliseQuery(question);
+  const context = normaliseQuery(topicContext(history));
+  const previousQuestion = normaliseQuery(history.findLast(turn => turn.role === "user")?.content ?? "");
+  const task = taskSources(question, previousQuestion);
+  if (task) {
+    // The preparation page hands off to the official portal. Only quote the verified
+    // upload guidance; the portal controls its own field names and current limits.
+    const overview = task[0].href === routes.apply.href + "#prepare" ? task[0].summary : undefined;
+    return { query: question, sources: task, overview };
+  }
   const campus = namedCampus(question);
-  const context = topicContext(history);
+  if (asksAboutAIPlacementImpact(question, context)) return { query: question, sources: placementPages, overview: placementOverview };
   if (!campus) return { query: question, sources: findSources(question, context) };
 
   const previousTopic = history.findLast(turn => turn.role === "user" && !namedCampus(turn.content));
@@ -265,8 +402,16 @@ export function retrieveQuestion(question: string, history: ChatMessage[]): {
 }
 
 export function findSources(question: string, previous = ""): Source[] {
+  question = normaliseQuery(question);
+  previous = normaliseQuery(previous);
+  const task = taskSources(question, "");
+  if (task) return task;
   const calendar = calendarSources(question);
   if (calendar) return calendar;
+  // An explicit change of applicant category or campus service starts a new
+  // lookup. A bare campus name or fee question can still refine the prior topic.
+  if ((/\b(?:domestic|indian (?:student|applicant))\b/i.test(question) && /\b(?:international|nri|foreign)\b/i.test(previous))
+    || (studentTask(previous) && /\b(?:hostels?|dorms?|parent portal|attendance|research instrument|campus recruiters?)\b/i.test(question))) previous = "";
   const current = queryTerms(question);
   const explicitCampuses = current.filter(w => campusWords.has(w));
   // A new campus replaces the earlier one. Other topic words can carry forward.
@@ -277,8 +422,7 @@ export function findSources(question: string, previous = ""): Source[] {
     const general = docs.find(({ source }) => source.href === routes.contact.href);
     if (general) return [general.source];
   }
-  const ranked = rankSources(current, prior);
-  if (isCourseChoice(question)) return courseSuggestions(question, ranked);
+  if (isCourseChoice(question)) return courseSuggestions(question);
   // SRM publishes international fees separately. A domestic amount is never
   // supporting evidence for an NRI applicant's bill, even for the same degree.
   const admissionContext = question + " " + previous;
@@ -292,6 +436,7 @@ export function findSources(question: string, previous = ""): Source[] {
       return contact ? [contact.source, gateway.source] : [gateway.source];
     }
   }
+  const ranked = rankSources(current, prior);
   if (!ranked.length) return [];
 
   const sources: Source[] = [];
@@ -308,9 +453,9 @@ export function findSources(question: string, previous = ""): Source[] {
     // the first campus's programme isn't listed at the second campus.
     let comparisonProgramme: string | undefined;
     for (const campus of explicitCampuses.slice(0, 3)) {
-      const campusResult = rankSources(current.filter(w => !campusWords.has(w) || w === campus), prior)
-        .find(({ doc }) => doc.source.section === "Course details" && doc.title.includes(campus)
-          && (!comparisonProgramme || doc.source.title.split(" · ")[0] === comparisonProgramme));
+      const eligible = docs.filter(doc => doc.source.section === "Course details" && doc.title.includes(campus)
+        && (!comparisonProgramme || doc.source.title.split(" · ")[0] === comparisonProgramme));
+      const [campusResult] = rankSources(current.filter(w => !campusWords.has(w) || w === campus), prior, eligible);
       if (campusResult) {
         comparisonProgramme ??= campusResult.doc.source.title.split(" · ")[0];
         add(campusResult.doc.source);
@@ -318,8 +463,8 @@ export function findSources(question: string, previous = ""): Source[] {
     }
     if (sources.length > 1) add({
       title: "Compare these programme listings", section: "Fees & eligibility",
-      href: "/programmes/fees?compare=" + sources.map(s => s.href.split("/").pop()).join(","),
-      summary: "The fee comparison opens with these listings selected: " + sources.map(s => s.title).join("; ") + ".",
+      href: routes.compare.href + "?compare=" + sources.map(s => s.href.split("/").pop()).join(","),
+      summary: "Compare the study paths, career evidence and fees for " + sources.map(s => s.title).join("; ") + ".",
     });
   }
   for (const { doc, score } of ranked) {

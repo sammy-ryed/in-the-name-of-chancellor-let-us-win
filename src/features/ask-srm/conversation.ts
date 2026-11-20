@@ -29,7 +29,12 @@ export function parseConversation(body: unknown) {
     if (containsSecret(message.content) || instructionAttack.test(message.content)) continue;
     messages.push({ role: message.role, content: redactContact(message.content.trim()) });
   }
-  return { query, mode: input.mode, history: messages };
+  // Only a public route and public course identifiers are relevant to search.
+  // Discard query strings, pass tokens and arbitrary user-supplied page content.
+  const page = typeof input.page === "string" && /^\/(?:[a-z0-9-]+(?:\/[a-z0-9-]+){0,2})?$/.test(input.page) && input.page.length <= 80 ? input.page : "";
+  const compare = page === "/programmes/compare" && typeof input.compare === "string" && input.compare.length <= 35
+    && /^(?:[a-f0-9]{11})?(?:,(?:[a-f0-9]{11})?){0,2}$/.test(input.compare) ? input.compare : "";
+  return { query, mode: input.mode, history: messages, page, compare } as const;
 }
 
 export function redactContact(text: string): string {
@@ -49,6 +54,12 @@ export function localReply(question: string): SearchResponse | null {
   }
   if (instructionAttack.test(question)) {
     return reply("I can help with public SRM information. What would you like to know about studying here or using a campus service?");
+  }
+  if (/\bmy\s+(?:(?:srmjeee|b[. -]?tech|admissions?)\s+)?application\s+status\b|\btrack\s+my\s+(?:admission\s+)?application\b/i.test(question)) {
+    return reply("Check your status in the applicant portal you used to register. Open your programme’s application route and choose Login with your registered account.", [{
+      title: "Find your applicant portal", href: "/admissions/apply#application-form", section: "Admissions",
+      summary: "Choose B.Tech, another domestic programme, or international admissions to continue to the corresponding portal.",
+    }]);
   }
   if (personalRecord.test(question)) {
     const parent = /\b(?:child|daughter|son)\b/i.test(question);
@@ -80,6 +91,6 @@ export function sourceGuide(sources: Source[]): SearchResponse {
   return {
     kind: "guide",
     sources,
-    answer: "The AI overview is unavailable. Here’s the closest SRM guide.\n\n" + sources[0].summary.slice(0, 1100),
+    answer: sources[0].summary.slice(0, 1100),
   };
 }

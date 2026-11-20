@@ -19,6 +19,14 @@
 .details p { max-width: 65ch; }
 .details a, .fees a { font-weight: 650; text-underline-offset: .22em; }
 .details a:hover { color: var(--color-secondary); }
+.placementNote { border-block: 1px solid var(--border-strong); padding-block: .35rem; }
+.placementNote summary { min-height: 44px; cursor: pointer; padding-block: .55rem; font: 600 1.1rem/1.45 var(--font-primary); }
+.placementNote summary:focus-visible { outline: 3px solid var(--color-secondary); outline-offset: 2px; }
+.placementNote p { line-height: 1.55; }
+.placementNote dd { font-weight: 450; line-height: 1.5; }
+@media (max-width: 760px) {
+  .details .placementNote dl div { grid-template-columns: 1fr; gap: .2rem; }
+}
 .fees { background: var(--color-primary-dark); color: white; border-top: .32rem solid var(--color-amber); padding: clamp(1.35rem, 2.5vw, 2.3rem); overflow-wrap: anywhere; }
 .fees h2 { margin: 0; color: var(--color-gold-light); font: 700 .9rem/1.4 var(--font-nav); }
 .fees p { margin: 1.1rem 0 0; line-height: 1.5; }

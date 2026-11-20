@@ -18,7 +18,7 @@ export type Entry = Source & { keywords?: string };
 const sectionNotes: Record<string, string> = {
   [routes.contact.label]: "For general university enquiries call " + generalContact.phone.label + " or email " + generalContact.email + ". The Contact us directory also lists admissions, student services, careers and alumni offices.",
   Programmes:
-    "Search the SRM programme finder by degree, campus, faculty or department.",
+    "Browse the programme directory by degree, campus, faculty or department.",
   "Campus life":
     "Explore clubs, hostel blocks, dining, culture and directions around campus.",
   Students:
@@ -107,7 +107,7 @@ export const universityOverview: Entry[] = [
     href: "https://www.srmist.edu.in/",
     keywords: "university introduction about full name stands for",
     summary:
-      "SRMIST stands for SRM Institute of Science and Technology. Its main campus is in Kattankulathur, Tamil Nadu. The programme finder lists degrees across its faculties and campuses.",
+      "SRMIST stands for SRM Institute of Science and Technology. Its main campus is in Kattankulathur, Tamil Nadu. The programme directory lists degrees across its faculties and campuses.",
   },
 ];
 
@@ -140,10 +140,10 @@ const guides: Entry[] = [
   {
     title: "Apply for B.Tech / SRMJEEE",
     section: "Admissions",
-    href: "/admissions#apply",
+    href: routes.apply.href,
     keywords: "apply register application",
     summary:
-      "Open the official B.Tech application from How to apply. Other faculties have their own admissions routes.",
+      "The SRMJEEE application guide links to the official B.Tech applicant portal. Register there, prepare the required documents, pay the application fee and submit through the portal. Other faculties have their own admissions routes.",
   },
   {
     title: "SCORE student app",
@@ -187,11 +187,11 @@ const guides: Entry[] = [
 ];
 
 export function catalogue(): Entry[] {
-  const guideSummaries = new Map(guides.map(guide => [guide.href, guide.summary]));
+  const pages = [...guides, ...siteGuides()];
+  const guideSummaries = new Map(pages.map(guide => [guide.href, guide.summary]));
   return [
     ...universityOverview,
-    ...guides,
-    ...siteGuides(),
+    ...pages,
     ...[...navigation, ...services].map((item) => ({
       title: item.label,
       section: item.label,
@@ -237,7 +237,7 @@ export function catalogue(): Entry[] {
       })),
     ),
     ...courses.map((c): Entry => {
-      const { fee, period } = programmeFee(c);
+      const { fee, period, amount, conflict } = programmeFee(c);
       const qualifiers = [c.mode, c.shift].filter(Boolean).join(", ");
       return {
         title: c.degree + " " + c.name + " · " + c.campus + (qualifiers ? " · " + qualifiers : ""),
@@ -247,6 +247,8 @@ export function catalogue(): Entry[] {
           c.degree + " " + c.name + " · " + c.campus + " · " + qualifiers + ".",
           "Domestic fee listing — " + period + ": " + fee + ".",
           period === "Listed fee" && "The billing period is unspecified.",
+          conflict && "Fee sources differ. " + conflict,
+          amount === null && "Confirm conditions before comparing amounts.",
           c.duration && "Duration: " + c.duration + ".",
           c.notes,
           criteria(c),
@@ -259,7 +261,7 @@ export function catalogue(): Entry[] {
       const campus = campuses.map(c => c.label).join(", ");
       return {
         title: p.name,
-        section: "Programme Finder",
+        section: "Programme directory",
         href: p.url,
         summary: [p.name, p.level.join(" / "), campus, p.duration].filter(Boolean).join(" · ")
           + ". Open the official programme page for its published details.",

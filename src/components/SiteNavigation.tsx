@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ComponentProps } fro
 import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import Accessibility from "./Accessibility";
+import AskSRM from "@/features/ask-srm/AskSRM";
 import { HomeLogo } from "./HomeLogo";
 import { navigation, services, tourUrl, type NavItem } from "@/lib/navigation";
 
@@ -34,7 +35,12 @@ function MenuLink({ href, close, children, ...props }: MenuLinkProps) {
   );
 }
 
-type MenuProps = { pathname: string; currentSection?: NavItem; close: () => void };
+type MenuProps = {
+  pathname: string;
+  currentSection?: NavItem;
+  close: () => void;
+  searchSlot: (element: HTMLDivElement | null) => void;
+};
 
 function QuickLinks({ pathname, close }: Pick<MenuProps, "pathname" | "close">) {
   return (
@@ -55,7 +61,7 @@ function currentState(item: NavItem, pathname: string, section?: NavItem) {
   if (item === section) return "location" as const;
 }
 
-function PhoneMenu({ pathname, currentSection, close }: MenuProps) {
+function PhoneMenu({ pathname, currentSection, close, dismiss, searchSlot }: MenuProps & { dismiss: () => void }) {
   const [section, setSection] = useState<NavItem | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const sectionTrigger = useRef<string | null>(null);
@@ -71,8 +77,9 @@ function PhoneMenu({ pathname, currentSection, close }: MenuProps) {
         {section ? <button className="s-phone-back" type="button" onClick={() => setSection(null)}>
           <span aria-hidden="true">←</span> All pages
         </button> : <h2>Site menu</h2>}
-        <button type="button" className="s-phone-close" onClick={close} aria-label="Close menu">×</button>
+        <button type="button" className="s-phone-close" onClick={dismiss} aria-label="Close menu">×</button>
       </header>
+      <div ref={searchSlot} className="s-menu-search-slot" />
       {section ? (
         <nav key={section.href} className="s-phone-pages" aria-label={section.label + " pages"}>
           <h2 ref={heading} tabIndex={-1}>{section.label}</h2>
@@ -108,7 +115,7 @@ function PhoneMenu({ pathname, currentSection, close }: MenuProps) {
   );
 }
 
-function DesktopMenu({ pathname, currentSection, close }: MenuProps) {
+function DesktopMenu({ pathname, currentSection, close, searchSlot }: MenuProps) {
   const nested = currentSection?.children?.some(link => link.href === pathname) ? currentSection.label : null;
   const [section, setSection] = useState<string | null>(nested);
   const [wide, setWide] = useState(Boolean(nested));
@@ -128,6 +135,7 @@ function DesktopMenu({ pathname, currentSection, close }: MenuProps) {
     <>
       <div className="s-menu-rail"><button type="button" aria-label="Close menu" onClick={close}>×</button></div>
       <div className="s-menu-sheet" data-expanded={wide ? "" : undefined}>
+        <div ref={searchSlot} className="s-menu-search-slot" />
         <nav className="s-menu-nav" aria-label="Main destinations">
           <ul className="s-menu-main">
             {navigation.map(item => {
@@ -176,7 +184,14 @@ export function SiteNavigation() {
   const panel = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   const [touchMenu, setTouchMenu] = useState(false);
+  const [searchSlot, setSearchSlot] = useState<HTMLDivElement | null>(null);
   const close = () => panel.current?.close();
+  const dismiss = () => {
+    const dialog = panel.current;
+    if (!dialog?.open) return;
+    if (typeof dialog.requestClose === "function") dialog.requestClose();
+    else if (dialog.dispatchEvent(new Event("cancel", { cancelable: true }))) dialog.close();
+  };
 
   useLayoutEffect(() => {
     if (open && !panel.current?.open) panel.current?.showModal();
@@ -194,6 +209,7 @@ export function SiteNavigation() {
 
   return (
     <>
+      <AskSRM menuSlot={searchSlot} closeMenu={close} />
       <aside className="s-rail" aria-label="Site controls" ref={rail => {
         if (rail) rail.dataset.menuReady = "";
       }}>
@@ -221,10 +237,10 @@ export function SiteNavigation() {
       </aside>
       <dialog id="srm-menu" ref={panel} aria-label="Main navigation" className="s-menu"
         onClose={() => { if (!panel.current?.open) setOpen(false); }}
-        onClick={event => { if (event.target === panel.current) close(); }}>
+        onClick={event => { if (event.target === panel.current) dismiss(); }}>
         {open && (touchMenu
-          ? <PhoneMenu pathname={pathname} currentSection={currentSection} close={close} />
-          : <DesktopMenu pathname={pathname} currentSection={currentSection} close={close} />)}
+          ? <PhoneMenu dismiss={dismiss} searchSlot={setSearchSlot} pathname={pathname} currentSection={currentSection} close={close} />
+          : <DesktopMenu searchSlot={setSearchSlot} pathname={pathname} currentSection={currentSection} close={close} />)}
       </dialog>
     </>
   );

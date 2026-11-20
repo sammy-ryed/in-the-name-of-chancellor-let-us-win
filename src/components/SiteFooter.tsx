@@ -52,10 +52,10 @@ const social = [
 
 const groups: FooterGroup[] = [
   { title: "Explore SRM", links: [routes.home, routes.programmes, routes.campus, routes.festivals,
-    routes.clubs, routes.housing, routes.news, routes.events,
+    routes.buddy, routes.clubs, routes.housing, routes.news, routes.events,
     { label: "Academics", href: srm + "/about-us/academic-heads/" }, { label: "Research", href: srm + "/research/" }] },
-  { title: "Study & apply", links: [routes.admissions, routes.india, routes.international,
-    routes.finder, routes.fees, routes.exam, routes.apply,
+  { title: "Study & apply", links: [routes.admissions, routes.india, routes.international, routes.campusVisit,
+    routes.finder, routes.compare, routes.fees, routes.exam, routes.apply,
     { label: "Admissions enquiry", href: "/admissions#enquiry" }] },
   { title: "Our community", links: [routes.students, routes.parents, routes.portals, routes.score,
     routes.alumni, routes.photos, routes.reunions, routes.graduates, { label: "Student portal", href: studentPortal }] },

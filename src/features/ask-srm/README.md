@@ -2,7 +2,7 @@
 
 The shared launcher opens university search from any route. On phones the launcher retracts to the SRM crest. Ctrl/Cmd + K opens the search field. The panel loads on first use.
 
-Typing looks up matching pages in the local index. Submit a search for an AI overview alongside those pages. Editing and submitting the field starts an independent search. “Ask a follow-up” refines the current result using up to four previous exchanges. Search context stays in memory across the site's links. Clear search or refresh to start over.
+Typing looks up matching pages in the local index. A completed local answer opens immediately on submit. For questions that need AI, students can read the matching guide excerpts while the overview is being written. The follow-up field and suggested replies sit under the answer and use up to four previous exchanges. New search starts a separate conversation. After opening a result, you can start a search about the new page or resume the previous conversation with its original course context. Conversations stay in memory until you clear the search or refresh.
 
 ## Connect Groq
 
@@ -20,7 +20,7 @@ Common greetings, private-record requests and obvious credentials have local res
 
 ## API and maintenance
 
-`POST /api/ask-srm` accepts `{ mode: "search" | "ask", query, history? }`. History entries have a `user` or `assistant` role and a plain-text `content` field. The legacy `previous` question is also supported. Responses include `kind`, `sources` and an optional plain-text `answer`.
+`POST /api/ask-srm` accepts `{ mode: "search" | "ask", query, history? }`. History entries have a `user` or `assistant` role and a plain-text `content` field. The legacy `previous` question is also supported. The client may send a public `page` pathname and, on `/programmes/compare`, the visible A/B/C course IDs in `compare`. The server resolves those IDs against the course catalogue. URL query strings, booking tokens and quiz answers are excluded from page context. Responses include `kind`, `sources`, and optionally a plain-text `answer` and `suggestions` for follow-up questions. A search response can include `resolved` when the server already has a complete local answer. The client reuses it only for the same question and page context.
 
 Each running instance admits up to three simultaneous Groq requests and 15 per minute, including second lookups. On Vercel, each verified client IP can use at most eight of those calls per window. Counts stay in process memory. Multiple instances have independent limits. The directory remains available during bursts.
 

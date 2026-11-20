@@ -2,20 +2,27 @@
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { addToShortlist, readShortlist, writeShortlist } from "@/features/explore/shortlist";
+import { useShortlist } from "@/features/explore/useShortlist";
+import { DirectoryComparison, type ComparisonPanel } from "./DirectoryComparison";
+import { rememberPosition, type BrowsePosition } from "./browse-position";
+import { routes } from "@/lib/navigation";
+import { applicantCounts, applicantEdition, applicantSource } from "./applicants";
 import { ProgrammeMasthead } from "./ProgrammeMasthead";
 import { groupStudyAreas } from "./studyAreas";
 import { AreaGallery } from "./AreaGallery";
 import { ActiveChips, ChoiceList, Icon, SearchBox, SelectField, SortSelect, type ActiveChip } from "./controls";
 import { activeCount, buildIndex, campusIndex, facetCounts, filterProgrammes, sortProgrammes } from "./filter";
 import { ProgrammeRow, type RowLabels } from "./ProgrammeRow";
-import { emptyFilters, sortOptions, type FinderData, type Filters, type SortKey } from "./types";
+import { emptyFilters, sortOptions, type FinderData, type Filters, type Programme, type SortKey } from "./types";
 
 const PAGE = 12;
 const fmt = (n: number) => n.toLocaleString("en-IN");
 
-export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = false }: {
+export function ProgrammeFinder({ data: catalogue, initial, saved, areaId, browseAll = false }: {
   data: FinderData;
   initial?: Partial<Filters>;
+  saved?: BrowsePosition;
   areaId?: string | null;
   browseAll?: boolean;
 }) {
@@ -36,8 +43,45 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
     };
   }, [area, catalogue]);
   const [filters, setFilters] = useState<Filters>({ ...emptyFilters, ...initial });
-  const [selectedSort, setSort] = useState<SortKey>();
-  const [limit, setLimit] = useState(PAGE);
+  const [selectedSort, setSort] = useState<SortKey | undefined>(saved?.sort);
+  const [limit, setLimit] = useState(saved?.limit ?? PAGE);
+  const slots = useShortlist();
+  const [panel, setPanel] = useState<ComparisonPanel>(null);
+  const [announcement, announce] = useState("");
+  const lastRow = useRef("");
+  useEffect(() => {
+    if (!saved) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(saved.focus)?.focus({ preventScroll: true });
+      window.scrollTo({ top: saved.scroll, behavior: "instant" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [saved]);
+  const rememberBrowse = (focus = lastRow.current) => {
+    const row = document.getElementById(focus);
+    const top = row?.getBoundingClientRect().top;
+    rememberPosition({ search: saved?.search ?? window.location.search, filters, sort: selectedSort, limit,
+      scroll: window.scrollY, focus: top !== undefined && top >= 0 && top < window.innerHeight ? focus : "pf-review" });
+  };
+  const toggleCourse = (id: string) => {
+    const current = readShortlist();
+    const slot = current.indexOf(id);
+    if (slot < 0 && current.every(Boolean)) {
+      announce("All three places are filled. Remove one to add another course.");
+      setPanel("shortlist");
+      return;
+    }
+    const next = slot < 0 ? addToShortlist(current, id) : current.map(value => value === id ? "" : value);
+    writeShortlist(next);
+    const course = catalogue.compareCourses.find(c => c.id === id);
+    announce(slot >= 0 ? `Removed ${course?.title} from your comparison.`
+      : `Added ${course?.title} to slot ${String.fromCharCode(65 + next.indexOf(id))}.`);
+  };
+  const chooseProgramme = (programme: Programme) => {
+    lastRow.current = "pf-choose-" + programme.id;
+    if (programme.feeCourseId) toggleCourse(programme.feeCourseId);
+    else setPanel(programme);
+  };
   const [sheetOpen, setSheetOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const sheet = useRef<HTMLDialogElement>(null);
@@ -108,7 +152,7 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
-      if (sheet.current?.open || e.key !== "/" || e.metaKey || e.ctrlKey || t.closest("input, textarea, select, [contenteditable]")) return;
+      if (document.querySelector("dialog[open]") || e.key !== "/" || e.metaKey || e.ctrlKey || t.closest("input, textarea, select, [contenteditable]")) return;
       e.preventDefault();
       searchRef.current?.focus();
     };
@@ -116,7 +160,7 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Phone filter sheet: lock page scroll, focus its close button, Escape closes.
+  // Keep keyboard focus inside the native filter dialog while it is open.
   useEffect(() => {
     if (!sheetOpen) return;
     const html = document.documentElement;
@@ -125,18 +169,15 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
     const dialog = sheet.current;
     dialog?.showModal();
     sheetClose.current?.focus();
-    const desktop = window.matchMedia("(min-width: 961px)");
-    const onResize = () => { if (desktop.matches) setSheetOpen(false); };
-    desktop.addEventListener("change", onResize);
     return () => {
       dialog?.close();
       html.style.overflow = before;
-      desktop.removeEventListener("change", onResize);
     };
   }, [sheetOpen]);
   const closeSheet = () => setSheetOpen(false);
 
-  const shown = results.slice(0, limit);
+  const showPopular = !area && !browseAll && active === 0 && sort === "applications";
+  const shown = showPopular ? results.filter(p => applicantCounts.has(p.id)).slice(0, 3) : results.slice(0, limit);
   const total = data.programmes.length;
 
   const filterControls = (
@@ -211,7 +252,7 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
       </div>
       <div className="pf-sheet-foot">
         <button type="button" className="pf-btn pf-btn-primary" onClick={closeSheet}>
-          Show {fmt(results.length)} {results.length === 1 ? "programme" : "programmes"}
+          {showPopular ? "Show most-applied courses" : `Show ${fmt(results.length)} ${results.length === 1 ? "programme" : "programmes"}`}
         </button>
       </div>
     </>
@@ -219,94 +260,96 @@ export function ProgrammeFinder({ data: catalogue, initial, areaId, browseAll = 
 
   return (
     <div className="pf">
-      <ProgrammeMasthead area={area} areas={areas} total={total} browseAll={browseAll}
-        hasFilters={active > 0} onBrowse={() => { if (active) clearAll(); }}>
+      <ProgrammeMasthead area={area} total={total} browseAll={browseAll}
+        onBrowse={() => { if (active) clearAll(); setSort(undefined); }}>
         <SearchBox value={filters.query} onChange={(value) => set("query", value)} inputRef={searchRef}
-          placeholder={area ? "Search this study area" : "Search by subject, degree or campus"} />
+          placeholder={area ? "Search this study area" : "Search courses or subjects"} />
       </ProgrammeMasthead>
-      {!area && !browseAll && active === 0 ? (
-        <AreaGallery areas={areas} total={catalogue.programmes.length} />
-      ) : (
-        <div className="pf-main pf-body">
-          {sheetOpen ? (
-            <dialog className="pf-refine" id="pf-refine" ref={sheet} aria-label="Programme filters"
-              onCancel={() => setSheetOpen(false)}>{filterControls}</dialog>
-          ) : (
-            <aside className="pf-refine" id="pf-refine" aria-label="Programme filters">{filterControls}</aside>
-          )}
+      <DirectoryComparison panel={panel} slots={slots} courses={catalogue.compareCourses} showBrowseAll={showPopular}
+        onReview={() => setPanel("shortlist")} onClose={() => setPanel(null)} onToggle={toggleCourse} onCompare={() => rememberBrowse()} />
+      <span className="pf-sr" role="status">{announcement}</span>
+      <dialog className="pf-refine" id="pf-refine" ref={sheet} aria-label="Programme filters"
+        onCancel={closeSheet}>{filterControls}</dialog>
 
-          {/* 3 — Results */}
-          <section className="pf-results" aria-labelledby="pf-results-title">
-            <div className="pf-toolbar">
+      <div className="pf-main pf-body" data-popular={showPopular || undefined}>
+        <section className="pf-results" aria-labelledby="pf-results-title">
+          <div className="pf-toolbar">
+            <div className="pf-toolbar-heading">
               <h2 id="pf-results-title" className="pf-result-count" aria-live="polite">
-                <strong>{fmt(results.length)}</strong> {results.length === 1 ? "programme" : "programmes"}
-                {active > 0 && <span> of {fmt(total)}</span>}
+                {showPopular ? "Most applied to" : <><strong>{fmt(results.length)}</strong> {results.length === 1 ? "programme" : "programmes"}
+                  {active > 0 && <span> of {fmt(total)}</span>}</>}
               </h2>
-              <div className="pf-toolbar-actions">
-                <button
-                  type="button"
-                  className="pf-btn pf-filters-btn"
-                  aria-controls="pf-refine"
-                  aria-expanded={sheetOpen}
-                  onClick={() => setSheetOpen(true)}
-                >
-                  <Icon name="filter" />
-                  Filters
-                  {refineActive > 0 && <span className="pf-badge">{refineActive}</span>}
-                </button>
-                <SortSelect<SortKey> value={sort} options={sortOptions} onChange={setSort} />
-              </div>
+              {showPopular && <p className="pf-ranking-source">Kattankulathur · <a href={applicantSource}>SRM’s {applicantEdition} disclosure</a></p>}
             </div>
+            <div className="pf-toolbar-actions">
+              <button
+                type="button"
+                className="pf-btn pf-filters-btn"
+                aria-controls="pf-refine"
+                aria-expanded={sheetOpen}
+                onClick={() => setSheetOpen(true)}
+              >
+                <Icon name="filter" />
+                Filters
+                {refineActive > 0 && <span className="pf-badge">{refineActive}</span>}
+              </button>
+              {!showPopular && <SortSelect<SortKey> value={sort} options={sortOptions} onChange={setSort} />}
+            </div>
+          </div>
 
-            <ActiveChips chips={chips} onClear={clearAll} />
+          <ActiveChips chips={chips} onClear={clearAll} />
 
-            <div className="pf-list-wrap" data-busy={busy ? "" : undefined} aria-busy={busy}>
-              <span className="pf-progress" aria-hidden="true" />
-              {results.length ? (
-                <>
-                  <ol className="pf-list">
-                    {shown.map((p) => (
-                      <ProgrammeRow key={p.id} programme={p} labels={labels} />
-                    ))}
-                  </ol>
-                  {results.length > limit && (
-                    <div className="pf-more">
-                      <p>
-                        Showing {fmt(shown.length)} of {fmt(results.length)}
-                      </p>
-                      <button type="button" className="pf-btn" onClick={() => setLimit((n) => n + PAGE)}>
-                        Show {fmt(Math.min(PAGE, results.length - limit))} more
-                      </button>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="pf-empty" role="status">
-                  <h3>No programmes match</h3>
-                  <p>
-                    {filters.query.trim()
-                      ? `Nothing matches “${filters.query.trim()}” with the current filters. Check the spelling, try a broader word such as “engineering” or “nursing”, or remove a filter.`
-                      : "Try removing a filter or choosing a different level."}
-                  </p>
-                  <div className="pf-empty-actions">
-                    {area && filters.query.trim() && (
-                      <Link className="pf-btn" href={`/programmes?q=${encodeURIComponent(filters.query.trim())}`}>Search all study areas</Link>
-                    )}
-                    {filters.query.trim() && active > 1 && (
-                      <button type="button" className="pf-btn" onClick={() => change(() => ({ ...emptyFilters, query: filters.query }))}>
-                        Search “{filters.query.trim()}” {area ? "in this study area" : "in all programmes"}
-                      </button>
-                    )}
-                    <button type="button" className="pf-btn pf-btn-primary" onClick={clearAll}>
-                      Clear all filters
+          <div className="pf-list-wrap" data-busy={busy ? "" : undefined} aria-busy={busy}>
+            <span className="pf-progress" aria-hidden="true" />
+            {results.length ? (
+              <>
+                <ol className="pf-list">
+                  {shown.map((p, index) => (
+                    <ProgrammeRow key={p.id} programme={p} labels={labels} slots={slots} onChoose={chooseProgramme} onOpen={rememberBrowse}
+                      lead={showPopular && index === 0} applications={showPopular ? applicantCounts.get(p.id) : undefined} />
+                  ))}
+                </ol>
+                {showPopular ? <div className="pf-more"><Link href="/programmes?view=all" className="pf-btn">Browse all {fmt(total)} programmes <Icon name="arrow" /></Link></div> : results.length > limit && (
+                  <div className="pf-more">
+                    <p>
+                      Showing {fmt(shown.length)} of {fmt(results.length)}
+                    </p>
+                    <button type="button" className="pf-btn" onClick={() => setLimit((n) => n + PAGE)}>
+                      Show {fmt(Math.min(PAGE, results.length - limit))} more
                     </button>
                   </div>
+                )}
+              </>
+            ) : (
+              <div className="pf-empty" role="status">
+                <h3>No programmes match</h3>
+                <p>
+                  {filters.query.trim()
+                    ? `Nothing matches “${filters.query.trim()}” with the current filters. Check the spelling, try a broader word such as “engineering” or “nursing”, or remove a filter.`
+                    : "Try removing a filter or choosing a different level."}
+                </p>
+                <div className="pf-empty-actions">
+                  {area && filters.query.trim() && (
+                    <Link className="pf-btn" href={`/programmes?q=${encodeURIComponent(filters.query.trim())}`}>Search all study areas</Link>
+                  )}
+                  {filters.query.trim() && active > 1 && (
+                    <button type="button" className="pf-btn" onClick={() => change(() => ({ ...emptyFilters, query: filters.query }))}>
+                      Search “{filters.query.trim()}” {area ? "in this study area" : "in all programmes"}
+                    </button>
+                  )}
+                  <button type="button" className="pf-btn pf-btn-primary" onClick={clearAll}>
+                    Clear all filters
+                  </button>
                 </div>
-              )}
-            </div>
-          </section>
-        </div>
-      )}
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+      {showPopular && <AreaGallery areas={areas} total={catalogue.programmes.length} />}
+      <nav className="pf-resources pf-main" aria-label="More programme resources">
+        <Link href={routes.fees.href}>Browse fees <Icon name="arrow" /></Link>
+      </nav>
     </div>
   );
 }

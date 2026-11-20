@@ -1,98 +1,106 @@
-// Kattankulathur, 2024–25. Section 13, “Applied Count”, matched to catalogue IDs.
-export const applicantSource = "https://webstor.srmist.edu.in/web_assets/downloads/2025/aicte-mandate-disclosure-2024-25.pdf#page=99";
+// Kattankulathur. Section 11 of SRM’s AY 2026–27 AICTE disclosure,
+// printed pages 129–131. Counts are reported by programme. Where the catalogue
+// has multiple possible matches, leave the intake or study option unresolved.
+export const applicantEdition = "2026–27";
+export const applicantSource = "https://webstor.srmist.edu.in/web_assets/downloads/2025/flipbook/aicte-mandate-disclosure/files/basic-html/page131.html";
 
 export const applicantCounts = new Map<number, number>([
-  [15559, 1513], // B.Tech. Aerospace Engineering
-  [14942, 4630], // B.Tech. Artificial Intelligence
-  [27987, 384], // B.Tech. Automation & Robotics
-  [15524, 205], // B.Tech. Automobile Engineering
-  [15557, 77], // B.Tech. Automobile Engineering with Specialization in Automotive Electronics
-  [14826, 548], // B.Tech. Biomedical Engineering
-  [133126, 200], // Biomedical Engineering (Machine Intelligence)
-  [15582, 1551], // B.Tech. Biotechnology
-  [133118, 111], // B.Tech. Biotechnology (Computational Biology)
-  [65389, 603], // B.Tech. Biotechnology with specialization in Genetic Engineering
-  [27737, 194], // B.Tech. Biotechnology with specialization in Regenerative Medicine
-  [15578, 394], // B.Tech. Chemical Engineering
-  [14956, 312], // B.Tech. Civil Engineering
-  [14958, 136], // B.Tech. Civil Engineering with Computer Applications
-  [14936, 1078], // B.Tech. Computer Science and Business Systems (In Collaboration with TCS)
-  [14918, 22217], // B.Tech. Computer Science and Engineering
-  [14924, 1079], // B.Tech. Computer Science And Engineering with Specialization in Cloud Computing
-  [27986, 2984], // B.Tech. Computer Science And Engineering (Data Science)
-  [14920, 15025], // B.Tech Computer Science And Engineering with Specialization in Artificial Intelligence and Machine Learning
-  [14922, 1591], // B.Tech. Computer Science And Engineering with Specialization in Big Data Analytics
-  [14938, 264], // B.Tech. Computer Science And Engineering with Specialization in Blockchain Technology
-  [14926, 330], // B.Tech. Computer Science And Engineering with Specialization in Computer Networking
-  [14928, 3586], // B.Tech. Computer Science And Engineering with Specialization in Cyber Security
-  [14930, 1051], // B.Tech. Computer Science And Engineering with Specialization in Information Technology
-  [14932, 404], // B.Tech. Computer Science And Engineering with Specialization in Internet of Things
-  [14934, 1025], // B.Tech. Computer Science And Engineering with Specialization in Software Engineering
-  [14940, 507], // B.Tech. Computer Science And Engineering with Specialization in Gaming Technology
-  [14814, 1025], // B.Tech. Electrical & Electronics Engineering
-  [14833, 1784], // B.Tech. Electronics And Communication Engineering with Specialization in Data Sciences
-  [28022, 4106], // B.Tech Electronics and Communication Engineering
-  [14828, 281], // B.Tech. Electronics And Communication Engineering with Specialization in Cyber Physical Systems
-  [14831, 611], // B.Tech. Electronics And Computer Engineering
-  [14847, 99], // B.Tech. Electronics And Instrumentation Engineering
-  [64046, 350], // B.Tech. Electronics Engineering (VLSI Design and Technology)
-  [133128, 159], // Biotechnology (Food Technology)
-  [15572, 825], // B.Tech. Mechanical Engineering
-  [108870, 174], // B.Tech. Mechanical Engineering (Automation and Robotics)
-  [27881, 463], // B.Tech. Mechanical Engineering with specialization in Artificial Intelligence and Machine Learning
-  [15561, 236], // B.Tech. Mechatronics Engineering
-  [27747, 200], // B.Tech. Mechatronics Engineering with Specialization in Robotics
-  [15730, 68], // B.Tech. Nanotechnology
-  [156163, 17], // M.Tech. Aerospace Engineering
-  [15542, 18], // M.Tech. Automotive Hybrid Systems Engineering (For working professionals)
-  [28116, 36], // M.Tech. Automotive Technology
-  [15509, 52], // M.Tech. Biomedical Engineering
-  [15590, 168], // M.Tech. Biotechnology
-  [15574, 41], // M.Tech. Chemical Engineering
-  [14953, 156], // M.Tech. Cloud Computing
-  [15563, 30], // M.Tech. Computer Aided Design
-  [14964, 54], // M.Tech. Construction Engineering & Management
-  [28297, 35], // M.Tech. Electric Vehicle Technology
-  [14837, 35], // M.Tech. Embedded System Technology
-  [14966, 20], // M.Tech. Environmental Engineering
-  [15658, 32], // M.Tech. Food and Nutritional Biotechnology
-  [15683, 57], // M.Tech. Food Safety and Quality Management
-  [15654, 52], // M.Tech. Genetic Engineering
-  [14960, 7], // M.Tech. Geotechnical Engineering
-  [28157, 100], // M.Tech. Information Security and Cyber Forensics
-  [14944, 21], // M.Tech. Internet of Things
-  [28154, 12], // M.Tech. Mechatronics Engineering
-  [15802, 5], // M.Tech. Nanotechnology
-  [52112, 13], // M.Tech. Power Electronics and Drives
-  [14821, 13], // M.Tech. Power Systems
-  [14968, 9], // M.Tech. Remote Sensing & Geographic Information System
-  [15567, 24], // M.Tech. Robotics
-  [15570, 5], // M.Tech. Solar Energy
-  [14962, 98], // M.Tech. Structural Engineering
-  [14842, 88], // M.Tech. VLSI Design
-  [156160, 6], // M.Tech. Wireless Communication Technology (Full Time)
-  [28138, 130], // M.Tech. Artificial Intelligence
-  [28133, 136], // M.Tech. Artificial Intelligence & Data Science
-  [144441, 8], // M.Tech. Cloud Computing and Block Chain
-  [273945, 33], // M.Tech CyberSecurity
-  [299794, 4], // M.Tech Data Engineering
-  [299804, 56], // M.Tech Data science
-  [31579, 480], // MBA. Business Administration
-  [31582, 160], // M.B.A. Banking and Financial Services
-  [31584, 120], // M.B.A. Artificial Intelligence and Data Science
-  [31593, 83], // M.B.A. Digital Marketing
-  [31598, 285], // M.B.A. Business Analytics
-  [31603, 56], // M.B.A. Health Care and Hospital Management
-  [110424, 86], // M.B.A. Financial Services along with NSE
-  [105638, 43], // M.B.A. Sports Management
-  [132106, 58], // M.B.A. Logistics and Supply Chain Management
-  [28470, 476], // MCA. Computer Applications
-  [134303, 89], // MCA. Computer Applications with specialization in Generative AI
-  [28051, 274], // M.Tech. (Integrated) – Artificial Intelligence
-  [110610, 364], // M.Tech. (Integrated) – Computer Science and Engineering
-  [28309, 158], // M.Tech. (Integrated) – Computer Science And Engineering with Specialization in Cyber Security and Digital Forensics
-  [28317, 205], // M.Tech. (Integrated) – Computer Science And Engineering with Specialization in Data Science
-  [28307, 67], // M.Tech. (Integrated) – Electronics And Communication Engineering with Specialization in Micro Electronics System Design
-  [88511, 10], // M.Tech. (Integrated) – Material Science and Engineering
+  [98149, 136], // Bachelor of Design (Interior Design) (U.G.)
+  [250415, 287], // Aeronautical Engineering (U.G.)
+  [15559, 2255], // Aerospace Engineering (U.G.)
+  [14942, 4610], // Artificial intelligence (U.G.)
+  [27987, 644], // Automation and Robotics (U.G.)
+  [15524, 382], // Automobile Engineering (U.G.)
+  [15557, 111], // Automobile Engineering with Specialisation in Automotive Electronics (U.G.)
+  [14826, 684], // Biomedical Engineering (U.G.)
+  [133126, 226], // Biomedical Engineering (Machine intelligence) (U.G.)
+  [15582, 1982], // Biotechnology (U.G.)
+  [133118, 644], // Biotechnology (Computational Biology) (U.G.)
+  [133128, 200], // Biotechnology (Food Technology) (U.G.)
+  [65389, 936], // Biotechnology with Specialisation in Genetic Engineering (U.G.)
+  [27737, 185], // Biotechnology with Specialisation in Regenerative Medicine (U.G.)
+  [15578, 580], // Chemical Engineering (U.G.)
+  [14956, 454], // Civil Engineering (U.G.)
+  [14958, 99], // Civil Engineering with Computer Application (U.G.)
+  [14936, 445], // Computer Science and Business System (U.G.)
+  [14918, 16648], // Computer Science and Engineering (U.G.)
+  [14924, 311], // Computer Science and Engineering with Specialisation in Cloud Computing (U.G.)
+  [27986, 2017], // Computer Science and Engineering (Data Science) (U.G.)
+  [208378, 184], // Computer Science and Engineering (Devsecops) (U.G.)
+  [14920, 20877], // Computer Science and Engineering with Specialisation in Artificial intelligence and Machine Learning (U.G.)
+  [14922, 249], // Computer Science and Engineering with Specialisation in Big Data Analytics (U.G.)
+  [14938, 92], // Computer Science and Engineering with Specialisation in Block Chain Technology (U.G.)
+  [14926, 44], // Computer Science and Engineering with Specialisation in Computer Networking (U.G.)
+  [14928, 3478], // Computer Science and Engineering with Specialisation in Cyber Security (U.G.)
+  [14930, 422], // Computer Science and Engineering with Specialisation in information Technology (U.G.)
+  [14932, 46], // Computer Science and Engineering with Specialisation in internet Of Things (U.G.)
+  [14934, 701], // Computer Science and Engineering with Specialisation in Software Engineering (U.G.)
+  [14940, 301], // Computer Science and Engineering with Specialization in Gaming Technology (U.G.)
+  [14814, 839], // Electrical and Electronics Engineering (U.G.)
+  [14833, 1018], // Electronics and Communication and Engineering with Specialization in Data Science (U.G.)
+  [28022, 5039], // Electronics and Communication Engineering (U.G.)
+  [14828, 381], // Electronics and Communiction Engineering with Specialization in Cyber Physical Systems (U.G.)
+  [14831, 588], // Electronics and Computer Engineering (U.G.)
+  [14847, 78], // Electronics and instrumentation Engineering (U.G.)
+  [64046, 231], // Electronics Engineering (Vlsi Design and Technology) (U.G.)
+  [209319, 676], // Mathematics and Computing (U.G.)
+  [15572, 1000], // Mechanical Engineering (U.G.)
+  [108870, 389], // Mechanical Engineering (Automation and Robotics) (U.G.)
+  [27881, 405], // Mechanical Engineering with Specialisation in Artificial intelligence and Machine Learning (U.G.)
+  [15561, 505], // Mechatronics Engineering (U.G.)
+  [27747, 314], // Mechatronics Engineering with Specialisation in Robotics (U.G.)
+  [15730, 59], // Nano Technology (U.G.)
+  [98154, 7], // Public Space Design (P.G.)
+  [156163, 51], // Aerospace Engineering (P.G.)
+  [29904, 50], // Automation and Robotics (P.G.)
+  [28116, 28], // Automotive Technology (P.G.)
+  [15509, 101], // Biomedical Engineering (P.G.)
+  [15590, 340], // Biotechnology (P.G.)
+  [15574, 40], // Chemical Engineering (P.G.)
+  [14953, 78], // Cloud Computing (P.G.)
+  [144441, 33], // Cloud Computing and Blockchain (P.G.)
+  [15563, 15], // Computer Aided Design (P.G.)
+  [14964, 45], // Construction Engineering and Management (P.G.)
+  [299794, 53], // Data Engineering (P.G.)
+  [299804, 370], // Data Science (P.G.)
+  [28297, 33], // Electric Vehicle Technology (P.G.)
+  [14837, 89], // Embedded System Technology (P.G.)
+  [14966, 18], // Environmental Engineering (P.G.)
+  [209313, 9], // Financial Technologies (P.G.)
+  [15658, 43], // Food and Nutritional Biotechnology (P.G.)
+  [15683, 98], // Food Safety and Quality Management (P.G.)
+  [15654, 72], // Genetic Engineering (P.G.)
+  [14960, 1], // Geotechnical Engineering (P.G.)
+  [274753, 12], // Ic Design and Technology (P.G.)
+  [28157, 133], // information Security and Cyber Forensics (P.G.)
+  [14944, 12], // internet Of Things (P.G.)
+  [28154, 21], // Mechatronics Engineering (P.G.)
+  [15802, 13], // Nano Technology (P.G.)
+  [52112, 19], // Power Electronics and Drives (P.G.)
+  [14821, 27], // Power Systems (P.G.)
+  [14968, 14], // Remote Sensing and Gis (P.G.)
+  [15567, 37], // Robotics (P.G.)
+  [15570, 4], // Solar Energy (P.G.)
+  [14962, 74], // Structural Engineering (P.G.)
+  [14842, 238], // Vlsi Design (P.G.)
+  [156160, 13], // Wireless Communication Technology (P.G.)
+  [28051, 212], // Artificial Intelligence (Integrated)
+  [28309, 121], // Computer Science and Engineering with Specialisation in Cybersecurity and Digital Forensics (Integrated)
+  [88511, 18], // Material Science and Engineering (Integrated)
+  [28307, 58], // Electronics and Communication Engineering with Specialisation in Microelectronic S System Design (Integrated)
+  [110610, 99], // Computer Science and Engineering (Integrated)
+  [28317, 73], // Computer Science and Engineering with Specialisation in Data Science (Integrated)
+  [31579, 602], // MBA (P.G.)
+  [31582, 263], // MBA (Bankiing and Financial Services) (P.G.)
+  [31584, 259], // MBA (Artificial Intelligence and Data Science) (P.G.)
+  [31593, 192], // MBA (Digital Marketing) (P.G.)
+  [31598, 592], // MBA (Business Analytics) (P.G.)
+  [31603, 109], // MBA (Health Care and Hospital Management) (P.G.)
+  [110424, 100], // MBA (Financial Services) (P.G.)
+  [105638, 53], // MBA (Sports Management) (P.G.)
+  [132106, 331], // MBA (Logistics and Supply Chain ManagemenT) (P.G.)
+  [31573, 1275], // BBA (U.G.)
+  [28470, 549], // Master of Computer Applications (P.G.)
+  [134303, 905], // MCA (Generative Al) (P.G.)
+  [28444, 1102], // BCA (U.G.)
 ]);
-

@@ -6,7 +6,7 @@ import { clubs } from "@/features/campus/clubs";
 import { campusLinks } from "@/features/campus/links";
 import hostels from "@/features/explore/hostels.json";
 import events from "@/features/explore/events.json";
-import { tourUrl } from "@/lib/navigation";
+import { routes, tourUrl } from "@/lib/navigation";
 import { finderData } from "@/features/programmes/finder/data";
 import "./campus.css";
 
@@ -63,6 +63,7 @@ export default function Page() {
           <nav className="section-shortcuts" aria-label="Campus shortcuts">
             <a href="#people">Clubs and societies ↓</a>
             <a href="#whats-on">Events ↓</a>
+            <Link href="/campus/buddy">Campus Buddy ↗</Link>
             <Link href="/campus/accommodation">Accommodation ↗</Link>
           </nav>
         </div>
@@ -200,6 +201,7 @@ export default function Page() {
             <a className="cl-btn cl-btn-gold" href={tourUrl}>
               Take the 360° tour <Arrow />
             </a>
+            <Link className="cl-btn cl-btn-ghost" href={routes.campusVisit.href}>Campus visit guide <Arrow /></Link>
             <a className="cl-btn cl-btn-ghost" href={campusLinks.visitors}>
               Directions &amp; transport <Arrow />
             </a>

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SiteFooter } from "@/components/SiteFooter";
 import { application, courses, criteria, faculties, source } from "@/features/explore/academic";
-import { programmeFee } from "@/features/explore/fee-listing";
+import { courseEvidence } from "@/features/explore/course-evidence";
 import { coursePhoto, fieldPhotos } from "@/features/programmes/photography";
 import { routes } from "@/lib/navigation";
 import { CompareCourseLink } from "./CompareCourseLink";
@@ -43,7 +43,9 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Page({ params }: Props) {
   const course = await getCourse(params);
-  const { fee, period } = programmeFee(course);
+  const evidence = courseEvidence(course);
+  const { fee, period, conflict, alternateSource } = evidence.fee;
+  const [placementAnswer, ...placementDetails] = evidence.details.ai;
   const official = source(course);
   const apply = application(course);
   const facts = [
@@ -59,7 +61,7 @@ export default async function Page({ params }: Props) {
           <header className={styles.header}>
             <div>
               <p className={styles.degree}>{course.degree}</p>
-              <h1>{course.name}</h1>
+              <h1>{course.name.replace(/\bW\/S\.?\s+(?:in\s+)?/ig, "with ")}</h1>
               <p className={styles.faculty}>{faculties[course.faculty]}</p>
             </div>
             <div className={styles.photo}>
@@ -77,11 +79,24 @@ export default async function Page({ params }: Props) {
                 <p>{criteria(course)}</p>
                 <a href={official}>Full eligibility and selection rules <span aria-hidden="true">↗</span></a>
               </section>
+              <details className={styles.placementNote}>
+                <summary>{placementAnswer.label}</summary>
+                <p>{placementAnswer.text} {placementAnswer.link && <a href={placementAnswer.link.href}>{placementAnswer.link.label}</a>}</p>
+                <dl>{placementDetails.map(row => <div key={row.label}>
+                  <dt>{row.label}</dt><dd>{row.text} {row.link && <a href={row.link.href}>{row.link.label}</a>}</dd>
+                </div>)}</dl>
+              </details>
+              {course.level === "Undergraduate" && <section aria-labelledby="course-direction">
+                <h2 id="course-direction">Still choosing a subject?</h2>
+                <p>Answer a few questions about what you enjoy. See other undergraduate options at SRM and choose degrees to compare.</p>
+                <Link href={routes.finder.href}>{routes.finder.label} <span aria-hidden="true">→</span></Link>
+              </section>}
             </div>
             <aside className={styles.fees} aria-labelledby="fee-label">
               <h2 id="fee-label">{period || "Listed fee"}</h2>
               <p className={styles.amount} data-prose={fee.length > 19 || undefined}>{fee}</p>
-              <Suspense fallback={<Link className={styles.compare} href={`${routes.fees.href}?compare=${course.id}`}>Compare this fee <span aria-hidden="true">→</span></Link>}>
+              {conflict && <p>{conflict} <a href={alternateSource}>Programme fee source</a></p>}
+              <Suspense fallback={<Link className={styles.compare} href={`${routes.compare.href}?compare=${course.id}`}>Compare course <span aria-hidden="true">→</span></Link>}>
                 <CompareCourseLink className={styles.compare} courseId={course.id} />
               </Suspense>
               <p>{course.notes || "Check the faculty schedule for registration, exams and other charges. Hostel and dining are listed separately."}</p>
