@@ -170,27 +170,6 @@
   .s-hero-title span:last-child { display: block; }
 }
 
-.s-subject-links { grid-column: 1 / -1; align-self: end; min-width: 0; }
-.s-subjects[aria-hidden] { display: none; }
-.s-subjects { display: flex; flex-wrap: wrap; gap: .4rem clamp(12px, 2vw, 36px); align-items: center; list-style: none; padding: 0; margin: 0 0 3svh; border-top: 1px solid var(--steel); }
-.s-subjects a { display: inline-flex; align-items: center; gap: .25em; min-height: 44px; padding: .25em 0; color: var(--color-gold-light); font: 400 clamp(20px, 2vw, 38px)/1.1 var(--display); }
-.s-subjects li:nth-child(even) a { font-family: var(--font-editorial); font-style: italic; color: var(--sky); }
-.s-subjects a span { font: .6em var(--font-primary); }
-.s-subjects a:is(:hover,:focus-visible) { color: white; text-decoration: underline; text-underline-offset: .15em; }
-@media (min-width: 761px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
-  html:not([data-quiet-motion], [data-large-text]) .s-subject-links:not(:has(:focus-visible)) { overflow: hidden; }
-  html:not([data-quiet-motion], [data-large-text]) .s-subject-links:not(:has(:focus-visible)) .s-subject-track {
-    display: flex; width: max-content; animation: s-marquee 32s linear infinite;
-  }
-  html:not([data-quiet-motion], [data-large-text]) .s-subject-links:not(:has(:focus-visible)) .s-subjects {
-    display: flex; flex-wrap: nowrap; gap: 4vw; padding-right: 4vw; white-space: nowrap;
-  }
-  html:not([data-quiet-motion], [data-large-text]) .s-subject-links:hover .s-subject-track { animation-play-state: paused; }
-}
-@media (max-height: 530px) and (orientation: landscape) {
-  .s-subjects { margin: 0; gap: 0 12px; }
-  .s-subjects a { font-size: 18px; min-height: 32px; }
-}
 .s-tour-section {
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);

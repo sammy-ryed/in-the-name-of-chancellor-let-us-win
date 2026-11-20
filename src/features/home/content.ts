@@ -1,8 +1,16 @@
-import { srm } from "@/lib/navigation";
+import { routes, srm } from "@/lib/navigation";
 
 export const filmId = "4c7Ob4pDYMQ";
 export const filmUrl = "https://www.youtube.com/watch?v=" + filmId;
+const camberRacingUrl = srm + "/srmists-team-camber-racing-claims-national-title-at-formula-bharat-2026/";
+
 export const community = [
+  {
+    name: "SRM DEI",
+    place: "Startups & incubation",
+    href: routes.dei.href,
+    wordmark: "DEI",
+  },
   {
     name: "Student clubs",
     place: "Find your people",
@@ -12,9 +20,7 @@ export const community = [
   {
     name: "Camber Racing",
     place: "Build / compete",
-    href:
-      srm +
-      "/srmists-team-camber-racing-claims-national-title-at-formula-bharat-2026/",
+    href: camberRacingUrl,
     image: "racing",
   },
   {
@@ -51,7 +57,7 @@ export const stories = [
     category: "Formula Bharat / 2026",
     image: "racing",
     alt: "Team Camber Racing with its competition car",
-    href: community[1].href,
+    href: camberRacingUrl,
   },
   {
     title: "The graduating class takes the stage",

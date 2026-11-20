@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { HomeAction } from "./HomeAction";
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -10,6 +11,11 @@ import "./team-roll.css";
 
 const number = (index: number) => String(index + 1).padStart(2, "0");
 const headline = ["Great", "ideas", "need", "great", "teams."];
+
+function TeamPortrait({ team }: { team: (typeof community)[number] }) {
+  if (team.wordmark) return <span className="team-type-print" aria-hidden="true"><b>{team.wordmark}</b></span>;
+  return <Image src={`/home/${team.image}.webp`} width={800} height={600} alt="" unoptimized />;
+}
 
 export function TeamRoll() {
   const section = useRef<HTMLElement>(null);
@@ -88,24 +94,25 @@ export function TeamRoll() {
       <ol id="home-teams" ref={list} className="team-list">
         {community.map((team, i) => (
           <li key={team.href} data-current={index === i || undefined}>
-            <a href={team.href} onFocus={event => {
+            <Link href={team.href} onFocus={event => {
               if (section.current?.hasAttribute("data-rolling") && event.currentTarget.matches(":focus-visible")) {
                 event.currentTarget.scrollIntoView({ block: "center", behavior: "instant" });
               }
             }}>
-              <span className="team-thumb"><Image src={`/home/${team.image}.webp`} width={720} height={480} alt="" unoptimized /></span>
+              <span className="team-thumb"><TeamPortrait team={team} /></span>
               <span className="team-number" aria-hidden="true">{number(i)}</span>
               <span className="team-name">{team.name}<small>{team.place}</small></span>
               <span className="team-link-arrow" aria-hidden="true">↗</span>
-            </a>
+            </Link>
           </li>
         ))}
       </ol>
       <div className="team-gallery" aria-hidden="true">
         <div className="team-print">
           {community.map((team, i) => (
-            <Image key={team.image} src={`/home/${team.image}.webp`} width={800} height={600} alt="" unoptimized
-              data-current={index === i || undefined} data-previous={previous === i || undefined} />
+            <span key={team.href} className="team-frame" data-current={index === i || undefined} data-previous={previous === i || undefined}>
+              <TeamPortrait team={team} />
+            </span>
           ))}
         </div>
         <div className="team-caption"><span>{community[index].place}</span><span>{number(index)} / {number(community.length - 1)}</span></div>
