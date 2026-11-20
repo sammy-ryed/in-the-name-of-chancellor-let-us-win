@@ -39,6 +39,7 @@ export const routes = {
   housing: { href: "/campus/accommodation", label: "Accommodation & dining" },
   recruiters: { href: "/career-centre#recruiters", label: "Recruiters & Super Dream offers" },
   outcomes: { href: "/career-centre#outcomes", label: "Placement figures & average CTC" },
+  dei: { href: "/dei", label: "Startups & incubation (DEI)" },
   portals: { href: "/parents#parent-portals", label: "Parent portals" },
   score: { href: "/students#score", label: "About SCORE" },
   photos: { href: "https://alumni.srmist.edu.in/albums.dz", label: "Alumni photo albums" },
@@ -87,6 +88,7 @@ export const navigation: NavItem[] = [
     { href: "/career-centre#outcomes", label: "Placement figures & CTC" },
     { href: "/career-centre#recruiters", label: "Recruiters & offers" },
     { href: "/career-centre#support", label: "Training & contacts" },
+    routes.dei,
   ] },
   { ...routes.students, children: [
     { href: "/students#portals", label: "Academic portals" }, routes.buddy,
