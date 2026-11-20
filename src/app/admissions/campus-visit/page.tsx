@@ -41,7 +41,6 @@ export default function CampusVisitPage() {
         <p className="cv-hero-description">Explore Kattankulathur’s guided itinerary and try a demo booking. For a visit in person, confirm arrangements with Admissions before you travel.</p>
         <div className="cv-hero-actions"><a className="cv-button" href="#book-visit">Try a demo booking</a><Link className="cv-hero-link" href="/campus">Explore the Campus</Link></div>
       </div>
-      <div className="cv-hero-caption"><span>Guided campus tours</span><span>Kattankulathur, Chennai / Pictured</span></div>
     </header>
     <nav className="cv-page-links" aria-label="Plan your campus visit"><a href="#book-visit">Demo booking</a><a href="#itinerary">Tour itinerary</a><a href="#before-arrival">Before you arrive</a></nav>
 
