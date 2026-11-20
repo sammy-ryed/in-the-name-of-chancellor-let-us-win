@@ -23,7 +23,7 @@ test("automated visit lifecycle, live passes, validation and concurrent capacity
       const page = await (await fetch(`${base}/admissions/campus-visit`)).text();
       assert.match(page, /Your future/);
       assert.match(page, /begins with/);
-      assert.match(page, /Schedule Your Visit/);
+      assert.match(page, /<a\b[^>]*href="#book-visit"[^>]*>Try a demo booking<\/a>/);
       assert.match(page, /id="book-visit"/);
       assert.match(page, /id="faq-title"/);
       const admissions = await (await fetch(`${base}/admissions`)).text();

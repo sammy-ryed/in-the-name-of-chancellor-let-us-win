@@ -140,10 +140,10 @@ const guides: Entry[] = [
   {
     title: "Apply for B.Tech / SRMJEEE",
     section: "Admissions",
-    href: "/admissions#apply",
+    href: routes.apply.href,
     keywords: "apply register application",
     summary:
-      "Open the official B.Tech application from How to apply. Other faculties have their own admissions routes.",
+      "The SRMJEEE application guide links to the official B.Tech applicant portal. Register there, prepare the required documents, pay the application fee and submit through the portal. Other faculties have their own admissions routes.",
   },
   {
     title: "SCORE student app",
@@ -187,11 +187,11 @@ const guides: Entry[] = [
 ];
 
 export function catalogue(): Entry[] {
-  const guideSummaries = new Map(guides.map(guide => [guide.href, guide.summary]));
+  const pages = [...guides, ...siteGuides()];
+  const guideSummaries = new Map(pages.map(guide => [guide.href, guide.summary]));
   return [
     ...universityOverview,
-    ...guides,
-    ...siteGuides(),
+    ...pages,
     ...[...navigation, ...services].map((item) => ({
       title: item.label,
       section: item.label,

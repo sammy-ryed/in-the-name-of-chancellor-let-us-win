@@ -8,6 +8,7 @@ export interface NavItem extends NavLink {
 }
 
 export const srm = "https://www.srmist.edu.in";
+export const internationalApplicationUrl = "https://intlapplications.srmist.edu.in/international-application-form-2027";
 export const tourUrl = "https://webstor.srmist.edu.in/web_assets/srmist-virtual-tour-vo/index.htm";
 
 export const routes = {

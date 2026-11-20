@@ -5,11 +5,10 @@ import { ProspectusHeading } from "@/components/ProspectusHeading";
 import { Guide } from "@/components/Guide";
 import { GuideContents } from "@/components/GuideContents";
 import { SiteFooter } from "@/components/SiteFooter";
-import { routes } from "@/lib/navigation";
-import { application, university, type Course } from "@/features/explore/academic";
+import { internationalApplicationUrl, routes } from "@/lib/navigation";
+import { application, source, university, type Course } from "@/features/explore/academic";
 import "./admissions.css";
 
-const internationalApplication = "https://intlapplications.srmist.edu.in/international-application-form-2027";
 const sections: [string, string][] = [
   ["SRMJEEE dates", "exam"],
   [routes.finder.label, "programme-finder"],
@@ -18,13 +17,16 @@ const sections: [string, string][] = [
 ];
 
 function ApplicationRoutes({ course }: { course?: Course }) {
+  const href = course ? application(course) : routes.apply.href;
+  const formLabel = href === routes.apply.href ? "Apply for B.Tech / SRMJEEE"
+    : course && href === source(course) ? "See application routes for this faculty" : "Open programme application";
   return <div className="admission-routes">
     <section id="apply" aria-labelledby="domestic-heading">
       <h2 id="domestic-heading">Domestic applicants</h2>
       <p>{course ? `${course.degree} · ${course.name} / ${course.campus}` : "Apply through the Indian admissions portal for your programme."}</p>
       <div className="admission-route-links">
-        <Link href={course ? application(course) : routes.apply.href}>{course ? "Open programme application" : "Apply for B.Tech / SRMJEEE"} <span aria-hidden="true">{course ? "↗" : "→"}</span></Link>
-        <a href={university + "/admission-india/"}>All domestic forms <span aria-hidden="true">↗</span></a>
+        <Link href={href}>{formLabel} <span aria-hidden="true">{href.startsWith("/") ? "→" : "↗"}</span></Link>
+        <a href="https://applications.srmist.edu.in/">All domestic forms <span aria-hidden="true">↗</span></a>
       </div>
       {course && <Link className="admission-course-link" href={"/programmes/" + course.id}>Review this programme’s fees and eligibility</Link>}
     </section>
@@ -32,7 +34,7 @@ function ApplicationRoutes({ course }: { course?: Course }) {
       <h2 id="international-heading">International applicants</h2>
       <p>For foreign nationals, NRIs and NRI-sponsored students.</p>
       <div className="admission-route-links">
-        <a href={internationalApplication}>Apply for 2027 <span aria-hidden="true">↗</span></a>
+        <a href={internationalApplicationUrl}>Apply for 2027 <span aria-hidden="true">↗</span></a>
         <a href={university + "/admission-international/"}>Check eligibility and fees <span aria-hidden="true">↗</span></a>
       </div>
     </section>
@@ -42,7 +44,8 @@ function ApplicationRoutes({ course }: { course?: Course }) {
 const planningLinks = [
   { href: routes.campusVisit.href, label: "Schedule a Campus Visit" },
   { href: routes.programmes.href, label: "Browse programmes" },
-  { href: routes.fees.href, label: "Compare tuition fees" },
+  routes.compare,
+  { href: routes.fees.href, label: "Browse tuition fees" },
   { href: routes.scholarships.href, label: "Explore scholarships" },
   routes.finder,
 ];

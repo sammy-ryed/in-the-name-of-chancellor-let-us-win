@@ -65,11 +65,35 @@ html:has(.ask-panel[open]) { overflow: hidden; }
 .ask-panel .ask-submit:enabled:hover { background: var(--color-primary); }
 .ask-panel .ask-submit:focus-visible { outline-color: var(--ask-gold); outline-offset: -4px; }
 .ask-panel .ask-submit:disabled { background: var(--surface-secondary); color: var(--text-secondary); cursor: default; }
-.ask-refinement { display: flex; align-items: baseline; gap: 12px; margin-top: 10px; font: 400 .83rem/1.4 var(--font-primary); }
-.ask-refinement span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.ask-refinement button { border: 0; background: transparent; color: var(--color-primary); padding: 3px 0; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.ask-brand-row:only-child { margin-bottom: 0; }
+.ask-new-search {
+  display: inline-flex; flex: none; align-items: center; gap: 6px; min-height: 44px;
+  padding: 3px 8px; border: 0; background: transparent; color: var(--color-primary);
+  font: 650 .88rem/1.3 var(--font-nav);
+}
+.ask-new-search .ask-icon { width: 15px; height: 15px; }
+.ask-new-search:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 460px) {
+  .ask-new-search .ask-icon { display: none; }
+  .ask-brand-row h2 { min-width: 0; }
+}
 .ask-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 20px var(--ask-pad) 24px; }
 .ask-start > h3 { margin: 0 0 6px; font: 700 .87rem/1.4 var(--font-nav); }
+.ask-query-action, .ask-continue {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+  gap: 2px 14px; width: 100%; min-height: 48px; margin: 0 0 15px; padding: 10px 14px;
+  text-align: start; background: var(--surface-blue); color: var(--ask-ink);
+  border: 1px solid var(--ask-line); border-radius: 6px;
+}
+.ask-query-action > span, .ask-continue > span {
+  grid-column: 1; color: var(--text-secondary); font: 550 .77rem/1.4 var(--font-nav);
+}
+.ask-query-action strong, .ask-continue strong {
+  grid-column: 1; overflow-wrap: anywhere; font: 650 1rem/1.38 var(--font-primary);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.ask-query-action > .ask-icon, .ask-continue > .ask-icon { grid-column: 2; grid-row: 1 / 3; }
+.ask-query-action:hover strong, .ask-continue:hover strong { text-decoration: underline; text-underline-offset: 3px; }
 .ask-suggestions { display: grid; }
 .ask-suggestions button {
   width: 100%; min-height: 46px; display: grid; grid-template-columns: 17px 1fr auto 15px;
