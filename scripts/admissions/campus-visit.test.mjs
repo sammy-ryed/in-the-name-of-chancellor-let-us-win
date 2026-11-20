@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { randomUUID } from "node:crypto";
+import { PDFDocument } from "pdf-lib";
 
 // Run against one local demo server: node --test scripts/admissions/campus-visit.test.mjs
 const base = process.env.SRM_TEST_URL || "http://127.0.0.1:3000";
@@ -71,8 +72,12 @@ test("automated visit lifecycle, live passes, validation and concurrent capacity
       assert.match(qr.headers.get("content-type"), /svg/);
       assert.match(await qr.text(), /<path/);
       const download = await fetch(pass);
-      assert.match(download.headers.get("content-disposition"), /attachment/);
-      assert.match(await download.text(), /Campus Test Visitor/);
+      assert.match(download.headers.get("content-type"), /application\/pdf/);
+      assert.match(download.headers.get("content-disposition"), /attachment;.*\.pdf/);
+      const pdf = await PDFDocument.load(await download.arrayBuffer());
+      assert.equal(pdf.getPageCount(), 1);
+      assert.equal(pdf.getTitle(), "SRM | Campus visit pass");
+      assert.ok(Math.abs(pdf.getPage(0).getWidth() - 595.28) < .1);
       const calendar = await (await fetch(`${pass}&format=ics`)).text();
       assert.match(calendar, /BEGIN:VCALENDAR/);
       assert.match(calendar, /DTSTART:\d{8}T043000Z/);

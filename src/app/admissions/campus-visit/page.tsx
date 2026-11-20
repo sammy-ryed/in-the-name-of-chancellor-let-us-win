@@ -40,7 +40,6 @@ export default function CampusVisitPage() {
         <p className="cv-hero-description">Experience campus life, explore our facilities, meet our community and discover what makes SRM extraordinary.</p>
         <div className="cv-hero-actions"><a className="cv-button" href="#book-visit">Schedule Your Visit</a><Link className="cv-hero-link" href="/campus">Explore the Campus</Link></div>
       </div>
-      <div className="cv-hero-caption"><span>Guided campus tours</span><span>Kattankulathur, Chennai / Pictured</span></div>
     </header>
     <nav className="cv-page-links" aria-label="Plan your campus visit"><a href="#book-visit">Book a visit</a><a href="#itinerary">Tour itinerary</a><a href="#before-arrival">Before you arrive</a></nav>
 
