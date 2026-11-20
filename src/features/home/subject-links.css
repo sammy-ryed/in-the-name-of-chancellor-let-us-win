@@ -1,42 +1,44 @@
-/* The photograph has its own space above the marquee, outside its clipping mask. */
 .s-subject-rail {
-  position: relative;
-  grid-column: 1 / -1;
-  align-self: end;
-  width: 100%;
   min-width: 0;
+  border-block-start: 1px solid var(--steel);
 }
 
-.s-subject-photo {
-  position: absolute;
-  right: 28%;
-  bottom: calc(100% + 1.5rem);
-  width: min(24vw, 37svh, 370px);
-  aspect-ratio: 3 / 2;
-  pointer-events: none;
-  transform: rotate(-2deg);
+.s-subject-rail summary {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  width: fit-content;
+  min-height: 44px;
+  list-style: none;
+  cursor: pointer;
+  color: var(--sky);
+  font: 600 1rem/1.4 var(--font-primary);
 }
+.s-subject-rail summary::-webkit-details-marker { display: none; }
+.s-subject-rail summary::after {
+  content: "";
+  width: .46em;
+  height: .46em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-.12em) rotate(45deg);
+}
+.s-subject-rail[open] > summary::after { transform: translateY(.12em) rotate(225deg); }
+.s-subject-rail summary:is(:hover,:focus-visible) { color: var(--surface-warm); }
 
-.s-subject-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 2px solid var(--surface-warm);
-  object-fit: cover;
+.s-subjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(1rem, 2.5vw, 2.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .s-subject-photo img { animation: s-subject-appear .18s ease-out both; }
-  @keyframes s-subject-appear {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.s-subjects a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-gold-light);
+  font: 550 1rem/1.4 var(--font-primary);
 }
-
-@media (max-width: 760px) {
-  .s-subject-photo {
-    right: 0;
-    bottom: calc(100% + .55rem);
-    width: min(25%, 144px);
-  }
-}
+.s-subjects a:is(:hover,:focus-visible) { text-decoration: underline; text-underline-offset: .18em; }

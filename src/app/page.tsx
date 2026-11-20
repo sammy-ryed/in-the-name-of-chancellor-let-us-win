@@ -13,6 +13,11 @@ import "./home.css";
 import "./home-scenes.css";
 import "@/features/home/journeys.css";
 
+const campusGuides = [
+  { href: routes.campusVisit.href + "#book-visit", title: "Book a campus visit" },
+  { href: routes.buddy.href, title: "Find a campus buddy" },
+];
+
 export const metadata = { title: "Life at SRM" };
 export default function Page() {
   return (
@@ -20,37 +25,37 @@ export default function Page() {
       <Choreography />
       <div className="s-opening">
         <div className="s-stage">
-          <section aria-label="Life at SRM" className="s-hero s-lines">
-            <div className="s-intro-pane">
-              <div className="s-hero-copy">
-                <h1 className="s-hero-title"><span>Ready for</span>{" "}<span>life at</span>{" "}<span>SRMIST?</span></h1>
-                <div className="s-hero-actions">
-                  <p className="s-motto">Learn<span>.</span> Leap<span>.</span> Lead<span>.</span></p>
-                  <HomeAction href={routes.admissions.href}>Apply now</HomeAction>
+          <div className="s-film-chapter">
+            <section aria-label="Life at SRM" className="s-hero s-lines">
+              <div className="s-intro-pane">
+                <div className="s-hero-copy">
+                  <h1 className="s-hero-title"><span>Ready for</span>{" "}<span>life at</span>{" "}<span>SRMIST?</span></h1>
+                  <div className="s-hero-actions">
+                    <p className="s-motto">Learn<span>.</span> Leap<span>.</span> Lead<span>.</span></p>
+                    <HomeAction href={routes.admissions.href}>Apply now</HomeAction>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="s-hero-brand" aria-hidden="true"><SrmCrest sizes="(max-width: 760px) 16.5vw, 13vw" /></div>
-            <div className="s-film-pane" data-search-surface="media"><Film /></div>
-          </section>
-          <section className="s-academics" aria-labelledby="academics-title">
+              <div className="s-hero-brand" aria-hidden="true"><SrmCrest sizes="(max-width: 760px) 16.5vw, 13vw" /></div>
+              <div className="s-film-pane" data-search-surface="media"><Film /></div>
+            </section>
+          </div>
+          <section className="s-academics" aria-label="Course quiz and campus experiences">
             <div className="s-acad-interior">
-              <h2 id="academics-title" className="s-block-title">
-                Big ideas.
-                <br />
-                Built
-                <br />
-                here.
-              </h2>
-              <div className="s-acad-note">
-                <p className="s-serif">
-                  Choose what you want to learn. Then find a place to try it.
-                </p>
-                <p>
-                  Design a building, test a circuit, grow a crop. Start with a
-                  subject and see where you can take it.
-                </p>
-                <HomeAction href={routes.programmes.href}>Find a programme</HomeAction>
+              <div className="s-acad-guides">
+                <Link className="s-course-quiz" href={routes.finder.href}>
+                  <h2 id="academics-title"><span>Which SRM</span> course <em>fits you?</em></h2>
+                  <span className="s-quiz-action">Take the quiz <HomeArrow /></span>
+                </Link>
+                <nav className="s-campus-guides" aria-labelledby="home-campus-demos">
+                  <p id="home-campus-demos" className="s-campus-label">Campus demos</p>
+                  {campusGuides.map(({ href, title }) => (
+                    <Link key={href} href={href} className="s-campus-guide">
+                      <span className="s-campus-title">{title}</span>
+                      <span className="s-guide-jump" aria-hidden="true"><HomeArrow /></span>
+                    </Link>
+                  ))}
+                </nav>
               </div>
               <SubjectLinks />
             </div>

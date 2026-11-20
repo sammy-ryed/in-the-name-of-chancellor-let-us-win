@@ -464,28 +464,12 @@
     left: var(--mx, 62%);
     top: var(--my, 54%);
   }
-  .s-moving .s-opening {
-    height: 355svh;
-  }
-  .s-acad-interior {
-    padding: 5svh 20px 3svh var(--start);
-    display: flex;
-    flex-direction: column;
-    gap: 3svh;
-  }
-  .s-block-title {
-    font-size: min(17vw, 15.5svh);
-    line-height: 0.99;
-  }
-  .s-acad-note {
-    gap: 1.8svh;
-  }
-  .s-acad-note p {
-    max-width: 23ch;
-  }
-  .s-acad-note .s-button {
-    margin-top: 0;
-  }
+  .s-acad-guides { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .s-course-quiz { min-height: 0; padding: clamp(1.25rem, 5vw, 2.5rem); }
+  .s-course-quiz h2 { font-size: clamp(2.9rem, 12.8vw, 5.25rem); }
+  .s-quiz-action { margin-top: 1rem; }
+  .s-campus-guide { padding-block: 1rem; }
+  .s-campus-title { font-size: clamp(1.75rem, 6.8vw, 2.5rem); }
   .s-disciplines {
     --d-gap: 7vw;
     --d-speed: 22s;
@@ -617,6 +601,23 @@
   }
 
 }
+@media (max-width: 1024px) {
+  /* Let the film release before the guides so touch scrolling stays on the page. */
+  .s-moving .s-opening, .s-moving .s-stage { height: auto; }
+  .s-moving .s-stage { position: relative; top: auto; overflow: visible; }
+  .s-moving .s-film-chapter { height: calc(165svh - var(--scene-top)); }
+  .s-moving .s-hero { position: sticky; top: var(--scene-top); }
+  .s-home .s-academics { position: relative; inset: auto; min-height: 0; clip-path: none; overflow: visible; }
+  .s-acad-interior { min-height: 0; padding-block: clamp(1.5rem, 5vw, 2.5rem); gap: 1rem; }
+}
+@media (min-width: 761px) and (max-width: 1024px) {
+  .s-acad-guides { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .s-course-quiz { min-height: 0; }
+  .s-course-quiz h2 { font-size: clamp(3.5rem, 8.4vw, 5.5rem); }
+  .s-campus-guides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
+  .s-campus-label { grid-column: 1 / -1; }
+  .s-campus-title { font-size: clamp(1.75rem, 3.4vw, 2.25rem); }
+}
 @media (max-height: 530px) and (orientation: landscape) {
   .s-opening-note {
     bottom: 3svh;
@@ -628,12 +629,6 @@
   .s-opening-note small {
     margin-top: 4px;
     font-size: 11px;
-  }
-  .s-acad-note {
-    gap: 8px;
-  }
-  .s-acad-note > p:not(.s-serif) {
-    font-size: 12px;
   }
   .s-compass {
     display: none;
@@ -761,7 +756,6 @@
     top: auto;
     bottom: 16px;
   }
-  .s-acad-interior,
   .s-people-frame {
     padding-top: calc(4svh);
   }

@@ -21,18 +21,29 @@
 .team-list { list-style: none; margin: 0; padding: 0; min-width: 0; }
 .team-list a {
   display: grid;
-  grid-template-columns: clamp(80px, 9vw, 140px) 2ch 1fr auto;
+  grid-template-columns: clamp(64px, 9vw, 140px) max-content minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(8px, 1.2vw, 20px);
   padding: .65rem 0;
   color: inherit;
   border-block-end: 1px solid var(--rule);
 }
-.team-thumb { display: block; overflow: hidden; }
-.team-thumb img { display: block; width: 100%; height: auto; aspect-ratio: 3/2; object-fit: cover; }
+.team-thumb { display: block; overflow: hidden; container-type: inline-size; }
+.team-thumb img, .team-thumb .team-type-print { width: 100%; height: auto; aspect-ratio: 3/2; }
+.team-thumb img { display: block; object-fit: cover; }
+.team-type-print {
+  position: relative; isolation: isolate; display: grid; place-items: center; overflow: hidden;
+  background: var(--brand-blue); color: var(--color-gold-light);
+}
+.team-type-print::before, .team-type-print::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+}
+.team-type-print::before { background: var(--navy); clip-path: polygon(0 0, 26% 0, 49% 100%, 0 100%); }
+.team-type-print::after { background: var(--steel); clip-path: polygon(89% 0, 100% 0, 81% 100%, 76% 100%); }
+.team-type-print b { font: 400 44cqw/.88 var(--display); letter-spacing: -.025em; transform: rotate(-4deg); }
 .team-number, .team-caption, .team-controls { font: 600 .82rem/1.2 var(--font-nav); font-variant-numeric: tabular-nums; }
 .team-number { color: var(--text-secondary); }
-.team-name { font: 400 clamp(1.5rem, 2.7vw, 3.7rem)/.98 var(--display); text-transform: uppercase; }
+.team-name { min-width: 0; overflow-wrap: anywhere; font: 400 clamp(1.5rem, 2.7vw, 3.7rem)/.98 var(--display); text-transform: uppercase; }
 .team-name small { display: block; margin-top: .35rem; color: var(--text-secondary); font: 450 .92rem/1.2 var(--font-primary); text-transform: none; }
 .team-link-arrow { font: 500 1.3rem/1 var(--font-primary); }
 .team-list a:is(:hover, :focus-visible) .team-name { text-decoration: underline; text-underline-offset: .12em; }
@@ -64,18 +75,21 @@
 .team-roll[data-rolling] :is(.team-thumb, .team-name small) { display: none; }
 .team-roll[data-rolling] .team-gallery { align-self: start; }
 .team-print {
-  position: relative; isolation: isolate; overflow: hidden; width: 100%;
+  position: relative; isolation: isolate; overflow: hidden; width: 100%; container-type: inline-size;
   aspect-ratio: 4/3.6; background: var(--surface-blue);
 }
-.team-print img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
+.team-frame { position: absolute; inset: 0; visibility: hidden; }
+.team-frame > :is(img, .team-type-print) { width: 100%; height: 100%; object-fit: cover; }
 .team-print [data-previous] { visibility: visible; }
-.team-print [data-current] { visibility: visible; z-index: 1; animation: team-wipe .58s cubic-bezier(.25, .7, .18, 1) both; }
+.team-print [data-current] { visibility: visible; z-index: 1; }
+.team-print [data-current]:not([data-previous]) { animation: team-wipe .58s cubic-bezier(.25, .7, .18, 1) both; }
 @keyframes team-wipe {
   from { clip-path: polygon(0 100%, 48% 100%, 100% 100%, 100% 100%, 0 100%); }
   45% { clip-path: polygon(0 49%, 48% 14%, 100% 38%, 100% 100%, 0 100%); }
   to { clip-path: polygon(0 0, 48% 0, 100% 0, 100% 100%, 0 100%); }
 }
 .team-caption { display: flex; width: 100%; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: .8rem; }
+.team-caption span:last-child { flex: none; white-space: nowrap; }
 .team-caption span:first-child { font: italic 400 clamp(1.2rem, 2vw, 2.3rem)/1.1 var(--font-editorial); }
 
 @media (max-width: 1024px) {
@@ -92,9 +106,9 @@
     overscroll-behavior-x: contain; padding: 4px max(0px, calc((100% - var(--card)) / 2));
   }
   html:not([data-quiet-motion], [data-large-text]) .team-list li { scroll-snap-align: center; }
-  html:not([data-quiet-motion], [data-large-text]) .team-list a { grid-template-columns: 2ch 1fr auto; padding: 0 0 .75rem; }
+  html:not([data-quiet-motion], [data-large-text]) .team-list a { grid-template-columns: 2ch minmax(0, 1fr) auto; padding: 0 0 .75rem; }
   html:not([data-quiet-motion], [data-large-text]) .team-thumb { grid-column: 1/-1; }
-  html:not([data-quiet-motion], [data-large-text]) .team-thumb img { aspect-ratio: 4/3; }
+  html:not([data-quiet-motion], [data-large-text]) .team-thumb > :is(img, .team-type-print) { aspect-ratio: 4/3; }
   html:not([data-quiet-motion], [data-large-text]) .team-controls {
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }

@@ -306,6 +306,8 @@
 .s-moving .s-academics {
   position: absolute;
   inset: 0;
+  /* Keep every destination reachable if zoom or a short window outgrows the pinned scene. */
+  overflow-y: auto;
   clip-path: polygon(
     var(--entry) 0,
     150% 0,
@@ -314,36 +316,116 @@
   );
 }
 .s-acad-interior {
-  min-height: calc(100svh - var(--scene-top));
   position: relative;
-  padding: 4svh 5vw 4svh var(--start);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(210px, 23vw, 460px);
-  grid-template-rows: 1fr auto;
-  gap: 1.2rem;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  min-height: calc(100svh - var(--scene-top));
+  padding: max(4svh, calc(var(--search-row) + 1rem)) var(--start) 4svh;
+  gap: clamp(1rem, 3svh, 2.25rem);
 }
-.s-block-title {
-  font-size: min(13.6vw, 22.5svh);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+.s-acad-guides {
+  display: grid;
+  grid-template-columns: minmax(0, 1.48fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.75rem, 4.5vw, 5rem);
 }
-.s-acad-note {
-  padding-top: 1vh;
+.s-course-quiz {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  justify-items: start;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(14rem, 40svh, 25rem);
+  padding: clamp(1.5rem, 3.8vw, 4.5rem);
+  color: var(--navy);
+  background: var(--color-blue-pale);
+}
+/* The folded edge repeats the two angled cuts in the opening film. */
+.s-course-quiz::before, .s-course-quiz::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 0 auto;
+  width: 19%;
+  pointer-events: none;
+}
+.s-course-quiz::before {
+  background: var(--sky);
+  clip-path: polygon(65% 0, 100% 0, 100% 100%, 68% 100%, 12% 61%);
+}
+.s-course-quiz::after {
+  background: var(--color-gold);
+  clip-path: polygon(83% 0, 100% 0, 30% 62%, 12% 61%);
+}
+.s-course-quiz h2 {
+  position: relative;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: clamp(3.35rem, min(6.6vw, 13.6svh), 8rem);
+  line-height: .93;
+  letter-spacing: -.035em;
+}
+.s-course-quiz h2 > span { display: block; }
+.s-course-quiz em {
+  font: italic 400 .88em/1.08 var(--font-editorial);
+  text-transform: none;
+}
+.s-quiz-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(.5rem, 2vw, 1.25rem);
+  min-height: 46px;
+  max-width: 100%;
+  margin-top: clamp(1.1rem, 3svh, 2.2rem);
+  padding: .65rem 1rem;
+  color: var(--surface-warm);
+  background: var(--navy);
+  font: 700 clamp(1rem, 1.15vw, 1.2rem)/1.25 var(--font-primary);
+}
+.s-course-quiz:is(:hover,:focus-visible) .s-quiz-action { background: var(--color-secondary); }
+.s-acad-guides a:focus-visible { outline: 3px solid var(--color-gold-light); outline-offset: 4px; }
+.s-campus-label {
+  padding-bottom: .45rem;
+  color: var(--sky);
+  font: 600 1rem/1.4 var(--font-primary);
+}
+.s-campus-guide {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3.5vh;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 48px;
+  padding-block: clamp(.875rem, 2.5svh, 1.65rem);
+  border-block-start: 1px solid var(--steel);
+  color: var(--surface-warm);
 }
-.s-acad-note > p:not(.s-serif),
+.s-campus-title {
+  font: 400 clamp(2rem, 3.3vw, 4rem)/1 var(--display);
+  text-transform: uppercase;
+}
+.s-guide-jump {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--color-gold-light);
+}
+.s-guide-jump .s-arrow { transform: rotate(-34deg); }
+.s-campus-guide:is(:hover,:focus-visible) { color: var(--color-gold-light); }
+@media (prefers-reduced-motion: no-preference) {
+  .s-quiz-action .s-arrow, .s-guide-jump .s-arrow { transition: transform .2s ease-out; }
+  .s-course-quiz:is(:hover,:focus-visible) .s-arrow { transform: translateX(3px); }
+  .s-campus-guide:is(:hover,:focus-visible) .s-arrow { transform: translate(2px,-2px) rotate(-34deg); }
+}
 .s-place-details p,
 .s-news-aside > p:not(.s-serif) {
   max-width: 31ch;
   font-size: clamp(14px, 1.2vw, 21px);
   letter-spacing: -0.025em;
   line-height: 1.18;
-}
-.s-acad-note .s-button {
-  margin-top: 3vh;
 }
 /* Fields of study: an endless horizontal marquee. */
 .s-disciplines {
