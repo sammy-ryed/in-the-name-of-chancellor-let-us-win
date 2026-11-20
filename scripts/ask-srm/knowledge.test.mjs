@@ -99,3 +99,41 @@ test("general contacts and admissions enquiries reach the right published desk",
   assert.equal(international[0].href, "/contact#international-admissions");
   assert.ok(international.every(item => item.section !== "Course details"));
 });
+
+test("physical visits, virtual tours and peer introductions have distinct destinations", async () => {
+  const first = async (query, previous) => (await search(query, previous))[0];
+  assert.equal((await first("can I bring my parents for a camus vist?")).href, "/admissions/campus-visit");
+  assert.equal((await first("is Ramapuram available?", "book a campus visit")).href, "/admissions/campus-visit");
+  assert.match((await first("what should I bring?", "book a campus visit")).summary, /demo passes do not authorise entry/i);
+  assert.match((await first("can I tour the campus from home?")).href, /virtual-tour/);
+  assert.equal((await first("how can I meet a senior before classes start?")).href, "/campus/buddy");
+  assert.match((await first("where do we meet?", "campus buddy")).summary, /Arch Gate/);
+  assert.equal((await first("What about hostel booking?", "book a campus visit")).href, "/campus/accommodation#booking");
+  assert.equal((await first("What documents do I need?", "Can I book a campus visit?")).href, "/admissions/campus-visit#before-arrival");
+});
+
+test("student spelling, award names and application follow-ups reach specific guides", async () => {
+  assert.equal((await search("how do I apply for a scholorship?"))[0].href, "/admissions/scholarships#apply");
+  assert.equal((await search("Is there a Founder's scholarship?"))[0].href, "/admissions/scholarships#founder");
+  const [uploads] = await search("Where do I upload my signature?", "How do I apply for SRMJEEE?");
+  assert.equal(uploads.href, "/admissions/apply#prepare");
+  assert.match(uploads.summary, /official application form/);
+  assert.doesNotMatch(uploads.summary, /\d\s*MB/i);
+  assert.equal((await search("What courses should I take after 12th?"))[0].href, "/admissions/course-finder");
+  const equipment = await search("book an XRD slot");
+  assert.ok(equipment.some(source => /diffraction|instrument/i.test(source.summary)));
+  assert.ok(equipment.every(source => !source.href.includes("campus-visit") && !source.href.includes("accommodation")));
+});
+
+test("incidental words alone do not supply evidence for unrelated subjects", async () => {
+  for (const query of ["what is the weather on Mars?", "how much is the fee for the moon mission?", "what happens if aliens steal my sandwich?"]) {
+    assert.deepEqual(await search(query), [], query);
+  }
+});
+
+test("explicit applicant and service switches use the new topic", async () => {
+  const [domestic] = await search("What are the domestic B.Tech CSE fees at Ramapuram?", "What are international admissions fees?");
+  assert.equal(domestic.href, "/programmes/a30d32f7612");
+  assert.match((await search("How much does the hostel cost?", "When is scholarship renewal?"))[0].href, /^\/campus\/accommodation/);
+  assert.equal((await search("Which courses does SRM offer?", "How do I apply for international admissions?"))[0].href, "/programmes");
+});

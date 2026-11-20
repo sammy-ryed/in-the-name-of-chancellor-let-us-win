@@ -8,7 +8,12 @@ const apply: Prompt = { section: "Admissions", question: "How do international s
 const placement: Prompt = { section: "Careers", question: "What are the placement figures?" };
 const first: Record<string, Prompt> = {
   [routes.finder.href]: { section: routes.finder.label, question: "How does the SRM Course Finder suggest courses?" },
-  "/programmes/compare": { section: "Programmes", question: "How do I compare course fees?" },
+  [routes.compare.href]: { section: "Your comparison", question: "Which of my choices has the lowest tuition?" },
+  [routes.fees.href]: { section: "Fees", question: "How do I check tuition for my course?" },
+  [routes.campusVisit.href]: { section: "Campus visits", question: "How can I book a campus visit?" },
+  [routes.scholarships.href]: { section: "Scholarships", question: "Where can I check scholarship eligibility?" },
+  [routes.housing.href]: { section: "Accommodation", question: "How do I book a hostel room?" },
+  [routes.apply.href]: { section: "SRMJEEE", question: "What is the SRMJEEE application fee?" },
   "/campus/buddy": { section: "Campus Buddy", question: "Where do campus buddies meet?" },
   programmes: fees, admissions: apply, campus: clubs, "career-centre": placement,
   contact: { section: "Contact us", question: "How do I contact SRM admissions?" },
@@ -21,5 +26,9 @@ const first: Record<string, Prompt> = {
 };
 
 export function promptsFor(path: string): Prompt[] {
+  if (/^\/programmes\/[a-f0-9]{11}$/.test(path)) {
+    return ["What is the tuition for this course?", "What subjects do I need for this course?", "How long is this course?"]
+      .map(question => ({ section: "This course", question }));
+  }
   return [...new Set([first[path] ?? first[path.split("/")[1]] ?? fees, apply, clubs, placement])].slice(0, 3);
 }

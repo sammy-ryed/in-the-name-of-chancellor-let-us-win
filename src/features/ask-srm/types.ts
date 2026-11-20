@@ -16,5 +16,7 @@ export const chatLimits = {
 export type SearchResponse = {
   sources: Source[];
   answer?: string;
+  suggestions?: string[];
+  resolved?: { kind: "guide" | "reply" | "unanswered"; answer: string; suggestions?: string[] };
   kind: "matches" | "guide" | "groq" | "reply" | "unanswered";
 };

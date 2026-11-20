@@ -32,7 +32,7 @@ const planning: Resource[] = [
   { title: "Examination notices", note: "Check announcements from the Controller of Examinations.", href: srm + "/controller-of-examinations/" },
   { title: "Visit Kattankulathur", note: "Find the campus address and directions for your visit.", href: srm + "/visitors/" },
   { title: "Campus transport", note: "Find SRM transport information and bus routes.", href: srm + "/transport-facility/" },
-  { title: "Scholarships", note: "Review SRM’s scholarship eligibility and renewal policy.", href: srm + "/policies/scholarship-policy/" },
+  { title: "Scholarships", note: "Review SRM’s scholarship eligibility and renewal policy.", href: routes.scholarships.href },
 ];
 const support: Resource[] = [
   { title: "Hostel office", note: "Contact campus life about accommodation or a residential concern.", href: srm + "/srm-hostels/#hostels-contact" },

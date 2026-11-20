@@ -21,3 +21,17 @@ test("allows a calculated difference only between two fees with matching periods
   const disputed = { ...annual[0], summary: annual[0].summary + " Fee sources differ." };
   assert.equal(figuresAreSupported("The difference is ₹1 lakh.", [disputed, annual[1]]), false);
 });
+
+test("a fee, rank and percentage remain distinct even when the number matches", () => {
+  const sources = [{ title: "Example award", section: "Admissions", href: "/admissions/scholarships",
+    summary: "Ranks 1 to 100 can apply for a 50% tuition concession. A sample fee is INR 2,000." }];
+  assert.equal(figuresAreSupported("Ranks up to 100, with a 50 per cent concession.", sources), true);
+  assert.equal(figuresAreSupported("The fee is Rs. 2,000.", sources), true);
+  assert.equal(figuresAreSupported("100% of applicants receive an award.", sources), false);
+  assert.equal(figuresAreSupported("The fee is ₹100.", sources), false);
+});
+
+test("percentages at both ends of a published concession range keep their unit", () => {
+  const source = { title: "Award", section: "Scholarships", href: "/admissions/scholarships", summary: "Support ranges from 25–100% of tuition." };
+  assert.equal(figuresAreSupported("The range starts at 25 per cent, up to 100%.", [source]), true);
+});
